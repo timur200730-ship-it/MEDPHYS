@@ -36,3 +36,12 @@
 .flow-key .flow-key-wall{background:#8bb6bb}
 .flow-extra{margin-top:10px;padding:10px 12px;border-radius:8px;background:#1b3038;border:1px solid #344f56;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#9fb0b5}
 .flow-extra strong{font:600 15px 'Space Grotesk';color:var(--teal)}
+
+/* v4: laboratory state and graph visibility fixes */
+.graph-card.hidden,.g-readout.hidden,.flow-extra.hidden{display:none!important}
+.graph-curve{fill:none;stroke:#6ac5b4;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.graph-guide{stroke:#d8b36a;stroke-width:1.5;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.graph-point{fill:#d8b36a;stroke:#fff0c9;stroke-width:2;vector-effect:non-scaling-stroke}
+.graph-current{font-size:10px;fill:#d8b36a}
+.lab-tab[aria-pressed="true"]{border-color:var(--gold);color:var(--gold);background:#24343b}
+.flow-scene.hidden,.motion-scene.hidden,.centrifuge-scene.hidden{display:none!important}

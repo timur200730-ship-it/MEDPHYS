@@ -31,91 +31,128 @@ function updateProgress(){const n=getDone().length,p=Math.round(n/topics.length*
 function renderTerms(q=""){const filtered=terms.filter(t=>(t[0]+" "+t[1]).toLowerCase().includes(q.toLowerCase()));$("glossaryList").innerHTML=filtered.map(t=>`<article class="term"><b>${t[0]}</b><p>${t[1]}</p></article>`).join("")||'<p class="muted">Ничего не найдено.</p>'}
 $("glossarySearch").addEventListener("input",e=>renderTerms(e.target.value));
 let lab="centrifuge";
-function renderCentrifugeGraph(r, rpm){
+
+function renderCentrifugeGraph(radiusM, rpm){
   const curve=$("graphCurve"), point=$("graphPoint"), guide=$("graphGuide"), label=$("graphCurrent");
   if(!curve||!point||!guide||!label)return;
-  const x0=58,x1=610,y0=18,y1=184,maxRpm=8000;
-  const omegaMax=2*Math.PI*maxRpm/60, aMax=omegaMax*omegaMax*r;
+  const x0=58,x1=610,y0=22,y1=184,minN=500,maxN=8000;
+  const maxA=Math.pow(2*Math.PI*maxN/60,2)*radiusM;
   const pts=[];
-  for(let i=0;i<=80;i++){
-    const n=500+(maxRpm-500)*i/80;
-    const a=Math.pow(2*Math.PI*n/60,2)*r;
-    const x=x0+(n-500)/(maxRpm-500)*(x1-x0);
-    const y=y1-(a/aMax)*(y1-y0);
-    pts.push(`${i===0?"M":"L"}${x.toFixed(1)},${y.toFixed(1)}`);
+  for(let i=0;i<=100;i++){
+    const n=minN+(maxN-minN)*i/100;
+    const a=Math.pow(2*Math.PI*n/60,2)*radiusM;
+    const x=x0+(n-minN)/(maxN-minN)*(x1-x0);
+    const y=y1-(a/maxA)*(y1-y0);
+    pts.push((i===0?"M":"L")+x.toFixed(2)+","+y.toFixed(2));
   }
   curve.setAttribute("d",pts.join(" "));
-  const currentA=Math.pow(2*Math.PI*rpm/60,2)*r;
-  const cx=x0+(rpm-500)/(maxRpm-500)*(x1-x0);
-  const cy=y1-(currentA/aMax)*(y1-y0);
-  point.setAttribute("cx",cx);point.setAttribute("cy",cy);
-  guide.setAttribute("x1",cx);guide.setAttribute("x2",cx);guide.setAttribute("y1",cy);guide.setAttribute("y2",y1);
-  label.textContent=`${rpm.toLocaleString("ru-RU")} об/мин · ${Math.round(currentA).toLocaleString("ru-RU")} м/с²`;
+  const aNow=Math.pow(2*Math.PI*rpm/60,2)*radiusM;
+  const px=x0+(rpm-minN)/(maxN-minN)*(x1-x0);
+  const py=y1-(aNow/maxA)*(y1-y0);
+  point.setAttribute("cx",px.toFixed(2)); point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2)); guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2)); guide.setAttribute("y2",y1);
+  label.textContent=`${rpm.toLocaleString("ru-RU")} об/мин`;
+}
+function setResult(value, unit, label){
+  $("resultValue").textContent=value;
+  $("resultUnit").textContent=unit;
+  $("resultLabel").textContent=label;
 }
 function calcLab(){
-  $("gValue").parentElement.parentElement.classList.toggle("hidden",lab!=="centrifuge");
+  const gReadout=$("gReadout");
+  gReadout.classList.toggle("hidden",lab!=="centrifuge");
   $("flowExtra").classList.toggle("hidden",lab!=="flow");
+  $("centrifugeGraphCard").classList.toggle("hidden",lab!=="centrifuge");
+
   if(lab==="centrifuge"){
-    const rpm=+$("rpm").value,r=+$("radius").value/100;
-    const omega=2*Math.PI*rpm/60,a=omega*omega*r,g=a/9.80665;
+    const rpm=Number($("rpm").value);
+    const radiusM=Number($("radius").value)/100;
+    const omega=2*Math.PI*rpm/60;
+    const acceleration=omega*omega*radiusM;
     $("rpmOut").textContent=rpm.toLocaleString("ru-RU");
-    $("radiusOut").textContent=r.toFixed(2).replace(".",",");
-    $("resultValue").textContent=Math.round(a).toLocaleString("ru-RU");
-    $("resultUnit").textContent="м/с²";
-    $("resultLabel").textContent="Центростремительное ускорение";
-    $("gValue").textContent=(g>=100?Math.round(g).toLocaleString("ru-RU"):g.toFixed(1).replace(".",","))+" g";
+    $("radiusOut").textContent=radiusM.toFixed(2).replace(".",",");
+    setResult(Math.round(acceleration).toLocaleString("ru-RU"),"м/с²","Центростремительное ускорение");
+    $("gValue").textContent=(acceleration/9.80665).toLocaleString("ru-RU",{maximumFractionDigits:0})+" g";
     $("formula").innerHTML="a = ω²r <span>ω = 2πn / 60</span>";
     $("rotor").style.animationDuration=Math.max(.25,60/rpm*8)+"s";
-    renderCentrifugeGraph(r,rpm);
-  }else if(lab==="motion"){
-    const v=+$("speed").value,t=+$("time").value,s=v*t;
-    $("speedOut").textContent=v;$("timeOut").textContent=t;
-    $("resultValue").textContent=s.toFixed(1).replace(".",",");
-    $("resultUnit").textContent="м";$("resultLabel").textContent="Путь за выбранное время";
+    renderCentrifugeGraph(radiusM,rpm);
+    $("labExplain").textContent="Образцы движутся по окружности вместе с ротором. Центростремительное ускорение направлено к оси вращения и растёт пропорционально квадрату частоты.";
+  } else if(lab==="motion"){
+    const speed=Number($("speed").value), time=Number($("time").value);
+    const distance=speed*time;
+    $("speedOut").textContent=speed.toLocaleString("ru-RU");
+    $("timeOut").textContent=time.toLocaleString("ru-RU");
+    setResult(distance.toFixed(1).replace(".",","),"м","Путь за выбранное время");
     $("formula").innerHTML="s = vt <span>Путь = скорость × время</span>";
-    $("movingDot").style.left=Math.min(92,v/10*92)+"%";
-  }else{
-    const radiusMm=+$("vesselRadius").value,dp=+$("pressure").value;
-    const radius=radiusMm/1000, length=0.1, viscosity=0.0035;
-    const q=Math.PI*Math.pow(radius,4)*dp/(8*viscosity*length);
-    const qMlSec=q*1e6;
-    const area=Math.PI*radius*radius;
-    const velocity=q/area;
+    $("movingDot").style.left=Math.min(92,speed/10*92)+"%";
+    $("labExplain").textContent="При равномерном прямолинейном движении путь прямо пропорционален скорости и времени движения.";
+  } else {
+    const radiusMm=Number($("vesselRadius").value);
+    const pressurePa=Number($("pressure").value);
+    const radius=radiusMm/1000;
+    const length=0.5;              // учебная длина участка сосуда, м
+    const viscosity=0.0035;        // динамическая вязкость модельной жидкости, Па·с
+    const flowM3s=Math.PI*Math.pow(radius,4)*pressurePa/(8*viscosity*length);
+    const flowMlMin=flowM3s*60*1e6;
+    const meanVelocity=flowM3s/(Math.PI*radius*radius);
     $("vesselRadiusOut").textContent=radiusMm.toFixed(1).replace(".",",");
-    $("pressureOut").textContent=dp.toLocaleString("ru-RU");
-    $("resultValue").textContent=qMlSec.toFixed(2).replace(".",",");
-    $("resultUnit").textContent="мл/с";
-    $("resultLabel").textContent="Объёмный расход жидкости (модель)";
-    $("formula").innerHTML="Q = πr⁴ΔP / (8ηL) <span>Закон Пуазёйля для ламинарного течения в цилиндрическом сосуде</span>";
-    $("flowVelocity").textContent=(velocity*100).toFixed(2).replace(".",",")+" см/с";
-    $("vessel").style.height=(58+radiusMm*14)+"px";
-    $("bloodStream").style.height=(26+radiusMm*6)+"px";
-    $("bloodStream").style.opacity=String(.45+Math.min(.5,dp/6000));
+    $("pressureOut").textContent=pressurePa.toLocaleString("ru-RU");
+    setResult(flowMlMin.toFixed(1).replace(".",","),"мл/мин","Объёмный расход (учебная модель)");
+    $("formula").innerHTML="Q = πr⁴ΔP / (8ηL) <span>Закон Пуазёйля · ламинарное течение</span>";
+    $("flowVelocity").textContent=meanVelocity.toFixed(2).replace(".",",")+" м/с";
+    $("vessel").style.height=(64+radiusMm*9)+"px";
+    $("bloodStream").style.height=(24+radiusMm*5)+"px";
+    $("bloodStream").style.opacity=String(.5+Math.min(.4,pressurePa/5000));
+    $("labExplain").textContent="Модель показывает ламинарное течение ньютоновской жидкости в жёстком цилиндрическом сосуде. Расход зависит от четвёртой степени радиуса и прямо пропорционален перепаду давления.";
   }
 }
 function switchLab(next){
+  if(!["centrifuge","motion","flow"].includes(next))return;
   lab=next;
-  document.querySelectorAll(".lab-tab").forEach(b=>b.classList.toggle("active",b.dataset.lab===next));
-  $("centrifugeControls").classList.toggle("hidden",next!=="centrifuge");
-  $("motionControls").classList.toggle("hidden",next!=="motion");
-  $("flowControls").classList.toggle("hidden",next!=="flow");
-  $("centrifugeScene").classList.toggle("hidden",next!=="centrifuge");
-  $("motionScene").classList.toggle("hidden",next!=="motion");
-  $("flowScene").classList.toggle("hidden",next!=="flow");
-  $("centrifugeGraphCard").classList.toggle("hidden",next!=="centrifuge");
+  document.querySelectorAll(".lab-tab").forEach(button=>{
+    const active=button.dataset.lab===next;
+    button.classList.toggle("active",active);
+    button.setAttribute("aria-pressed",String(active));
+  });
+  const states={
+    centrifuge:["centrifugeControls","centrifugeScene"],
+    motion:["motionControls","motionScene"],
+    flow:["flowControls","flowScene"]
+  };
+  ["centrifugeControls","motionControls","flowControls","centrifugeScene","motionScene","flowScene"].forEach(id=>{
+    $(id).classList.add("hidden");
+  });
+  states[next].forEach(id=>$(id).classList.remove("hidden"));
   $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":"Параметры потока";
   $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":"ЭКСПЕРИМЕНТ 03";
-  $("labExplain").textContent=next==="centrifuge"?"При вращении ротора образцы движутся по окружности. Вектор центростремительного ускорения направлен к центру. Чем выше частота вращения и радиус, тем больше ускорение.":next==="motion"?"При равномерном прямолинейном движении путь прямо пропорционален скорости и времени движения.":"Модель показывает ламинарное течение жидкости в цилиндрическом сосуде. В этой упрощённой модели расход особенно чувствителен к радиусу: он зависит от четвёртой степени радиуса.";
-  $("questionTitle").textContent=next==="centrifuge"?"Как изменится ускорение, если увеличить частоту вращения в 2 раза?":next==="motion"?"Как изменится путь, если при той же скорости увеличить время в 2 раза?":"Что произойдёт с объёмным расходом, если радиус сосуда увеличить в 2 раза при неизменных остальных параметрах?";
-  $("questionText").textContent=next==="centrifuge"?"Используй ползунок частоты и сравни результат с графиком. Обрати внимание на зависимость ускорения от квадрата угловой скорости.":next==="motion"?"Измени время движения и сравни результат. При постоянной скорости путь изменяется прямо пропорционально времени.":"Измени радиус сосуда. Закон Пуазёйля предсказывает зависимость расхода от четвёртой степени радиуса: удвоение радиуса даёт увеличение расхода в 16 раз в рамках модели.";
+  $("questionTitle").textContent=next==="centrifuge"
+    ?"Как изменится ускорение, если увеличить частоту вращения в 2 раза?"
+    :next==="motion"
+    ?"Как изменится путь, если при той же скорости увеличить время в 2 раза?"
+    :"Что произойдёт с расходом, если радиус сосуда увеличить в 2 раза?";
+  $("questionText").textContent=next==="centrifuge"
+    ?"Измени частоту вращения. При постоянном радиусе ускорение зависит от квадрата частоты."
+    :next==="motion"
+    ?"Измени время движения. При постоянной скорости путь изменяется прямо пропорционально времени."
+    :"Сравни два значения радиуса при неизменных давлении, вязкости и длине сосуда. В модели Пуазёйля расход пропорционален r⁴.";
   calcLab();
 }
-document.querySelectorAll("[data-lab]").forEach(b=>b.addEventListener("click",()=>switchLab(b.dataset.lab)));
-["rpm","radius","speed","time","vesselRadius","pressure"].forEach(id=>$(id).addEventListener("input",calcLab));
-$("resetLab").addEventListener("click",()=>{ $("rpm").value=3000;$("radius").value=10;$("speed").value=2;$("time").value=5;$("vesselRadius").value=2;$("pressure").value=1500;calcLab()});
+document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
+  button.addEventListener("click",()=>switchLab(button.dataset.lab));
+});
+["rpm","radius","speed","time","vesselRadius","pressure"].forEach(id=>{
+  $(id).addEventListener("input",calcLab);
+});
+$("resetLab").addEventListener("click",()=>{
+  $("rpm").value=3000; $("radius").value=10;
+  $("speed").value=2; $("time").value=5;
+  $("vesselRadius").value=2; $("pressure").value=1500;
+  calcLab();
+});
 document.querySelectorAll(".answer").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>x.disabled=true);if(b.dataset.answer==="b"){b.classList.add("correct");$("quizFeedback").textContent="Верно! Ускорение пропорционально квадрату частоты вращения: при увеличении частоты в 2 раза ускорение увеличится в 4 раза."}else{b.classList.add("wrong");document.querySelector('[data-answer="b"]').classList.add("correct");$("quizFeedback").textContent="Не совсем. Вспомни формулу a = ω²r: ускорение зависит от квадрата угловой скорости. Правильный ответ — Б."}}));
 $("nextQuestion").addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>{x.disabled=false;x.classList.remove("correct","wrong")});$("quizFeedback").textContent=""});
 $("connection").textContent=navigator.onLine?"Подключение активно":"Автономный режим";
 window.addEventListener("online",()=>$("connection").textContent="Подключение активно");window.addEventListener("offline",()=>$("connection").textContent="Автономный режим");
-renderTopics();updateProgress();renderTerms();calcLab();
+renderTopics();updateProgress();renderTerms();switchLab("centrifuge");
 if("serviceWorker" in navigator && location.protocol!=="file:"){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}

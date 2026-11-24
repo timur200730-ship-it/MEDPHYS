@@ -83,7 +83,7 @@
               <div class="scene-caption">СХЕМА РОТОРА ЦЕНТРИФУГИ</div>
             </div>
             <div class="motion-scene hidden" id="motionScene"><div class="track"><div class="moving-dot" id="movingDot"></div></div><div class="scene-caption">МОДЕЛЬ ПРЯМОЛИНЕЙНОГО ДВИЖЕНИЯ</div></div>
-<div class="flow-scene hidden" id="flowScene"><div class="vessel-wrap"><div class="vessel" id="vessel"><div class="blood-stream" id="bloodStream"></div><span class="flow-particle p1"></span><span class="flow-particle p2"></span><span class="flow-particle p3"></span><span class="flow-particle p4"></span></div><div class="vessel-label">МОДЕЛЬ СОСУДА · ЛАМИНАРНОЕ ТЕЧЕНИЕ</div></div><div class="flow-key"><span><i class="flow-key-center"></i> скорость выше в центре</span><span><i class="flow-key-wall"></i> скорость ниже у стенок</span></div></div>
+<div class="flow-scene hidden" id="flowScene"><div class="vessel-wrap"><div class="vessel" id="vessel"><div class="blood-stream" id="bloodStream"></div><span class="flow-particle p1"></span><span class="flow-particle p2"></span><span class="flow-particle p3"></span><span class="flow-particle p4"></span></div><div class="vessel-label">УЧЕБНАЯ МОДЕЛЬ ЛАМИНАРНОГО ПОТОКА</div></div><div class="flow-key"><span><i class="flow-key-center"></i> скорость выше в центре</span><span><i class="flow-key-wall"></i> скорость ниже у стенок</span></div></div>
             <div class="lab-explain" id="labExplain">При вращении ротора образцы движутся по окружности. Чем выше частота вращения и радиус, тем больше центростремительное ускорение.</div>
           </div>
           <div class="lab-controls card">
@@ -113,11 +113,11 @@
             <div class="result-box"><div class="eyebrow">РЕЗУЛЬТАТ РАСЧЁТА</div><div class="result-main"><strong id="resultValue">987</strong><span id="resultUnit">м/с²</span></div><div id="resultLabel" class="muted">Центростремительное ускорение</div></div>
             <div class="formula" id="formula">a = ω²r <span>ω = 2πn / 60</span></div>
             <div class="flow-extra hidden" id="flowExtra"><span>Средняя скорость потока</span><strong id="flowVelocity">—</strong></div>
-            <div class="g-readout"><div><span class="eyebrow">ОТНОСИТЕЛЬНОЕ УСКОРЕНИЕ</span><strong id="gValue">—</strong><small>g (условно, относительно g₀ = 9,80665 м/с²)</small></div><div class="g-symbol">g</div></div>
+            <div class="g-readout" id="gReadout"><div><span class="eyebrow">ОТНОСИТЕЛЬНОЕ УСКОРЕНИЕ</span><strong id="gValue">—</strong><small>g (условно, относительно g₀ = 9,80665 м/с²)</small></div><div class="g-symbol">g</div></div>
             <button class="secondary-btn full" id="resetLab">Сбросить параметры ↺</button>
           </div>
         </div>
-        <div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="595" y="30" text-anchor="end" class="graph-current">Текущая точка</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div>
+        <div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div>
         <div class="reflection card"><div><div class="eyebrow">ПОДУМАЙ И ОБЪЯСНИ</div><h3 id="questionTitle">Как изменится ускорение, если увеличить частоту вращения в 2 раза?</h3><p id="questionText">Используй ползунок частоты и сравни результат. Обрати внимание на зависимость ускорения от квадрата угловой скорости.</p></div><div class="reflection-mark">?</div></div>
       </section>
 
@@ -146,6 +146,6 @@
       <footer class="footer"><span>MEDPHYS <b>·</b> Физика в медицине</span><span>Учебный прототип · Версия 1.0</span></footer>
     </main>
   </div>
-  <script src="./app.js"></script>
+  <script src="./app.js?v=4"></script>
 </body>
 </html>
