@@ -56,29 +56,37 @@ function renderCentrifugeGraph(radiusM, rpm){
   label.textContent=`${rpm.toLocaleString("ru-RU")} об/мин · r=${radiusM.toFixed(2).replace(".",",")} м`;
 }
 function renderFlowGraph(radiusMm, pressurePa, viscosity, length){
-  const curve=$("flowGraphCurve"),point=$("flowGraphPoint"),guide=$("flowGraphGuide"),label=$("flowGraphCurrent");
+  const curve=document.getElementById("flowGraphCurve");
+  const point=document.getElementById("flowGraphPoint");
+  const guide=document.getElementById("flowGraphGuide");
+  const label=document.getElementById("flowGraphCurrent");
   if(!curve||!point||!guide||!label)return;
   const x0=58,x1=610,y0=22,y1=184,minR=1,maxR=4;
-  const qAt=rMm=>{
+  const qAt=(rMm)=>{
     const r=rMm/1000;
-    const q=Math.PI*Math.pow(r,4)*pressurePa/(8*viscosity*length);
-    return q*60*1e6;
+    return Math.PI*Math.pow(r,4)*pressurePa/(8*viscosity*length)*60*1e6;
   };
-  const maxQ=qAt(maxR),pts=[];
+  const maxQ=qAt(maxR);
+  if(!Number.isFinite(maxQ)||maxQ<=0)return;
+  const pts=[];
   for(let i=0;i<=100;i++){
     const r=minR+(maxR-minR)*i/100;
     const x=x0+(r-minR)/(maxR-minR)*(x1-x0);
     const y=y1-(qAt(r)/maxQ)*(y1-y0);
-    pts.push((i===0?"M":"L")+x.toFixed(2)+","+y.toFixed(2));
+    pts.push(`${i===0?"M":"L"}${x.toFixed(2)},${y.toFixed(2)}`);
   }
   curve.setAttribute("d",pts.join(" "));
-  const qNow=qAt(radiusMm);
-  const px=x0+(radiusMm-minR)/(maxR-minR)*(x1-x0);
+  const safeR=Math.min(maxR,Math.max(minR,Number(radiusMm)));
+  const qNow=qAt(safeR);
+  const px=x0+(safeR-minR)/(maxR-minR)*(x1-x0);
   const py=y1-(qNow/maxQ)*(y1-y0);
-  point.setAttribute("cx",px.toFixed(2));point.setAttribute("cy",py.toFixed(2));
-  guide.setAttribute("x1",px.toFixed(2));guide.setAttribute("x2",px.toFixed(2));
-  guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",y1);
-  label.textContent=`r=${radiusMm.toFixed(1).replace(".",",")} мм · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
+  point.setAttribute("cx",px.toFixed(2));
+  point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2));
+  guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2));
+  guide.setAttribute("y2",y1);
+  label.textContent=`r=${safeR.toFixed(1).replace(".",",")} мм · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
 }
 function setResult(value, unit, label){
   $("resultValue").textContent=value;
@@ -134,6 +142,7 @@ function calcLab(){
     $("bloodStream").style.opacity=String(.5+Math.min(.4,pressurePa/5000));
     $("labExplain").textContent="Модель показывает ламинарное течение ньютоновской жидкости в жёстком цилиндрическом сосуде. Расход зависит от четвёртой степени радиуса и прямо пропорционален перепаду давления.";
     renderFlowGraph(radiusMm,pressurePa,viscosity,length);
+    requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),viscosity,length));
   }
 }
 function switchLab(next){
@@ -167,12 +176,24 @@ function switchLab(next){
     ?"Измени время движения. При постоянной скорости путь изменяется прямо пропорционально времени."
     :"Сравни два значения радиуса при неизменных давлении, вязкости и длине сосуда. В модели Пуазёйля расход пропорционален r⁴.";
   calcLab();
+  if(next==="flow"){
+    requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
+  }
 }
 document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
   button.addEventListener("click",()=>switchLab(button.dataset.lab));
 });
 ["rpm","radius","speed","time","vesselRadius","pressure"].forEach(id=>{
   $(id).addEventListener("input",calcLab);
+});
+["vesselRadius","pressure"].forEach(id=>{
+  $(id).addEventListener("input",()=>{
+    if(lab==="flow"){
+      const r=Number($("vesselRadius").value);
+      const p=Number($("pressure").value);
+      requestAnimationFrame(()=>renderFlowGraph(r,p,0.0035,0.5));
+    }
+  });
 });
 $("resetLab").addEventListener("click",()=>{
   $("rpm").value=3000; $("radius").value=10;
