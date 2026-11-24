@@ -1,5 +1,5 @@
 const topics=[
-["Физические величины и измерения","Единицы СИ, измерительные приборы, точность и погрешности."],
+["Физика — наука о природе","Предмет физики, физические тела и явления, связь физических знаний с медициной."],
 ["Основы кинематики","Положение тела, траектория, путь, перемещение, скорость и ускорение."],
 ["Динамика и законы Ньютона","Силы и движение. Примеры механических процессов в организме."],
 ["Работа, энергия и мощность","Механическая работа, кинетическая и потенциальная энергия."],
@@ -19,14 +19,14 @@ const terms=[
 ["Радиус","Расстояние от центра окружности до её точки."],
 ["Давление","Физическая величина, равная отношению силы, действующей перпендикулярно поверхности, к площади этой поверхности."]
 ];
-const pages={overview:"Обзор",program:"Учебная программа",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
+const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
 const $=id=>document.getElementById(id);
 function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("crumbName").textContent=pages[name]||"Обзор";$("sidebar").classList.remove("open");window.scrollTo(0,0)}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 $("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
 function getDone(){try{return JSON.parse(localStorage.getItem("medphys-done")||"[]")}catch{return []}}
 function setDone(a){localStorage.setItem("medphys-done",JSON.stringify(a));renderTopics();updateProgress()}
-function renderTopics(){const done=getDone();$("topicList").innerHTML=topics.map((t,i)=>`<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${String(i+1).padStart(2,"0")}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p></div><button data-topic="${i}">${done.includes(i)?"✓ Изучено":"Отметить изученным"}</button></article>`).join("");document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>{const i=Number(b.dataset.topic),d=getDone();setDone(d.includes(i)?d.filter(x=>x!==i):[...d,i])}))}
+function renderTopics(){const done=getDone();$("topicList").innerHTML=topics.map((t,i)=>`<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${String(i+1).padStart(2,"0")}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p>${i===0?'<small class="topic-hours">2 академических часа · Материал открыт</small>':i===1?'<small class="topic-hours">Следующая тема курса</small>':''}</div><button data-topic="${i}">${i<2?"Открыть урок →":done.includes(i)?"✓ Изучено":"Отметить изученным"}</button></article>`).join("");document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>{const i=Number(b.dataset.topic);if(i===0){showPage("lesson-physics");return;}if(i===1){showPage("lesson-kinematics");return;}const d=getDone();setDone(d.includes(i)?d.filter(x=>x!==i):[...d,i])}))}
 function updateProgress(){const n=getDone().length,p=Math.round(n/topics.length*100);$("progressPercent").textContent=p+"%";$("progressBar").style.width=p+"%"}
 function renderTerms(q=""){const filtered=terms.filter(t=>(t[0]+" "+t[1]).toLowerCase().includes(q.toLowerCase()));$("glossaryList").innerHTML=filtered.map(t=>`<article class="term"><b>${t[0]}</b><p>${t[1]}</p></article>`).join("")||'<p class="muted">Ничего не найдено.</p>'}
 $("glossarySearch").addEventListener("input",e=>renderTerms(e.target.value));
@@ -203,6 +203,8 @@ $("resetLab").addEventListener("click",()=>{
 });
 document.querySelectorAll(".answer").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>x.disabled=true);if(b.dataset.answer==="b"){b.classList.add("correct");$("quizFeedback").textContent="Верно! Ускорение пропорционально квадрату частоты вращения: при увеличении частоты в 2 раза ускорение увеличится в 4 раза."}else{b.classList.add("wrong");document.querySelector('[data-answer="b"]').classList.add("correct");$("quizFeedback").textContent="Не совсем. Вспомни формулу a = ω²r: ускорение зависит от квадрата угловой скорости. Правильный ответ — Б."}}));
 $("nextQuestion").addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>{x.disabled=false;x.classList.remove("correct","wrong")});$("quizFeedback").textContent=""});
+$("kinCheck").addEventListener("click",()=>{const answers={kinq1:"1",kinq2:"2",kinq3:"0"};let score=0,answered=0;for(const [q,answer] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===answer)score++;}}const box=$("kinFeedback");if(answered<3){box.textContent="Ответь на все три вопроса, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Основные понятия кинематики усвоены.":"Повтори материал и попробуй ещё раз.");if(score===3){const d=getDone();if(!d.includes(1))setDone([...d,1]);}});
+$("lessonCheck").addEventListener("click",()=>{const answers={lq1:"b",lq2:"a",lq3:"b"};let score=0,answered=0;for(const [q,a] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===a)score++;}}const box=$("lessonFeedback");if(answered<3){box.textContent="Ответь на все три вопроса, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Ты освоил основные положения темы.":"Повтори материал и попробуй ещё раз.");if(score===3){const d=getDone();if(!d.includes(0))setDone([...d,0]);}});
 $("connection").textContent=navigator.onLine?"Подключение активно":"Автономный режим";
 window.addEventListener("online",()=>$("connection").textContent="Подключение активно");window.addEventListener("offline",()=>$("connection").textContent="Автономный режим");
 renderTopics();updateProgress();renderTerms();switchLab("centrifuge");

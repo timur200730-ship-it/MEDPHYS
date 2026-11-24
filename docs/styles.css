@@ -96,3 +96,72 @@
   .graph-label, .graph-current { font-size: 15px; }
   .graph-note, .lab-explain { font-size: 14px; }
 }
+
+
+/* MEDPHYS curriculum lesson */
+.version{display:block;line-height:1.5}
+.topic-hours{display:inline-block;margin-top:7px;color:var(--teal);font-size:.78rem;letter-spacing:.02em}
+.lesson-layout{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:22px;align-items:start}
+.lesson-content{min-width:0}
+.lesson-block{background:var(--card, #172a38);border:1px solid var(--line,rgba(255,255,255,.12));border-radius:18px;padding:clamp(20px,3vw,32px);margin:0 0 18px;color:var(--text,#eaf1ef)}
+.lesson-label{font-size:.7rem;font-weight:800;letter-spacing:.16em;color:var(--gold,#dfb66b);margin-bottom:12px}
+.lesson-block h2{font-size:clamp(1.25rem,2.5vw,1.8rem);line-height:1.25;margin:0 0 16px}
+.lesson-block p,.lesson-block li{color:var(--muted,#a8b8bd);line-height:1.75}
+.lesson-block b{color:var(--text,#eef4f2)}
+.lesson-callout{background:rgba(98,198,176,.09);border:1px solid rgba(98,198,176,.28);border-radius:13px;padding:16px 18px;margin:18px 0;color:var(--text,#eaf1ef)}
+.lesson-callout ul{margin:8px 0 0;padding-left:20px}
+.lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+.lesson-mini{background:rgba(255,255,255,.035);border:1px solid var(--line,rgba(255,255,255,.1));border-radius:13px;padding:16px}
+.lesson-mini b,.medical-cases b{display:block;color:var(--gold,#dfb66b);margin-bottom:6px}
+.lesson-mini span{display:block;color:var(--muted,#a8b8bd);font-size:.92rem;line-height:1.6}
+.phenomena-list{display:grid;gap:10px}
+.phenomena-list>div{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:start;padding:13px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:13px}
+.phenomena-list section{background:none;padding:0;margin:0}
+.phenomena-list p{margin:3px 0 0}
+.phen-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:rgba(223,182,107,.12);color:var(--gold,#dfb66b);font-size:1.45rem}
+.medical-cases{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.medical-cases>div{background:rgba(255,255,255,.035);border:1px solid var(--line,rgba(255,255,255,.1));padding:15px;border-radius:12px}
+.medical-cases p{font-size:.92rem;margin:0}
+.mini-experiment{background:rgba(255,255,255,.035);border-radius:13px;padding:18px}
+.mini-experiment b{display:block;color:var(--gold,#dfb66b);margin-top:10px}
+.lesson-question{padding:15px 0;border-top:1px solid var(--line,rgba(255,255,255,.12))}
+.lesson-question label{display:block;color:var(--muted,#a8b8bd);padding:5px 0;cursor:pointer}
+.lesson-question input{accent-color:var(--teal,#62c6b0);margin-right:8px}
+.lesson-feedback{margin-top:14px;padding:12px;border-radius:10px;background:rgba(98,198,176,.1);color:var(--text,#eaf1ef);min-height:12px}
+.summary-list{padding-left:22px}
+.lesson-aside{position:sticky;top:18px;background:var(--card,#172a38);border:1px solid var(--line,rgba(255,255,255,.12));border-radius:15px;padding:17px}
+.lesson-aside a{display:block;color:var(--muted,#a8b8bd);text-decoration:none;padding:7px 0;font-size:.88rem}
+.lesson-aside a:hover{color:var(--gold,#dfb66b)}
+.lesson-aside-note{margin-top:12px;padding-top:12px;border-top:1px solid var(--line,rgba(255,255,255,.12));font-size:.8rem;color:var(--gold,#dfb66b)}
+.lesson-author{border-top:1px solid var(--line,rgba(255,255,255,.12));padding-top:16px;margin-top:22px;color:var(--muted,#a8b8bd);font-size:.85rem}
+@media(max-width:850px){.lesson-layout{grid-template-columns:1fr}.lesson-aside{position:static;order:-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.lesson-aside>b{width:100%}.lesson-aside a{padding:5px 8px;border:1px solid var(--line,rgba(255,255,255,.12));border-radius:8px}.lesson-aside-note{width:100%}}
+@media(max-width:560px){.lesson-grid,.medical-cases{grid-template-columns:1fr}.lesson-block{padding:19px}.lesson-aside{gap:6px}}
+
+/* Lesson 2 — scoped styles */
+.kin-layout{display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:20px;align-items:start}
+.kin-content{min-width:0;display:grid;gap:16px}
+.kin-card{background:#f2f5f2;color:#20313a;border:1px solid #d9e3df;border-radius:18px;padding:clamp(18px,3vw,30px);line-height:1.7}
+.kin-card h2{font-size:clamp(1.35rem,2.4vw,1.8rem);margin:10px 0 14px;color:#1d3039}
+.kin-card h3{font-size:1.08rem;margin:22px 0 7px;color:#29434b}
+.kin-card p{margin:8px 0 13px}
+.kin-tag{display:inline-block;border-radius:99px;padding:4px 11px;background:#f3e6c8;color:#75531b;font-size:.76rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.kin-callout{margin:18px 0;padding:15px 17px;background:#e2f0eb;border-left:4px solid #62bda9;border-radius:0 12px 12px 0}
+.kin-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.kin-two>div{padding:15px;background:#e7eeea;border:1px solid #d3dfd9;border-radius:12px}
+.kin-two p{margin:5px 0 0}
+.kin-two.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.kin-diagram{display:block;width:100%;height:auto;background:#142637;border-radius:14px;margin:18px 0}
+.kin-formula{display:inline-block;padding:10px 16px;background:#f4e9d2;color:#79571e;border-radius:10px;font-size:1.25rem;font-weight:750;margin:8px 0}
+.kin-card details{margin:10px 0;padding:12px 14px;background:#e8efeb;border-radius:10px}
+.kin-card summary{cursor:pointer;font-weight:700;color:#315b59}
+.kin-question{padding:15px 0;border-top:1px solid #d5dfda}
+.kin-question label{display:block;margin:7px 0;font-weight:400;color:#253a42;cursor:pointer}
+.kin-question input{accent-color:#268f7d;margin-right:8px}
+.kin-feedback{margin-top:12px;padding:12px 14px;border-radius:10px;background:#e0eeea;color:#203b3b;min-height:20px}
+.kin-side{position:sticky;top:18px;padding:18px;background:#172938;border:1px solid #35505d;border-radius:15px;color:#edf4f3}
+.kin-side a{display:block;color:#b6c6c8;text-decoration:none;padding:8px 0;font-size:.9rem}
+.kin-side a:hover{color:#dfb66b}
+.kin-side-note{border-top:1px solid #35505d;margin-top:12px;padding-top:12px;color:#dfb66b;font-size:.85rem}
+.kin-author{margin-top:24px;padding-top:14px;border-top:1px solid #d4ded9;color:#60777a;font-size:.86rem}
+@media(max-width:850px){.kin-layout{grid-template-columns:1fr}.kin-side{position:static;order:-1}.kin-two.three{grid-template-columns:1fr}}
+@media(max-width:560px){.kin-two{grid-template-columns:1fr}.kin-card{padding:18px}.kin-diagram{min-height:130px}}
