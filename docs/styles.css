@@ -59,3 +59,13 @@
 .graph-point{fill:#d8b36a;stroke:#fff0c9;stroke-width:2;vector-effect:non-scaling-stroke;transition:cx .15s ease,cy .15s ease}
 .graph-current{fill:#f0ce87;font-size:10px}
 @media(max-width:650px){.vessel-svg{max-height:170px}.flow-scene{min-height:190px}.graph-card{padding:12px}#centrifugeGraph,#flowGraph{min-height:150px}}
+
+/* v6: graph is nested in the flow experiment and kept visible there */
+#flowScene{display:flex;flex-direction:column;gap:14px;align-items:stretch}
+#flowGraphCard{display:block;width:100%;min-height:260px;box-sizing:border-box;position:relative;z-index:2}
+#flowGraphCard.hidden{display:none!important}
+#flowGraph{display:block;width:100%;height:auto;min-height:190px;overflow:visible}
+#flowGraph .axis{stroke:#8aa3a8;stroke-width:1.5}
+#flowGraph .graph-curve{stroke:#6ac5b4;stroke-width:4;fill:none}
+#flowGraph .graph-point{fill:#e6bd69;stroke:#fff0c9;stroke-width:2}
+#flowGraph .graph-guide{stroke:#e6bd69;stroke-width:1.5;stroke-dasharray:5 4}

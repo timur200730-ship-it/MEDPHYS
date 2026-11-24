@@ -91,6 +91,7 @@ function calcLab(){
   $("flowExtra").classList.toggle("hidden",lab!=="flow");
   $("centrifugeGraphCard").classList.toggle("hidden",lab!=="centrifuge");
   $("flowGraphCard").classList.toggle("hidden",lab!=="flow");
+  $("flowGraphCard").style.display=lab==="flow"?"block":"none";
 
   if(lab==="centrifuge"){
     const rpm=Number($("rpm").value);
@@ -152,6 +153,7 @@ function switchLab(next){
     $(id).classList.add("hidden");
   });
   states[next].forEach(id=>$(id).classList.remove("hidden"));
+  $("flowGraphCard").style.display=next==="flow"?"block":"none";
   $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":"Параметры потока";
   $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":"ЭКСПЕРИМЕНТ 03";
   $("questionTitle").textContent=next==="centrifuge"
