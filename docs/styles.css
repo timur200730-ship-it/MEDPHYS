@@ -69,3 +69,30 @@
 #flowGraph .graph-curve{stroke:#6ac5b4;stroke-width:4;fill:none}
 #flowGraph .graph-point{fill:#e6bd69;stroke:#fff0c9;stroke-width:2}
 #flowGraph .graph-guide{stroke:#e6bd69;stroke-width:1.5;stroke-dasharray:5 4}
+
+
+/* MEDPHYS desktop typography polish: keep the existing compact mobile layout */
+@media (min-width: 900px) {
+  .graph-card { padding: 26px 28px; }
+  .graph-heading h3 { font-size: 20px; line-height: 1.35; }
+  .graph-legend { font-size: 14px; }
+  .graph-note { font-size: 13px; line-height: 1.7; margin-top: 12px; }
+  .graph-label { font-size: 14px; }
+  .graph-current { font-size: 14px; }
+  .flow-key { font-size: 12px; gap: 24px; }
+  .vessel-label { font-size: 12px; letter-spacing: 1.1px; }
+  .lab-explain { font-size: 14px; line-height: 1.7; }
+  .flow-extra { font-size: 13px; padding: 13px 16px; }
+  .flow-extra strong { font-size: 19px; }
+  #centrifugeGraph, #flowGraph { margin-top: 18px; }
+  #flowGraphCard { padding: 26px 28px; }
+  #flowGraphCard .graph-heading h3 { font-size: 20px; }
+  #flowGraphCard .graph-note { font-size: 13px; }
+  .vessel-svg { max-height: 260px; }
+}
+@media (min-width: 1200px) {
+  .graph-card { padding: 30px 34px; }
+  .graph-heading h3, #flowGraphCard .graph-heading h3 { font-size: 22px; }
+  .graph-label, .graph-current { font-size: 15px; }
+  .graph-note, .lab-explain { font-size: 14px; }
+}
