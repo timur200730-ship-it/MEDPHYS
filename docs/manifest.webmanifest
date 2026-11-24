@@ -1,0 +1,11 @@
+{
+  "name": "MEDPHYS — физика в медицине",
+  "short_name": "MEDPHYS",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101a23",
+  "theme_color": "#101a23",
+  "lang": "ru",
+  "description": "Интерактивная образовательная платформа по физике для медицинского колледжа."
+}

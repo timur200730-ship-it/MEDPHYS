@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b25">
+  <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>MEDPHYS — физика в медицине</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="overview">
+        <span class="brand-mark">M<span>+</span></span>
+        <span><b>MEDPHYS</b><small>ФИЗИКА В МЕДИЦИНЕ</small></span>
+      </a>
+      <div class="side-label">ОБУЧЕНИЕ</div>
+      <nav class="nav">
+        <button class="nav-item active" data-page="overview"><span>⌂</span> Обзор</button>
+        <button class="nav-item" data-page="program"><span>▤</span> Учебная программа</button>
+        <button class="nav-item" data-page="lab"><span>⌁</span> Виртуальная лаборатория <i>NEW</i></button>
+        <button class="nav-item" data-page="practice"><span>✎</span> Практикум</button>
+        <button class="nav-item" data-page="glossary"><span>⌕</span> Словарь терминов</button>
+      </nav>
+      <div class="side-bottom">
+        <div class="offline"><span class="pulse"></span><span><b>Учебная среда</b><small id="connection">Проверка соединения…</small></span></div>
+        <small class="version">MEDPHYS · учебный прототип</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Открыть меню">☰</button>
+        <div class="crumb">Образовательная платформа <span>/</span> <b id="crumbName">Обзор</b></div>
+        <div class="top-actions"><span class="status-dot"></span><span>Прогресс сохраняется на устройстве</span></div>
+      </header>
+
+      <section class="page active" id="page-overview">
+        <div class="hero">
+          <div class="hero-copy">
+            <div class="eyebrow"><span></span> ОБРАЗОВАТЕЛЬНАЯ СРЕДА ДЛЯ МЕДИЦИНСКОГО КОЛЛЕДЖА</div>
+            <h1>Физика, которая<br><em>работает в медицине.</em></h1>
+            <p>Изучай физические законы через медицинские примеры, интерактивные эксперименты и практические задачи.</p>
+            <button class="primary-btn" data-page="program">Перейти к обучению <b>↗</b></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+            <div class="core"><span>μ</span><small>PHYSICS<br>× MEDICINE</small></div>
+            <div class="float-card fc-one"><b>01</b><span>Механика</span></div>
+            <div class="float-card fc-two"><b>02</b><span>Биофизика</span></div>
+            <div class="float-card fc-three"><b>03</b><span>Диагностика</span></div>
+          </div>
+        </div>
+        <div class="section-head"><div><div class="eyebrow">ТВОЙ МАРШРУТ</div><h2>Учись через понимание</h2></div><span class="muted">Первый учебный модуль</span></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-icon gold">▤</div><div class="card-kicker">ТЕОРИЯ</div><h3>Понятные лекции</h3><p>Ключевые понятия, формулы, схемы и примеры из медицинской практики.</p><button class="text-link" data-page="program">Открыть программу →</button></article>
+          <article class="feature-card"><div class="feature-icon teal">⌁</div><div class="card-kicker">ЭКСПЕРИМЕНТ</div><h3>Виртуальная лаборатория</h3><p>Меняй параметры эксперимента и наблюдай, как изменяются физические величины.</p><button class="text-link" data-page="lab">В лабораторию →</button></article>
+          <article class="feature-card"><div class="feature-icon violet">✎</div><div class="card-kicker">ЗАКРЕПЛЕНИЕ</div><h3>Практикум</h3><p>Проверяй понимание на задачах с медицинскими сюжетами и подсказками.</p><button class="text-link" data-page="practice">Решать задачи →</button></article>
+        </div>
+        <div class="progress-panel">
+          <div><div class="eyebrow">ЛИЧНЫЙ ПРОГРЕСС</div><h3>Твой учебный путь</h3><p class="muted">Отмечай изученные темы — прогресс сохранится в этом браузере.</p></div>
+          <div class="progress-number"><strong id="progressPercent">0%</strong><span>пройдено</span><div class="progress-track"><i id="progressBar"></i></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-program">
+        <div class="page-heading"><div class="eyebrow">КАТАЛОГ ДИСЦИПЛИНЫ</div><h1>Учебная программа</h1><p>Базовые разделы физики. Состав и последовательность тем можно будет сверить и уточнить по рабочей программе колледжа.</p></div>
+        <div class="notice"><b>Важно:</b> это демонстрационный каркас курса. Полные лекционные материалы и точное распределение часов добавляются после сверки с вашей рабочей программой.</div>
+        <div class="topic-list" id="topicList"></div>
+      </section>
+
+      <section class="page" id="page-lab">
+        <div class="page-heading"><div class="eyebrow">ИНТЕРАКТИВНЫЕ ЭКСПЕРИМЕНТЫ</div><h1>Виртуальная лаборатория</h1><p>Изменяй параметры модели, наблюдай за результатом и связывай физические законы с медицинским оборудованием.</p></div>
+        <div class="lab-tabs"><button class="lab-tab active" data-lab="centrifuge">Медицинская центрифуга</button><button class="lab-tab" data-lab="motion">Равномерное движение</button></div>
+        <div class="lab-layout">
+          <div class="lab-visual card">
+            <div class="lab-top"><span class="live-tag"><i></i> МОДЕЛЬ В РЕАЛЬНОМ ВРЕМЕНИ</span><span class="muted" id="labMode">ЭКСПЕРИМЕНТ 01</span></div>
+            <div class="centrifuge-scene" id="centrifugeScene">
+              <div class="machine"><div class="machine-ring"><div class="rotor" id="rotor"><span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span></div></div><div class="machine-base"></div></div>
+              <div class="scene-caption">СХЕМА РОТОРА ЦЕНТРИФУГИ</div>
+            </div>
+            <div class="motion-scene hidden" id="motionScene"><div class="track"><div class="moving-dot" id="movingDot"></div></div><div class="scene-caption">МОДЕЛЬ ПРЯМОЛИНЕЙНОГО ДВИЖЕНИЯ</div></div>
+            <div class="lab-explain" id="labExplain">При вращении ротора образцы движутся по окружности. Чем выше частота вращения и радиус, тем больше центростремительное ускорение.</div>
+          </div>
+          <div class="lab-controls card">
+            <div class="control-heading"><div><div class="eyebrow">ПАНЕЛЬ УПРАВЛЕНИЯ</div><h3 id="controlTitle">Параметры центрифуги</h3></div><span class="control-icon">⚙</span></div>
+            <div id="centrifugeControls">
+              <label class="range-label"><span>Частота вращения</span><b><output id="rpmOut">3000</output> об/мин</b></label>
+              <input id="rpm" type="range" min="500" max="8000" step="100" value="3000">
+              <div class="range-ends"><span>500</span><span>8000 об/мин</span></div>
+              <label class="range-label"><span>Радиус ротора</span><b><output id="radiusOut">0,10</output> м</b></label>
+              <input id="radius" type="range" min="5" max="20" step="1" value="10">
+              <div class="range-ends"><span>0,05 м</span><span>0,20 м</span></div>
+            </div>
+            <div id="motionControls" class="hidden">
+              <label class="range-label"><span>Скорость</span><b><output id="speedOut">2</output> м/с</b></label>
+              <input id="speed" type="range" min="1" max="10" step="0.5" value="2">
+              <label class="range-label"><span>Время</span><b><output id="timeOut">5</output> с</b></label>
+              <input id="time" type="range" min="1" max="10" step="1" value="5">
+            </div>
+            <div class="result-box"><div class="eyebrow">РЕЗУЛЬТАТ РАСЧЁТА</div><div class="result-main"><strong id="resultValue">987</strong><span id="resultUnit">м/с²</span></div><div id="resultLabel" class="muted">Центростремительное ускорение</div></div>
+            <div class="formula" id="formula">a = ω²r <span>ω = 2πn / 60</span></div>
+            <button class="secondary-btn full" id="resetLab">Сбросить параметры ↺</button>
+          </div>
+        </div>
+        <div class="reflection card"><div><div class="eyebrow">ПОДУМАЙ И ОБЪЯСНИ</div><h3 id="questionTitle">Как изменится ускорение, если увеличить частоту вращения в 2 раза?</h3><p id="questionText">Используй ползунок частоты и сравни результат. Обрати внимание на зависимость ускорения от квадрата угловой скорости.</p></div><div class="reflection-mark">?</div></div>
+      </section>
+
+      <section class="page" id="page-practice">
+        <div class="page-heading"><div class="eyebrow">ПРОВЕРКА ПОНИМАНИЯ</div><h1>Практикум</h1><p>Небольшие тренировочные задания по физическим моделям. Они не заменяют практическую работу по вашей программе.</p></div>
+        <div class="quiz-card card">
+          <div class="quiz-meta"><span class="live-tag">ЗАДАНИЕ 01</span><span class="muted">Механика · центрифуга</span></div>
+          <h2>При увеличении частоты вращения центрифуги в 2 раза, при неизменном радиусе, центростремительное ускорение…</h2>
+          <div class="answers" id="answers">
+            <button class="answer" data-answer="a">А. Увеличится в 2 раза</button>
+            <button class="answer" data-answer="b">Б. Увеличится в 4 раза</button>
+            <button class="answer" data-answer="c">В. Не изменится</button>
+            <button class="answer" data-answer="d">Г. Уменьшится в 2 раза</button>
+          </div>
+          <div id="quizFeedback" class="feedback" aria-live="polite"></div>
+          <button class="secondary-btn" id="nextQuestion">Сбросить ответ</button>
+        </div>
+      </section>
+
+      <section class="page" id="page-glossary">
+        <div class="page-heading"><div class="eyebrow">СПРАВОЧНЫЙ РАЗДЕЛ</div><h1>Словарь терминов</h1><p>Ключевые понятия, которые встречаются в первых темах курса.</p></div>
+        <input class="search" id="glossarySearch" type="search" placeholder="Найти термин…">
+        <div class="glossary-list" id="glossaryList"></div>
+      </section>
+
+      <footer class="footer"><span>MEDPHYS <b>·</b> Физика в медицине</span><span>Учебный прототип · Версия 1.0</span></footer>
+    </main>
+  </div>
+  <script src="./app.js"></script>
+</body>
+</html>
