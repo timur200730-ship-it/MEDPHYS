@@ -45,3 +45,17 @@
 .graph-current{font-size:10px;fill:#d8b36a}
 .lab-tab[aria-pressed="true"]{border-color:var(--gold);color:var(--gold);background:#24343b}
 .flow-scene.hidden,.motion-scene.hidden,.centrifuge-scene.hidden{display:none!important}
+
+/* MEDPHYS Virtual Lab v5: explicit vector visuals and live plots */
+.vessel-svg{display:block;width:100%;height:auto;max-height:210px;overflow:visible}
+.vessel-wrap{width:100%;max-width:620px;margin:0 auto}
+.flow-scene{display:flex;min-height:240px;height:auto;padding:12px 0 18px;box-sizing:border-box}
+.flow-scene.hidden{display:none!important}
+#centrifugeGraph,#flowGraph{display:block;width:100%;height:auto;min-height:180px;overflow:visible}
+#centrifugeGraphCard.hidden,#flowGraphCard.hidden{display:none!important}
+.graph-card{width:100%;min-width:0;overflow:hidden}
+.graph-curve{fill:none;stroke:#6ac5b4;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.graph-guide{stroke:#d8b36a;stroke-width:1.5;stroke-dasharray:5 4;vector-effect:non-scaling-stroke}
+.graph-point{fill:#d8b36a;stroke:#fff0c9;stroke-width:2;vector-effect:non-scaling-stroke;transition:cx .15s ease,cy .15s ease}
+.graph-current{fill:#f0ce87;font-size:10px}
+@media(max-width:650px){.vessel-svg{max-height:170px}.flow-scene{min-height:190px}.graph-card{padding:12px}#centrifugeGraph,#flowGraph{min-height:150px}}

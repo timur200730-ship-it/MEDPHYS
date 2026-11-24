@@ -36,10 +36,11 @@ function renderCentrifugeGraph(radiusM, rpm){
   const curve=$("graphCurve"), point=$("graphPoint"), guide=$("graphGuide"), label=$("graphCurrent");
   if(!curve||!point||!guide||!label)return;
   const x0=58,x1=610,y0=22,y1=184,minN=500,maxN=8000;
-  const maxA=Math.pow(2*Math.PI*maxN/60,2)*radiusM;
+  const maxRadius=0.20;
+  const maxA=Math.pow(2*Math.PI*maxN/60,2)*maxRadius;
   const pts=[];
-  for(let i=0;i<=100;i++){
-    const n=minN+(maxN-minN)*i/100;
+  for(let i=0;i<=120;i++){
+    const n=minN+(maxN-minN)*i/120;
     const a=Math.pow(2*Math.PI*n/60,2)*radiusM;
     const x=x0+(n-minN)/(maxN-minN)*(x1-x0);
     const y=y1-(a/maxA)*(y1-y0);
@@ -49,10 +50,35 @@ function renderCentrifugeGraph(radiusM, rpm){
   const aNow=Math.pow(2*Math.PI*rpm/60,2)*radiusM;
   const px=x0+(rpm-minN)/(maxN-minN)*(x1-x0);
   const py=y1-(aNow/maxA)*(y1-y0);
-  point.setAttribute("cx",px.toFixed(2)); point.setAttribute("cy",py.toFixed(2));
-  guide.setAttribute("x1",px.toFixed(2)); guide.setAttribute("x2",px.toFixed(2));
-  guide.setAttribute("y1",py.toFixed(2)); guide.setAttribute("y2",y1);
-  label.textContent=`${rpm.toLocaleString("ru-RU")} об/мин`;
+  point.setAttribute("cx",px.toFixed(2));point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2));guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",y1);
+  label.textContent=`${rpm.toLocaleString("ru-RU")} об/мин · r=${radiusM.toFixed(2).replace(".",",")} м`;
+}
+function renderFlowGraph(radiusMm, pressurePa, viscosity, length){
+  const curve=$("flowGraphCurve"),point=$("flowGraphPoint"),guide=$("flowGraphGuide"),label=$("flowGraphCurrent");
+  if(!curve||!point||!guide||!label)return;
+  const x0=58,x1=610,y0=22,y1=184,minR=1,maxR=4;
+  const qAt=rMm=>{
+    const r=rMm/1000;
+    const q=Math.PI*Math.pow(r,4)*pressurePa/(8*viscosity*length);
+    return q*60*1e6;
+  };
+  const maxQ=qAt(maxR),pts=[];
+  for(let i=0;i<=100;i++){
+    const r=minR+(maxR-minR)*i/100;
+    const x=x0+(r-minR)/(maxR-minR)*(x1-x0);
+    const y=y1-(qAt(r)/maxQ)*(y1-y0);
+    pts.push((i===0?"M":"L")+x.toFixed(2)+","+y.toFixed(2));
+  }
+  curve.setAttribute("d",pts.join(" "));
+  const qNow=qAt(radiusMm);
+  const px=x0+(radiusMm-minR)/(maxR-minR)*(x1-x0);
+  const py=y1-(qNow/maxQ)*(y1-y0);
+  point.setAttribute("cx",px.toFixed(2));point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2));guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",y1);
+  label.textContent=`r=${radiusMm.toFixed(1).replace(".",",")} мм · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
 }
 function setResult(value, unit, label){
   $("resultValue").textContent=value;
@@ -64,6 +90,7 @@ function calcLab(){
   gReadout.classList.toggle("hidden",lab!=="centrifuge");
   $("flowExtra").classList.toggle("hidden",lab!=="flow");
   $("centrifugeGraphCard").classList.toggle("hidden",lab!=="centrifuge");
+  $("flowGraphCard").classList.toggle("hidden",lab!=="flow");
 
   if(lab==="centrifuge"){
     const rpm=Number($("rpm").value);
@@ -105,6 +132,7 @@ function calcLab(){
     $("bloodStream").style.height=(24+radiusMm*5)+"px";
     $("bloodStream").style.opacity=String(.5+Math.min(.4,pressurePa/5000));
     $("labExplain").textContent="Модель показывает ламинарное течение ньютоновской жидкости в жёстком цилиндрическом сосуде. Расход зависит от четвёртой степени радиуса и прямо пропорционален перепаду давления.";
+    renderFlowGraph(radiusMm,pressurePa,viscosity,length);
   }
 }
 function switchLab(next){
