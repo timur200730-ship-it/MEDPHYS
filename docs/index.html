@@ -74,15 +74,16 @@
 
       <section class="page" id="page-lab">
         <div class="page-heading"><div class="eyebrow">ИНТЕРАКТИВНЫЕ ЭКСПЕРИМЕНТЫ</div><h1>Виртуальная лаборатория</h1><p>Изменяй параметры модели, наблюдай за результатом и связывай физические законы с медицинским оборудованием.</p></div>
-        <div class="lab-tabs"><button class="lab-tab active" data-lab="centrifuge">Медицинская центрифуга</button><button class="lab-tab" data-lab="motion">Равномерное движение</button></div>
+        <div class="lab-tabs"><button class="lab-tab active" data-lab="centrifuge">Медицинская центрифуга</button><button class="lab-tab" data-lab="motion">Равномерное движение</button><button class="lab-tab" data-lab="flow">Гидродинамика: кровоток</button></div>
         <div class="lab-layout">
           <div class="lab-visual card">
             <div class="lab-top"><span class="live-tag"><i></i> МОДЕЛЬ В РЕАЛЬНОМ ВРЕМЕНИ</span><span class="muted" id="labMode">ЭКСПЕРИМЕНТ 01</span></div>
             <div class="centrifuge-scene" id="centrifugeScene">
-              <div class="machine"><div class="machine-ring"><div class="rotor" id="rotor"><span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span></div></div><div class="machine-base"></div></div>
+              <div class="machine"><div class="machine-ring"><div class="rotor" id="rotor"><span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span><span class="vector-arrow" aria-hidden="true"></span></div></div><div class="machine-base"></div></div>
               <div class="scene-caption">СХЕМА РОТОРА ЦЕНТРИФУГИ</div>
             </div>
             <div class="motion-scene hidden" id="motionScene"><div class="track"><div class="moving-dot" id="movingDot"></div></div><div class="scene-caption">МОДЕЛЬ ПРЯМОЛИНЕЙНОГО ДВИЖЕНИЯ</div></div>
+<div class="flow-scene hidden" id="flowScene"><div class="vessel-wrap"><div class="vessel" id="vessel"><div class="blood-stream" id="bloodStream"></div><span class="flow-particle p1"></span><span class="flow-particle p2"></span><span class="flow-particle p3"></span><span class="flow-particle p4"></span></div><div class="vessel-label">МОДЕЛЬ СОСУДА · ЛАМИНАРНОЕ ТЕЧЕНИЕ</div></div><div class="flow-key"><span><i class="flow-key-center"></i> скорость выше в центре</span><span><i class="flow-key-wall"></i> скорость ниже у стенок</span></div></div>
             <div class="lab-explain" id="labExplain">При вращении ротора образцы движутся по окружности. Чем выше частота вращения и радиус, тем больше центростремительное ускорение.</div>
           </div>
           <div class="lab-controls card">
@@ -101,11 +102,22 @@
               <label class="range-label"><span>Время</span><b><output id="timeOut">5</output> с</b></label>
               <input id="time" type="range" min="1" max="10" step="1" value="5">
             </div>
+            <div id="flowControls" class="hidden">
+              <label class="range-label"><span>Радиус сосуда</span><b><output id="vesselRadiusOut">2,0</output> мм</b></label>
+              <input id="vesselRadius" type="range" min="1" max="4" step="0.1" value="2">
+              <div class="range-ends"><span>1 мм</span><span>4 мм</span></div>
+              <label class="range-label"><span>Перепад давления</span><b><output id="pressureOut">1500</output> Па</b></label>
+              <input id="pressure" type="range" min="500" max="3000" step="100" value="1500">
+              <div class="range-ends"><span>500 Па</span><span>3000 Па</span></div>
+            </div>
             <div class="result-box"><div class="eyebrow">РЕЗУЛЬТАТ РАСЧЁТА</div><div class="result-main"><strong id="resultValue">987</strong><span id="resultUnit">м/с²</span></div><div id="resultLabel" class="muted">Центростремительное ускорение</div></div>
             <div class="formula" id="formula">a = ω²r <span>ω = 2πn / 60</span></div>
+            <div class="flow-extra hidden" id="flowExtra"><span>Средняя скорость потока</span><strong id="flowVelocity">—</strong></div>
+            <div class="g-readout"><div><span class="eyebrow">ОТНОСИТЕЛЬНОЕ УСКОРЕНИЕ</span><strong id="gValue">—</strong><small>g (условно, относительно g₀ = 9,80665 м/с²)</small></div><div class="g-symbol">g</div></div>
             <button class="secondary-btn full" id="resetLab">Сбросить параметры ↺</button>
           </div>
         </div>
+        <div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="595" y="30" text-anchor="end" class="graph-current">Текущая точка</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div>
         <div class="reflection card"><div><div class="eyebrow">ПОДУМАЙ И ОБЪЯСНИ</div><h3 id="questionTitle">Как изменится ускорение, если увеличить частоту вращения в 2 раза?</h3><p id="questionText">Используй ползунок частоты и сравни результат. Обрати внимание на зависимость ускорения от квадрата угловой скорости.</p></div><div class="reflection-mark">?</div></div>
       </section>
 
