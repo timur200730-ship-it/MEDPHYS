@@ -181,3 +181,20 @@
 #page-lesson-kinematics .lesson-question label{display:block;margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
 #page-lesson-kinematics .lesson-question input{margin-right:8px}
 @media(max-width:900px){.kin-side{position:static}.kin-figure{padding:8px}.kin-figure figcaption{font-size:.82rem}}
+
+/* MEDPHYS 1.4 — program structure and two-level lecture format */
+.program-group{margin:26px 0 34px}
+.program-group>h2{margin:0 0 14px;font-size:1.25rem;color:var(--gold);letter-spacing:.01em}
+.program-group-items{display:grid;gap:12px}
+.kin-brief{border-left:4px solid var(--gold)}
+.kin-brief .lesson-label{color:#94651c}
+#kin-full{padding-top:10px;border-top:1px solid var(--line)}
+
+/* MEDPHYS 1.5 — dynamics lesson and Newton's second-law laboratory */
+.practice-list li{margin:0 0 14px;line-height:1.65}
+.answer-key{margin-top:22px;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:rgba(98,191,174,.07)}
+.answer-key summary{cursor:pointer;font-weight:700;color:var(--gold)}
+.answer-key li{margin:8px 0;line-height:1.55}
+.dynamics-scene{min-height:260px;display:flex;align-items:center}
+.dynamics-scene svg{width:100%;height:auto;overflow:visible}
+#dynamicsGraphCard{display:block}
