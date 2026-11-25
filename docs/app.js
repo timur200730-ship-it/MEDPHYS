@@ -205,12 +205,64 @@ function switchLab(next){
     :next==="motion"
     ?"Измени время движения. При постоянной скорости путь изменяется прямо пропорционально времени."
     :"Сравни два значения радиуса при неизменных давлении, вязкости и длине сосуда. В модели Пуазёйля расход пропорционален r⁴.";
-  if(next==="dynamics"){$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
+  if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
   calcLab();
   if(next==="flow"){
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
   }
 }
+
+const dynamicsModes={
+  forces:{desc:"Измени две силы, направленные в противоположные стороны. Модель покажет их равнодействующую.",labels:["Сила вправо","Сила влево","Масса тела"],units:["Н","Н","кг"],min:[0,0,1],max:[100,100,50],step:[1,1,1],values:[50,20,10],medical:"В организме несколько мышц могут одновременно тянуть кости в разных направлениях. Модель помогает понять, почему важна не только величина, но и направление силы."},
+  friction:{desc:"Измени силу прижатия и коэффициент трения. Сравни силу трения с приложенной тягой.",labels:["Сила прижатия","Коэффициент трения ×100","Сила тяги"],units:["Н","","Н"],min:[10,5,0],max:[200,80,200],step:[1,1,1],values:[100,30,40],medical:"Трение между стопой и опорой помогает человеку сохранять устойчивость при ходьбе. При скольжении сцепление уменьшается."},
+  incline:{desc:"Измени угол наклона и массу тела. Наблюдай, как меняется составляющая силы тяжести вдоль плоскости.",labels:["Масса тела","Угол наклона","Коэффициент трения ×100"],units:["кг","°",""],min:[1,1,0],max:[100,60,80],step:[1,1,1],values:[10,25,10],medical:"При перемещении пациента на каталке по пандусу угол наклона влияет на составляющую силы тяжести вдоль поверхности и требуемое усилие."},
+  atwood:{desc:"Измени массы двух грузов. Модель оценит ускорение идеальной системы с лёгкой нитью и невесомым блоком.",labels:["Масса груза 1","Масса груза 2","g (условно)"],units:["кг","кг","м/с²"],min:[1,1,1],max:[20,20,12],step:[1,1,0.1],values:[8,5,9.81],medical:"Это базовая учебная модель связанных тел. Она помогает понять натяжение нити и действие сил в системах перемещения грузов, в том числе в учебных моделях тракции."}
+};
+let activeDynamicsMode="forces";
+function setDynamicsMode(mode){
+ const cfg=dynamicsModes[mode]; if(!cfg)return; activeDynamicsMode=mode;
+ document.querySelectorAll(".dynamics-subtab").forEach(b=>b.classList.toggle("active",b.dataset.dynmode===mode));
+ $("dynExtraDescription").textContent=cfg.desc;
+ for(let i=1;i<=3;i++){const n=i-1;$("dynExtraLabel"+i).textContent=cfg.labels[n];$("dynExtraOut"+i).textContent=cfg.values[n];$("dynExtra"+i).min=cfg.min[n];$("dynExtra"+i).max=cfg.max[n];$("dynExtra"+i).step=cfg.step[n];$("dynExtra"+i).value=cfg.values[n];}
+ $("dynExtraMedical").innerHTML="<b>Связь с медициной.</b> "+cfg.medical;
+ calcDynamicsExtra();
+}
+function calcDynamicsExtra(){
+ const mode=activeDynamicsMode,cfg=dynamicsModes[mode],v=[1,2,3].map(i=>Number($("dynExtra"+i).value));
+ for(let i=1;i<=3;i++)$("dynExtraOut"+i).textContent=String(v[i-1]).replace(".",",");
+ let result="",caption="",f1=0,f2=0,unit="Н";
+ if(mode==="forces"){
+   const net=v[0]-v[1],acc=net/v[2];result=`ΣF = ${net.toFixed(1).replace(".",",")} Н · a = ${acc.toFixed(2).replace(".",",")} м/с²`;
+   caption=net>0?"Равнодействующая направлена вправо":net<0?"Равнодействующая направлена влево":"Силы уравновешены";f1=v[0];f2=v[1];
+ }else if(mode==="friction"){
+   const friction=.01*v[1]*v[0],net=v[2]-friction;result=`Fтр ≈ ${friction.toFixed(1).replace(".",",")} Н · ΣF = ${net.toFixed(1).replace(".",",")} Н`;
+   caption=net>0?"Тяга превышает модельную силу трения":net<0?"Силы трения достаточно, чтобы противодействовать тяге":"Тяга и трение уравновешены";f1=v[2];f2=friction;
+ }else if(mode==="incline"){
+   const theta=v[1]*Math.PI/180,parallel=v[0]*9.81*Math.sin(theta),normal=v[0]*9.81*Math.cos(theta),fr=.01*v[2]*normal,net=parallel-fr;
+   result=`F∥ = ${parallel.toFixed(1).replace(".",",")} Н · Fтр ≈ ${fr.toFixed(1).replace(".",",")} Н · ΣF = ${net.toFixed(1).replace(".",",")} Н`;
+   caption=`Составляющая силы тяжести вдоль плоскости: ${parallel.toFixed(1).replace(".",",")} Н`;f1=parallel;f2=fr;
+ }else{
+   const acc=(v[0]-v[1])*v[2]/(v[0]+v[1]),tension=(2*v[0]*v[1]*v[2])/(v[0]+v[1]);
+   result=`a = ${acc.toFixed(2).replace(".",",")} м/с² · T = ${tension.toFixed(1).replace(".",",")} Н`;
+   caption=v[0]===v[1]?"Массы равны — система в равновесии":v[0]>v[1]?"Груз 1 движется вниз":"Груз 2 движется вниз";f1=v[0]*v[2];f2=v[1]*v[2];unit="Н";
+ }
+ $("dynExtraResult").textContent=result+" · "+caption;
+ const scale=Math.max(1,f1,f2),len1=60+Math.min(150,f1/scale*150),len2=60+Math.min(150,f2/scale*150);
+ const p1=$("dynExtraVector1"),p2=$("dynExtraVector2");
+ p1.setAttribute("d",`M360 110 H${Math.min(570,360+len1)} M${Math.min(554,360+len1-16)} 96 L${Math.min(572,360+len1+2)} 110 L${Math.min(554,360+len1-16)} 124`);
+ p2.setAttribute("d",`M260 110 H${Math.max(50,260-len2)} M${Math.max(66,260-len2+16)} 96 L${Math.max(48,260-len2-2)} 110 L${Math.max(66,260-len2+16)} 124`);
+ if(mode==="incline"){
+   $("dynExtraVisual").querySelector("svg").setAttribute("aria-label","Схема наклонной плоскости и действующих сил");
+   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M70 150 L540 ${150- Math.tan(v[1]*Math.PI/180)*300} L540 150 Z" fill="#263f49" stroke="#8ca9a5" stroke-width="3"/><rect x="275" y="${Math.max(28,120-v[1]*1.1)}" width="70" height="42" rx="8" fill="#dce8e3" stroke="#62bfae" stroke-width="3" transform="rotate(${-v[1]} 310 140)"/><text x="80" y="178" fill="#dce6e1" font-size="13">Угол ${v[1]}°</text><text x="310" y="25" fill="#dfb66b" text-anchor="middle" font-size="14">F тяжести</text>`;
+ }else if(mode==="atwood"){
+   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M240 30 H380" stroke="#8ca9a5" stroke-width="8"/><circle cx="310" cy="55" r="28" fill="#253e47" stroke="#d8b36a" stroke-width="5"/><path d="M282 55 V135 M338 55 V135" stroke="#dce6e1" stroke-width="3"/><rect x="255" y="135" width="54" height="40" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><rect x="311" y="135" width="54" height="40" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="282" y="160" text-anchor="middle" fill="#20323a" font-size="14">${v[0]} кг</text><text x="338" y="160" text-anchor="middle" fill="#20323a" font-size="14">${v[1]} кг</text><text x="310" y="18" text-anchor="middle" fill="#dfb66b" font-size="12">Невесомый блок · идеальная нить</text>`;
+ }else{
+   $("dynExtraVisual").querySelector("svg").innerHTML=`<line x1="35" y1="145" x2="585" y2="145" stroke="#789196" stroke-width="3"/><rect x="260" y="92" width="100" height="52" rx="10" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="310" y="124" text-anchor="middle" fill="#20323a" font-size="18" font-weight="700">ТЕЛО</text><path d="M360 110 H${Math.min(570,360+len1)}" stroke="#dfb66b" stroke-width="6"/><path d="M260 110 H${Math.max(50,260-len2)}" stroke="#d87578" stroke-width="6"/><text x="490" y="80" fill="#dfb66b" font-size="15">F₁</text><text x="105" y="80" fill="#d87578" font-size="15">F₂</text>`;
+ }
+}
+document.querySelectorAll(".dynamics-subtab").forEach(b=>b.addEventListener("click",()=>setDynamicsMode(b.dataset.dynmode)));
+["dynExtra1","dynExtra2","dynExtra3"].forEach(id=>$(id).addEventListener("input",calcDynamicsExtra));
+
 document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
   button.addEventListener("click",()=>switchLab(button.dataset.lab));
 });
@@ -231,7 +283,7 @@ $("resetLab").addEventListener("click",()=>{
   $("speed").value=2; $("time").value=5;
   $("vesselRadius").value=2; $("pressure").value=1500;
   $("dynMass").value=20;$("dynForce").value=50;$("dynFriction").value=10;
-  calcLab();
+  calcLab();setDynamicsMode(activeDynamicsMode);
 });
 document.querySelectorAll(".answer").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>x.disabled=true);if(b.dataset.answer==="b"){b.classList.add("correct");$("quizFeedback").textContent="Верно! Ускорение пропорционально квадрату частоты вращения: при увеличении частоты в 2 раза ускорение увеличится в 4 раза."}else{b.classList.add("wrong");document.querySelector('[data-answer="b"]').classList.add("correct");$("quizFeedback").textContent="Не совсем. Вспомни формулу a = ω²r: ускорение зависит от квадрата угловой скорости. Правильный ответ — Б."}}));
 $("nextQuestion").addEventListener("click",()=>{document.querySelectorAll(".answer").forEach(x=>{x.disabled=false;x.classList.remove("correct","wrong")});$("quizFeedback").textContent=""});
