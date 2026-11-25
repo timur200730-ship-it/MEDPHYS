@@ -109,7 +109,10 @@ function calcDynamics(){
   const m=Number($("dynMass").value),f=Number($("dynForce").value),fr=Number($("dynFriction").value),net=f-fr,a=net/m;
   $("dynMassOut").textContent=m;$("dynForceOut").textContent=f;$("dynFrictionOut").textContent=fr;
   setResult(a.toFixed(2).replace(".",","),"м/с²","Ускорение тележки (учебная модель)");
-  $("formula").innerHTML="a = (Fтяги − Fсопр) / m <span>Второй закон Ньютона</span>";
+  $("formula").innerHTML="ΣF = ma <span>Второй закон Ньютона</span>";
+  $("formulaLegend").classList.remove("hidden");
+  $("formulaLegend").innerHTML="<b>Обозначения:</b> Σ (сигма) — сумма; F — сила; m — масса тела; a — ускорение. ΣF — равнодействующая всех сил.";
+
   $("gReadout").classList.add("hidden");$("flowExtra").classList.add("hidden");
   $("dynSceneCaption").textContent=net>0?"Равнодействующая направлена вперёд — тележка ускоряется":net<0?"Равнодействующая направлена назад — тележка замедляется":"Силы уравновешены — ускорение равно нулю";
   $("dynForceArrow").style.opacity=f===0?".15":"1";
@@ -119,6 +122,7 @@ function calcDynamics(){
 }
 function calcLab(){
   const gReadout=$("gReadout");
+  $("formulaLegend").classList.toggle("hidden",lab!=="dynamics");
   gReadout.classList.toggle("hidden",lab!=="centrifuge");
   $("flowExtra").classList.toggle("hidden",lab!=="flow");
   $("centrifugeGraphCard").classList.toggle("hidden",lab!=="centrifuge");
@@ -223,7 +227,7 @@ function setDynamicsMode(mode){
  const cfg=dynamicsModes[mode]; if(!cfg)return; activeDynamicsMode=mode;
  document.querySelectorAll(".dynamics-subtab").forEach(b=>b.classList.toggle("active",b.dataset.dynmode===mode));
  $("dynExtraDescription").textContent=cfg.desc;
- for(let i=1;i<=3;i++){const n=i-1;$("dynExtraLabel"+i).textContent=cfg.labels[n];$("dynExtraOut"+i).textContent=cfg.values[n];$("dynExtra"+i).min=cfg.min[n];$("dynExtra"+i).max=cfg.max[n];$("dynExtra"+i).step=cfg.step[n];$("dynExtra"+i).value=cfg.values[n];}
+ for(let i=1;i<=3;i++){const n=i-1;$("dynExtraLabel"+i).textContent=cfg.labels[n];$("dynExtraOut"+i).textContent=String(cfg.values[n]).replace(".",",");$("dynExtraUnit"+i).textContent=cfg.units[n];$("dynExtra"+i).min=cfg.min[n];$("dynExtra"+i).max=cfg.max[n];$("dynExtra"+i).step=cfg.step[n];$("dynExtra"+i).value=cfg.values[n];}
  $("dynExtraMedical").innerHTML="<b>Связь с медициной.</b> "+cfg.medical;
  calcDynamicsExtra();
 }
@@ -255,7 +259,7 @@ function calcDynamicsExtra(){
    $("dynExtraVisual").querySelector("svg").setAttribute("aria-label","Схема наклонной плоскости и действующих сил");
    $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M70 150 L540 ${150- Math.tan(v[1]*Math.PI/180)*300} L540 150 Z" fill="#263f49" stroke="#8ca9a5" stroke-width="3"/><rect x="275" y="${Math.max(28,120-v[1]*1.1)}" width="70" height="42" rx="8" fill="#dce8e3" stroke="#62bfae" stroke-width="3" transform="rotate(${-v[1]} 310 140)"/><text x="80" y="178" fill="#dce6e1" font-size="13">Угол ${v[1]}°</text><text x="310" y="25" fill="#dfb66b" text-anchor="middle" font-size="14">F тяжести</text>`;
  }else if(mode==="atwood"){
-   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M240 30 H380" stroke="#8ca9a5" stroke-width="8"/><circle cx="310" cy="55" r="28" fill="#253e47" stroke="#d8b36a" stroke-width="5"/><path d="M282 55 V135 M338 55 V135" stroke="#dce6e1" stroke-width="3"/><rect x="255" y="135" width="54" height="40" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><rect x="311" y="135" width="54" height="40" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="282" y="160" text-anchor="middle" fill="#20323a" font-size="14">${v[0]} кг</text><text x="338" y="160" text-anchor="middle" fill="#20323a" font-size="14">${v[1]} кг</text><text x="310" y="18" text-anchor="middle" fill="#dfb66b" font-size="12">Невесомый блок · идеальная нить</text>`;
+   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M180 24 H440 M310 24 V42" stroke="#91a9a8" stroke-width="7" stroke-linecap="round"/><circle cx="310" cy="68" r="27" fill="#203943" stroke="#dfb66b" stroke-width="5"/><circle cx="310" cy="68" r="5" fill="#dfb66b"/><path d="M283 68 V139 Q283 150 270 150 M337 68 V139 Q337 150 350 150" stroke="#e4e9e4" stroke-width="3" fill="none"/><rect x="239" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><rect x="319" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="270" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₁</text><text x="350" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₂</text><text x="270" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[0]} кг</text><text x="350" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[1]} кг</text><path d="${v[0]>v[1]?"M210 122 V165 M200 153 L210 167 L220 153":"M210 165 V122 M200 134 L210 120 L220 134"}" stroke="#dfb66b" stroke-width="3" fill="none"/><path d="${v[1]>v[0]?"M410 122 V165 M400 153 L410 167 L420 153":"M410 165 V122 M400 134 L410 120 L420 134"}" stroke="#d87578" stroke-width="3" fill="none"/><text x="310" y="14" text-anchor="middle" fill="#dfb66b" font-size="12">Неподвижная опора · блок · лёгкая нить</text>`;
  }else{
    $("dynExtraVisual").querySelector("svg").innerHTML=`<line x1="35" y1="145" x2="585" y2="145" stroke="#789196" stroke-width="3"/><rect x="260" y="92" width="100" height="52" rx="10" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="310" y="124" text-anchor="middle" fill="#20323a" font-size="18" font-weight="700">ТЕЛО</text><path d="M360 110 H${Math.min(570,360+len1)}" stroke="#dfb66b" stroke-width="6"/><path d="M260 110 H${Math.max(50,260-len2)}" stroke="#d87578" stroke-width="6"/><text x="490" y="80" fill="#dfb66b" font-size="15">F₁</text><text x="105" y="80" fill="#d87578" font-size="15">F₂</text>`;
  }

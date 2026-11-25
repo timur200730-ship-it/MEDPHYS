@@ -542,11 +542,11 @@
               </div>
               <div class="dynamics-extra-description" id="dynExtraDescription">Измени величину и направление сил. Наблюдай за равнодействующей.</div>
               <div class="dynamics-extra-controls">
-                <label class="range-label"><span id="dynExtraLabel1">Сила 1</span><b><output id="dynExtraOut1">50</output> Н</b></label>
+                <label class="range-label"><span id="dynExtraLabel1">Сила 1</span><b><output id="dynExtraOut1">50</output> <span id="dynExtraUnit1">Н</span></b></label>
                 <input id="dynExtra1" type="range" min="0" max="100" value="50" step="1">
-                <label class="range-label"><span id="dynExtraLabel2">Сила 2</span><b><output id="dynExtraOut2">20</output> Н</b></label>
+                <label class="range-label"><span id="dynExtraLabel2">Сила 2</span><b><output id="dynExtraOut2">20</output> <span id="dynExtraUnit2">Н</span></b></label>
                 <input id="dynExtra2" type="range" min="0" max="100" value="20" step="1">
-                <label class="range-label"><span id="dynExtraLabel3">Угол / параметр</span><b><output id="dynExtraOut3">0</output>°</b></label>
+                <label class="range-label"><span id="dynExtraLabel3">Угол / параметр</span><b><output id="dynExtraOut3">0</output> <span id="dynExtraUnit3">°</span></b></label>
                 <input id="dynExtra3" type="range" min="0" max="90" value="0" step="1">
               </div>
               <div class="dynamics-extra-result" id="dynExtraResult" aria-live="polite">Равнодействующая: 30 Н</div>
@@ -565,6 +565,7 @@
             </div>
             <div class="result-box"><div class="eyebrow">РЕЗУЛЬТАТ РАСЧЁТА</div><div class="result-main"><strong id="resultValue">987</strong><span id="resultUnit">м/с²</span></div><div id="resultLabel" class="muted">Центростремительное ускорение</div></div>
             <div class="formula" id="formula">a = ω²r <span>ω = 2πn / 60</span></div>
+            <div class="formula-legend hidden" id="formulaLegend" aria-live="polite"></div>
             <div class="flow-extra hidden" id="flowExtra"><span>Средняя скорость потока</span><strong id="flowVelocity">—</strong></div>
             <div class="g-readout" id="gReadout"><div><span class="eyebrow">ОТНОСИТЕЛЬНОЕ УСКОРЕНИЕ</span><strong id="gValue">—</strong><small>g (условно, относительно g₀ = 9,80665 м/с²)</small></div><div class="g-symbol">g</div></div>
             <button class="secondary-btn full" id="resetLab">Сбросить параметры ↺</button>
