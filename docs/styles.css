@@ -658,3 +658,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #page-lab .centrifuge-visual-pair{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:10px;}
 #page-lab #centrifugeGraphCard{margin-top:0;}
 @media(max-width:650px){#page-lab .centrifuge-visual-pair{gap:10px;}#page-lab #centrifugeGraphCard{padding:12px 10px;}#page-lab #centrifugeGraph{width:100%;min-height:0;}}
+
+/* MEDPHYS · учебные визуальные схемы темы 2.2 */
+.thermo-visual{margin:22px 0 26px;padding:12px;border:1px solid var(--line,rgba(130,170,185,.25));border-radius:16px;background:rgba(17,38,50,.45);overflow:hidden}.thermo-visual svg{display:block;width:100%;height:auto;max-height:310px}.thermo-visual figcaption{margin:10px 5px 2px;color:var(--muted,#9eb2bd);font-size:.9rem;line-height:1.55}@media(max-width:600px){.thermo-visual{margin:16px 0 20px;padding:7px;border-radius:12px}.thermo-visual figcaption{font-size:.82rem}}
