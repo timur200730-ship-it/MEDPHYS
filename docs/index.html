@@ -7,7 +7,7 @@
   <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=23">
+  <link rel="stylesheet" href="./styles.css?v=24">
   <title>MEDPHYS — физика в медицине</title>
 </head>
 <body>
@@ -456,7 +456,7 @@
 
       <section class="page" id="page-lab">
         <div class="page-heading"><div class="eyebrow">ИНТЕРАКТИВНЫЕ ЭКСПЕРИМЕНТЫ</div><h1>Виртуальная лаборатория</h1><p>Изменяй параметры модели, наблюдай за результатом и связывай физические законы с медицинским оборудованием.</p></div>
-        <div class="lab-tabs"><button class="lab-tab active" data-lab="centrifuge">Медицинская центрифуга</button><button class="lab-tab" data-lab="motion">Равномерное движение</button><button class="lab-tab" data-lab="flow">Гидродинамика: кровоток</button><button class="lab-tab" data-lab="dynamics">Второй закон Ньютона</button></div>
+        <div class="lab-tabs"><button class="lab-tab active" data-lab="centrifuge">Медицинская центрифуга</button><button class="lab-tab" data-lab="motion">Равномерное движение</button><button class="lab-tab" data-lab="flow">Гидродинамика: кровоток</button><button class="lab-tab" data-lab="dynamics">Второй закон Ньютона</button><button class="lab-tab" data-lab="momentum">Импульс и столкновения</button></div>
         <div class="lab-layout">
           <div class="lab-visual card">
             <div class="lab-top"><span class="live-tag"><i></i> МОДЕЛЬ В РЕАЛЬНОМ ВРЕМЕНИ</span><span class="muted" id="labMode">ЭКСПЕРИМЕНТ 01</span></div>
@@ -467,7 +467,40 @@
             <div class="centrifuge-visual-pair"><div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div></div>
 
             <div class="motion-scene hidden" id="motionScene"><div class="motion-track-wrap"><div class="motion-track"><span class="motion-mark" style="left:0%">0 м</span><span class="motion-mark" style="left:25%">25 м</span><span class="motion-mark" style="left:50%">50 м</span><span class="motion-mark" style="left:75%">75 м</span><span class="motion-mark" style="left:100%">100 м</span><div class="moving-dot" id="movingDot"></div><div class="motion-interval-marks" id="motionIntervalMarks" aria-label="Положение тела через каждую секунду"></div></div></div><div class="scene-caption motion-distance-readout" id="motionDistanceLabel" aria-live="polite">Пройденный путь: 0 м за 0 с</div><div class="motion-live-readout"><b id="motionTimeNow">0,0 с</b><span id="motionXNow">x = 0,0 м</span><span id="motionVNow">v = 2 м/с</span></div><div class="motion-actions"><button type="button" class="secondary-btn" id="motionPlay">▶ Начать</button><button type="button" class="secondary-btn" id="motionPause" disabled>Ⅱ Пауза</button><button type="button" class="secondary-btn" id="motionReset">↺ Сброс</button></div><div class="motion-timeline" id="motionTimeline"></div><p class="graph-note">Модель прямолинейного движения с постоянной скоростью. Условная дистанция на схеме — 100 м; выбранное время задаёт длительность наблюдения.</p></div>
-<div class="dynamics-scene hidden" id="dynamicsScene">
+<div class="momentum-scene hidden" id="momentumScene">
+ <div class="momentum-stage">
+  <svg viewBox="0 0 680 250" role="img" aria-label="Два тела до и после одномерного столкновения; стрелки показывают направления и величины скоростей">
+   <line x1="30" y1="110" x2="650" y2="110" stroke="#789196" stroke-width="3"/>
+   <line x1="30" y1="220" x2="650" y2="220" stroke="#789196" stroke-width="3"/>
+   <text x="34" y="24" fill="#a9c0c1" font-size="14">ДО столкновения</text>
+   <text x="34" y="138" fill="#a9c0c1" font-size="14">ПОСЛЕ столкновения</text>
+   <rect id="momentumBody1Before" x="115" y="48" width="72" height="48" rx="9" fill="#62bfae"/>
+   <rect id="momentumBody2Before" x="450" y="48" width="72" height="48" rx="9" fill="#dfb66b"/>
+   <text x="151" y="78" text-anchor="middle" fill="#20323a" font-size="17" font-weight="700">m₁</text>
+   <text x="486" y="78" text-anchor="middle" fill="#20323a" font-size="17" font-weight="700">m₂</text>
+   <path id="momentumBeforeArrow1" d="M187 72 H280 M266 60 L282 72 L266 84" stroke="#62bfae" stroke-width="5" fill="none"/>
+   <path id="momentumBeforeArrow2" d="M450 72 H365 M379 60 L363 72 L379 84" stroke="#dfb66b" stroke-width="5" fill="none"/>
+   <rect id="momentumBody1After" x="115" y="158" width="72" height="48" rx="9" fill="#62bfae"/>
+   <rect id="momentumBody2After" x="450" y="158" width="72" height="48" rx="9" fill="#dfb66b"/>
+   <text id="momentumAfterLabel" x="340" y="242" text-anchor="middle" fill="#a9c0c1" font-size="13">Скорости после столкновения</text>
+   <path id="momentumAfterArrow1" d="M187 182 H280 M266 170 L282 182 L266 194" stroke="#62bfae" stroke-width="5" fill="none"/>
+   <path id="momentumAfterArrow2" d="M450 182 H365 M379 170 L363 182 L379 194" stroke="#dfb66b" stroke-width="5" fill="none"/>
+  </svg>
+ </div>
+ <div class="momentum-type" role="group" aria-label="Тип столкновения">
+  <button type="button" class="momentum-type-btn active" data-collision="elastic" aria-pressed="true">Упругое</button>
+  <button type="button" class="momentum-type-btn" data-collision="inelastic" aria-pressed="false">Неупругое (сцепляются)</button>
+ </div>
+ <div class="momentum-results" aria-live="polite">
+  <div><span>Импульс до столкновения</span><strong id="momentumBefore">—</strong></div>
+  <div><span>Импульс после столкновения</span><strong id="momentumAfter">—</strong></div>
+  <div><span>Скорость тела 1 после</span><strong id="momentumV1After">—</strong></div>
+  <div><span>Скорость тела 2 после</span><strong id="momentumV2After">—</strong></div>
+ </div>
+ <div class="newton-conclusion" id="momentumConclusion">Импульс замкнутой системы сохраняется: суммарный импульс до и после столкновения одинаков.</div>
+ <div class="newton-medical"><div class="eyebrow">ФИЗИКА В МЕДИЦИНЕ</div><b>Передача импульса при столкновении</b><p>Модель помогает понять, почему при столкновении важны масса и скорость движущегося объекта. В медицинском контексте это основа для обсуждения травм при падениях и столкновениях, но расчёт не является оценкой индивидуального риска травмы.</p></div>
+ <p class="momentum-note">Одномерная модель. Упругое столкновение сохраняет и импульс, и кинетическую энергию. При абсолютно неупругом столкновении тела после контакта движутся вместе: импульс сохраняется, но часть кинетической энергии переходит в другие формы. Внешними силами пренебрегаем.</p>
+</div>\n<div class="dynamics-scene hidden" id="dynamicsScene">
               <svg viewBox="0 0 680 250" role="img" aria-label="Модель тележки под действием силы тяги и силы трения">
                 <line x1="45" y1="194" x2="635" y2="194" stroke="#9bbfc0" stroke-width="5"/>
                 <rect x="205" y="112" width="190" height="68" rx="12" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/>
@@ -608,7 +641,17 @@
               <input id="pressure" type="range" min="500" max="3000" step="100" value="1500">
               <div class="range-ends"><span>500 Па</span><span>3000 Па</span></div>
             </div>
-            <div id="dynamicsControls" class="hidden">
+            <div id="momentumControls" class="hidden">
+ <label class="range-label"><span>Масса тела 1</span><b><output id="momentumMass1Out">2</output> кг</b></label>
+ <input id="momentumMass1" type="range" min="1" max="10" step="0.5" value="2">
+ <label class="range-label"><span>Начальная скорость тела 1</span><b><output id="momentumU1Out">3</output> м/с</b></label>
+ <input id="momentumU1" type="range" min="-5" max="5" step="0.5" value="3">
+ <label class="range-label"><span>Масса тела 2</span><b><output id="momentumMass2Out">3</output> кг</b></label>
+ <input id="momentumMass2" type="range" min="1" max="10" step="0.5" value="3">
+ <label class="range-label"><span>Начальная скорость тела 2</span><b><output id="momentumU2Out">−1</output> м/с</b></label>
+ <input id="momentumU2" type="range" min="-5" max="5" step="0.5" value="-1">
+ <div class="range-ends"><span>Движение влево: −5 м/с</span><span>Вправо: +5 м/с</span></div>
+</div>\n<div id="dynamicsControls" class="hidden">
               <label class="range-label"><span>Масса тележки</span><b><output id="dynMassOut">20</output> кг</b></label>
               <input id="dynMass" type="range" min="5" max="100" step="1" value="20">
               <div class="range-ends"><span>5 кг</span><span>100 кг</span></div>
@@ -2380,6 +2423,6 @@
       </footer>
     </main>
   </div>
-  <script src="./app.js?v=18"></script>
+  <script src="./app.js?v=19"></script>
 </body>
 </html>
