@@ -1144,9 +1144,11 @@
                   <g fill="#20323a" font-size="16" font-weight="700" text-anchor="middle"><text x="125" y="25">Изотерма</text><text x="380" y="25">Изобара</text><text x="635" y="25">Изохора</text></g>
                   <g stroke="#60777d" stroke-width="2" fill="none"><path d="M45 225 V55 M45 225 H220"/><path d="M300 225 V55 M300 225 H475"/><path d="M555 225 V55 M555 225 H730"/></g>
                   <g fill="#52666d" font-size="13"><text x="30" y="52">p</text><text x="220" y="246">V</text><text x="285" y="52">V</text><text x="475" y="246">T</text><text x="540" y="52">p</text><text x="730" y="246">T</text></g>
-                  <path d="M65 75 C85 100 110 140 205 205" stroke="#62bfae" stroke-width="4" fill="none"/>
-                  <path d="M320 205 L455 75" stroke="#dfb66b" stroke-width="4" fill="none"/>
-                  <path d="M575 205 L710 75" stroke="#d87578" stroke-width="4" fill="none"/>
+                  <!-- Изотерма: pV=const; точки вычислены по y=225−2400/(x−45), x=60…205. -->
+                  <path d="M60 65 L65 105 L70 129 L75 145 L85 165 L95 177 L105 185 L125 195 L145 201 L165 205 L185 208 L205 210" stroke="#62bfae" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                  <!-- При T в кельвинах обе прямые пропорциональности проходят через (0,0). -->
+                  <path d="M300 225 L455 75" stroke="#dfb66b" stroke-width="4" fill="none"/>
+                  <path d="M555 225 L710 75" stroke="#d87578" stroke-width="4" fill="none"/>
                   <g fill="#52666d" font-size="12"><text x="125" y="260" text-anchor="middle">T = const</text><text x="385" y="260" text-anchor="middle">p = const</text><text x="640" y="260" text-anchor="middle">V = const</text></g>
                 </svg>
                 <figcaption>Схематические графики. На осях температуры используется шкала Кельвина; линии показывают качественный характер зависимостей.</figcaption>
