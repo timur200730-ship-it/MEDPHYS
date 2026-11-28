@@ -4,7 +4,8 @@ const topics=[
 ["Основы динамики","Раздел 1 · Механика · Тема 1.2 · 6 академических часов."],
 ["Практическое занятие № 1","Решение задач по теме «Кинематика» · 2 академических часа."],
 ["Практическое занятие № 2","Решение задач на движение тела под действием нескольких сил · 2 академических часа."],
-["Законы сохранения","Раздел 1 · Механика · Тема 1.3 · 2 академических часа."]
+["Законы сохранения","Раздел 1 · Механика · Тема 1.3 · 2 академических часа."],
+["Основы молекулярно-кинетической теории","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.1 · 4 академических часа."]
 ];
 const terms=[
 ["Ускорение","Векторная физическая величина, характеризующая быстроту изменения скорости тела."],
@@ -22,7 +23,7 @@ const terms=[
 ["Сила трения","Сила, препятствующая относительному движению соприкасающихся поверхностей."],
 ["Невесомость","Состояние, при котором вес тела равен нулю, то есть тело не действует на опору или подвес."]
 ];
-const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
+const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения","lesson-molecular":"Основы молекулярно-кинетической теории",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
 const $=id=>document.getElementById(id);
 
 const themeButton=$("themeToggle");
@@ -56,10 +57,11 @@ function renderTopics(){
     {title:"Введение в физику",items:[{i:0,num:"01"}]},
     {title:"Раздел 1 · Механика · 18 академических часов",items:[
       {i:1,num:"1.1"},{i:3,num:"ПЗ 1"},{i:2,num:"1.2"},{i:4,num:"ПЗ 2"},{i:5,num:"1.3"}
-    ]}
+    ]},
+    {title:"Раздел 2 · Молекулярная физика и термодинамика · 16 академических часов",items:[{i:6,num:"2.1"}]}
   ];
-  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation"};
-  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа"};
+  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation",6:"lesson-molecular"};
+  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа",6:"4 академических часа"};
   $("topicList").innerHTML=groups.map(g=>`<section class="program-group"><h2>${g.title}</h2><div class="program-group-items">${g.items.map(item=>{
     const i=item.i,t=topics[i];
     return `<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${item.num}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p><small class="topic-hours">${hours[i]} · Материал открыт</small></div><button data-topic="${i}">Открыть →</button></article>`;
