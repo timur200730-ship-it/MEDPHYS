@@ -8,7 +8,8 @@ const topics=[
 ["Основы молекулярно-кинетической теории","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.1 · 4 академических часа."],
 ["Практическое занятие № 3","Решение задач на уравнение состояния идеального газа, изопроцессы в газах · 2 академических часа."],
 ["Основы термодинамики","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.2 · 4 академических часа."],
-["Практическое занятие № 4","Решение задач на расчёт количества теплоты и составление уравнения теплового баланса · 2 академических часа."]
+["Практическое занятие № 4","Решение задач на расчёт количества теплоты и составление уравнения теплового баланса · 2 академических часа."],
+["Агрегатные состояния вещества и фазовые переходы","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.3 · 2 академических часа."]
 ];
 const terms=[
 ["Ускорение","Векторная физическая величина, характеризующая быстроту изменения скорости тела."],
@@ -61,10 +62,10 @@ function renderTopics(){
     {title:"Раздел 1 · Механика · 18 академических часов",items:[
       {i:1,num:"1.1"},{i:3,num:"ПЗ 1"},{i:2,num:"1.2"},{i:4,num:"ПЗ 2"},{i:5,num:"1.3"}
     ]},
-    {title:"Раздел 2 · Молекулярная физика и термодинамика · 16 академических часов",items:[{i:6,num:"2.1"},{i:7,num:"ПЗ 3"},{i:8,num:"2.2"},{i:9,num:"ПЗ 4"}]}
+    {title:"Раздел 2 · Молекулярная физика и термодинамика · 16 академических часов",items:[{i:6,num:"2.1"},{i:7,num:"ПЗ 3"},{i:8,num:"2.2"},{i:9,num:"ПЗ 4"},{i:10,num:"2.3"}]}
   ];
-  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation",6:"lesson-molecular",7:"practice-gas-laws",8:"lesson-thermo",9:"practice-heat"};
-  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа",6:"4 академических часа",7:"2 академических часа",8:"4 академических часа",9:"2 академических часа"};
+  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation",6:"lesson-molecular",7:"practice-gas-laws",8:"lesson-thermo",9:"practice-heat",10:"lesson-phase"};
+  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа",6:"4 академических часа",7:"2 академических часа",8:"4 академических часа",9:"2 академических часа",10:"2 академических часа"};
   $("topicList").innerHTML=groups.map(g=>`<section class="program-group"><h2>${g.title}</h2><div class="program-group-items">${g.items.map(item=>{
     const i=item.i,t=topics[i];
     return `<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${item.num}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p><small class="topic-hours">${hours[i]} · Материал открыт</small></div><button data-topic="${i}">Открыть →</button></article>`;
@@ -358,6 +359,7 @@ $("kinCheck").addEventListener("click",()=>{const answers={kinq1:"1",kinq2:"1",k
 $("dynCheck").addEventListener("click",()=>{const ans={dynq1:"b",dynq2:"a",dynq3:"b",dynq4:"a"};let score=0,n=0;for(const [q,v] of Object.entries(ans)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===v)score++;}}const box=$("dynFeedback");if(n<4){box.textContent="Ответь на все четыре вопроса.";return;}box.textContent=`Результат: ${score} из 4. `+(score===4?"Отлично! Основные законы динамики усвоены.":"Повтори соответствующий раздел и попробуй ещё раз.");if(score===4){const d=getDone();if(!d.includes(2))setDone([...d,2]);}});
 
 $("gasPracticeCheck").addEventListener("click",()=>{const answers={gpq1:"b",gpq2:"a",gpq3:"a"};let score=0,n=0;for(const [q,a] of Object.entries(answers)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===a)score++;}}const box=$("gasPracticeFeedback");if(n<3){box.textContent="Ответь на все три вопроса.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Газовые законы усвоены.":"Повтори формулы изопроцессов и попробуй ещё раз.");});
+$("phaseCheck").addEventListener("click",()=>{const answers={phq1:"b",phq2:"a",phq3:"a",phq4:"a"};let score=0,n=0;for(const [q,a] of Object.entries(answers)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===a)score++;}}const box=$("phaseFeedback");if(n<4){box.textContent="Ответь на все четыре вопроса.";return;}box.textContent=`Результат: ${score} из 4. `+(score===4?"Отлично!":"Повтори материал и попробуй ещё раз.");if(score===4){const d=getDone();if(!d.includes(10))setDone([...d,10]);}});
 $("heatPracticeCheck").addEventListener("click",()=>{const answers={hpq1:"a",hpq2:"a",hpq3:"a"};let score=0,n=0;for(const [q,a] of Object.entries(answers)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===a)score++;}}const box=$("heatPracticeFeedback");if(n<3){box.textContent="Ответь на все три вопроса.";return;}box.textContent=`Результат: ${score} из 3.`;});
 $("thermoCheck").addEventListener("click",()=>{const answers={thq1:"b",thq2:"a",thq3:"b",thq4:"a"};let score=0,n=0;for(const [q,a] of Object.entries(answers)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===a)score++;}}const box=$("thermoFeedback");if(n<4){box.textContent="Ответь на все четыре вопроса.";return;}box.textContent=`Результат: ${score} из 4. `+(score===4?"Отлично! Основы термодинамики усвоены.":"Повтори материал и попробуй ещё раз.");if(score===4){const d=getDone();if(!d.includes(8))setDone([...d,8]);}});
 $("lessonCheck").addEventListener("click",()=>{const answers={lq1:"b",lq2:"a",lq3:"b"};let score=0,answered=0;for(const [q,a] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===a)score++;}}const box=$("lessonFeedback");if(answered<3){box.textContent="Ответь на все три вопроса, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Ты освоил основные положения темы.":"Повтори материал и попробуй ещё раз.");if(score===3){const d=getDone();if(!d.includes(0))setDone([...d,0]);}});
