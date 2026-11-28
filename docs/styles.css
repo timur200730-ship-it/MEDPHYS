@@ -812,3 +812,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .third-law-results small b{color:var(--teal)}
 .third-law-note{font-size:11px;line-height:1.6;color:var(--muted);margin:12px 0 2px}
 @media(max-width:600px){.third-law-scene{padding:4px}.third-law-scene svg{max-height:none}.third-law-results{gap:6px}.third-law-results>div{padding:9px}.third-law-results strong{font-size:16px}}
+
+/* MEDPHYS v54 · momentum and collisions laboratory */
+.momentum-scene{width:100%;min-width:0;padding:12px;margin:12px 0;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.momentum-stage{width:100%;overflow:hidden}.momentum-stage svg{display:block;width:100%;height:auto;max-height:280px}
+.momentum-type{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.momentum-type-btn{padding:11px 8px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025);color:var(--text);font-size:12px}
+.momentum-type-btn.active{border-color:var(--gold);background:rgba(223,182,107,.12);color:var(--gold);font-weight:700}
+.momentum-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+.momentum-results>div{display:flex;flex-direction:column;gap:7px;min-width:0;padding:11px;border:1px solid var(--line);border-radius:10px}
+.momentum-results span{font-size:10px;line-height:1.45;color:var(--muted)}
+.momentum-results strong{font-size:16px;color:var(--teal);overflow-wrap:anywhere}
+.momentum-note{margin:12px 0 2px;color:var(--muted);font-size:11px;line-height:1.6}
+.momentum-type-btn,.momentum-stage{touch-action:pan-y}
+@media(max-width:600px){.momentum-scene{padding:8px}.momentum-stage svg{max-height:none}.momentum-results{gap:6px}.momentum-results>div{padding:9px}.momentum-results strong{font-size:14px}.momentum-type-btn{font-size:11px;padding:10px 5px}}
