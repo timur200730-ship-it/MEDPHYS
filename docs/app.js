@@ -258,6 +258,15 @@ function calcLab(){
     $("vessel").style.height=(64+radiusMm*9)+"px";
     $("bloodStream").style.height=(24+radiusMm*5)+"px";
     $("bloodStream").style.opacity=String(.5+Math.min(.4,pressurePa/5000));
+    const relativeFlow=Math.pow(radiusMm/2,4)*100;
+    const resistanceFactor=Math.pow(2/radiusMm,4);
+    $("flowRelativeValue").textContent=relativeFlow.toLocaleString("ru-RU",{maximumFractionDigits:1})+"%";
+    $("flowResistanceValue").textContent=resistanceFactor.toLocaleString("ru-RU",{maximumFractionDigits:2})+"×";
+    $("flowStenosisText").textContent=radiusMm<2
+      ? "Просвет уже условной нормы: при том же перепаде давления расход уменьшается, а сопротивление резко возрастает."
+      : radiusMm>2
+      ? "Просвет шире условной нормы: при тех же условиях модельный расход возрастает, а сопротивление уменьшается."
+      : "Радиус совпадает с условной точкой сравнения 2 мм. Изменение расхода и сопротивления отсчитывается от неё.";
     $("labExplain").textContent="Модель показывает ламинарное течение ньютоновской жидкости в жёстком цилиндрическом сосуде. Расход зависит от четвёртой степени радиуса и прямо пропорционален перепаду давления.";
     renderFlowGraph(radiusMm,pressurePa,viscosity,length);
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),viscosity,length));

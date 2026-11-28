@@ -515,6 +515,34 @@
               <p class="flow-model-note">Учебная идеализация: жидкость считается ньютоновской, сосуд — жёстким цилиндрическим, течение — стационарным и ламинарным. Реальные кровь и сосуды устроены сложнее.</p>
               </div>
               <div class="flow-key"><span><i class="flow-key-center"></i> быстрее: центр сосуда</span><span><i class="flow-key-wall"></i> медленнее: у стенок</span></div>
+              <div class="stenosis-compare" aria-label="Сравнение нормального и суженного сосуда">
+                <article class="stenosis-card">
+                  <div class="stenosis-title"><b>Нормальный просвет</b><span>условная модель</span></div>
+                  <svg viewBox="0 0 320 112" role="img" aria-label="Сосуд с широким просветом и равномерным потоком">
+                    <path d="M8 20 H312 V92 H8 Z" fill="#743044" stroke="#b8c7c4" stroke-width="3"/>
+                    <path d="M8 39 H312 V73 H8 Z" fill="#e16a76" opacity=".9"/>
+                    <g fill="#ffe0cf"><circle cx="42" cy="56" r="4"/><circle cx="95" cy="48" r="4"/><circle cx="150" cy="62" r="4"/><circle cx="205" cy="49" r="4"/><circle cx="265" cy="58" r="4"/></g>
+                    <path d="M24 56 H286 M276 47 L288 56 L276 65" fill="none" stroke="#fff0d8" stroke-width="2"/>
+                    <text x="160" y="108" text-anchor="middle" fill="#a9c0c1" font-size="9">Широкий просвет</text>
+                  </svg>
+                </article>
+                <article class="stenosis-card">
+                  <div class="stenosis-title"><b>Суженный участок</b><span>стеноз</span></div>
+                  <svg viewBox="0 0 320 112" role="img" aria-label="Сосуд с локальным сужением просвета">
+                    <path d="M8 20 H78 Q118 20 137 43 Q150 55 170 43 Q190 20 230 20 H312 V92 H230 Q190 92 170 69 Q150 57 137 69 Q118 92 78 92 H8 Z" fill="#743044" stroke="#b8c7c4" stroke-width="3"/>
+                    <path d="M8 39 H78 Q118 39 137 50 Q150 56 170 50 Q190 39 230 39 H312 V73 H230 Q190 73 170 62 Q150 56 137 62 Q118 73 78 73 H8 Z" fill="#e16a76" opacity=".9"/>
+                    <g fill="#ffe0cf"><circle cx="35" cy="56" r="4"/><circle cx="90" cy="56" r="4"/><circle cx="148" cy="56" r="3"/><circle cx="178" cy="56" r="3"/><circle cx="255" cy="56" r="4"/></g>
+                    <path d="M24 56 H286 M276 47 L288 56 L276 65" fill="none" stroke="#fff0d8" stroke-width="2"/>
+                    <path d="M151 10 V34 M145 28 L151 35 L157 28" fill="none" stroke="#d8b36a" stroke-width="2"/>
+                    <text x="160" y="108" text-anchor="middle" fill="#a9c0c1" font-size="9">Уменьшение площади просвета</text>
+                  </svg>
+                </article>
+              </div>
+              <div class="stenosis-result">
+                <div><span>Расход относительно сосуда радиусом 2 мм</span><strong id="flowRelativeValue">100%</strong></div>
+                <div><span>Сопротивление относительно нормы</span><strong id="flowResistanceValue">1×</strong></div>
+                <p id="flowStenosisText">При выбранном радиусе сравнение с условной нормой 2 мм.</p>
+              </div>
             <div class="graph-card card hidden" id="flowGraphCard">
           <div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Объёмный расход и радиус сосуда</h3></div><span class="graph-legend"><i></i> Q(r)</span></div>
           <svg id="flowGraph" viewBox="0 0 640 230" role="img" aria-label="График зависимости объёмного расхода от радиуса сосуда">
