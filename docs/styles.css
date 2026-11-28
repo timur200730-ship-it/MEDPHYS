@@ -650,3 +650,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #page-lesson-phase .phase-diagram{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.025)}
 #page-lesson-phase .phase-state{padding:14px 12px;border-radius:12px;background:rgba(72,151,196,.14);font-weight:700;text-align:center;flex:1;min-width:90px}
 #page-lesson-phase .phase-arrow{text-align:center;font-size:.86em;line-height:1.55;color:var(--muted);flex:1;min-width:115px}
+
+/* Fixed numerical grid for the Poiseuille flow graph */
+#flowGraph .graph-grid line{stroke:rgba(145,166,170,.28);stroke-width:1;stroke-dasharray:3 5;}
