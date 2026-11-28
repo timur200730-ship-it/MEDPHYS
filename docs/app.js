@@ -5,7 +5,8 @@ const topics=[
 ["Практическое занятие № 1","Решение задач по теме «Кинематика» · 2 академических часа."],
 ["Практическое занятие № 2","Решение задач на движение тела под действием нескольких сил · 2 академических часа."],
 ["Законы сохранения","Раздел 1 · Механика · Тема 1.3 · 2 академических часа."],
-["Основы молекулярно-кинетической теории","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.1 · 4 академических часа."]
+["Основы молекулярно-кинетической теории","Раздел 2 · Молекулярная физика и термодинамика · Тема 2.1 · 4 академических часа."],
+["Практическое занятие № 3","Решение задач на уравнение состояния идеального газа, изопроцессы в газах · 2 академических часа."]
 ];
 const terms=[
 ["Ускорение","Векторная физическая величина, характеризующая быстроту изменения скорости тела."],
@@ -23,7 +24,7 @@ const terms=[
 ["Сила трения","Сила, препятствующая относительному движению соприкасающихся поверхностей."],
 ["Невесомость","Состояние, при котором вес тела равен нулю, то есть тело не действует на опору или подвес."]
 ];
-const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения","lesson-molecular":"Основы молекулярно-кинетической теории",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
+const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения","lesson-molecular":"Основы молекулярно-кинетической теории","practice-gas-laws":"Практическое занятие № 3",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
 const $=id=>document.getElementById(id);
 
 const themeButton=$("themeToggle");
@@ -58,10 +59,10 @@ function renderTopics(){
     {title:"Раздел 1 · Механика · 18 академических часов",items:[
       {i:1,num:"1.1"},{i:3,num:"ПЗ 1"},{i:2,num:"1.2"},{i:4,num:"ПЗ 2"},{i:5,num:"1.3"}
     ]},
-    {title:"Раздел 2 · Молекулярная физика и термодинамика · 16 академических часов",items:[{i:6,num:"2.1"}]}
+    {title:"Раздел 2 · Молекулярная физика и термодинамика · 16 академических часов",items:[{i:6,num:"2.1"},{i:7,num:"ПЗ 3"}]}
   ];
-  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation",6:"lesson-molecular"};
-  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа",6:"4 академических часа"};
+  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation",6:"lesson-molecular",7:"practice-gas-laws"};
+  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа",6:"4 академических часа",7:"2 академических часа"};
   $("topicList").innerHTML=groups.map(g=>`<section class="program-group"><h2>${g.title}</h2><div class="program-group-items">${g.items.map(item=>{
     const i=item.i,t=topics[i];
     return `<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${item.num}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p><small class="topic-hours">${hours[i]} · Материал открыт</small></div><button data-topic="${i}">Открыть →</button></article>`;
@@ -351,7 +352,9 @@ $("nextQuestion").addEventListener("click",()=>{document.querySelectorAll(".answ
 $("kinCheck").addEventListener("click",()=>{const answers={kinq1:"1",kinq2:"1",kinq3:"2",kinq4:"0",kinq5:"1",kinq6:"2"};let score=0,answered=0;for(const [q,answer] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===answer)score++;}}const box=$("kinFeedback");if(answered<6){box.textContent="Ответь на все шесть вопросов, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 6. `+(score>=5?"Отлично! Тема освоена на необходимом уровне.":"Повтори материал и попробуй ещё раз.");if(score>=5){const d=getDone();if(!d.includes(1))setDone([...d,1]);}});
 
 $("dynCheck").addEventListener("click",()=>{const ans={dynq1:"b",dynq2:"a",dynq3:"b",dynq4:"a"};let score=0,n=0;for(const [q,v] of Object.entries(ans)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===v)score++;}}const box=$("dynFeedback");if(n<4){box.textContent="Ответь на все четыре вопроса.";return;}box.textContent=`Результат: ${score} из 4. `+(score===4?"Отлично! Основные законы динамики усвоены.":"Повтори соответствующий раздел и попробуй ещё раз.");if(score===4){const d=getDone();if(!d.includes(2))setDone([...d,2]);}});
-$("lessonCheck").addEventListener("click",()=>{const answers={lq1:"b",lq2:"a",lq3:"b"};let score=0,answered=0;for(const [q,a] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===a)score++;}}const box=$("lessonFeedback");if(answered<3){box.textContent="Ответь на все три вопроса, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Ты освоил основные положения темы.":"Повтори материал и попробуй ещё раз.");if(score===3){const d=getDone();if(!d.includes(0))setDone([...d,0]);}});
+
+$("gasPracticeCheck").addEventListener("click",()=>{const answers={gpq1:"b",gpq2:"a",gpq3:"a"};let score=0,n=0;for(const [q,a] of Object.entries(answers)){const x=document.querySelector(`input[name="${q}"]:checked`);if(x){n++;if(x.value===a)score++;}}const box=$("gasPracticeFeedback");if(n<3){box.textContent="Ответь на все три вопроса.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Газовые законы усвоены.":"Повтори формулы изопроцессов и попробуй ещё раз.");});
+\n$("lessonCheck").addEventListener("click",()=>{const answers={lq1:"b",lq2:"a",lq3:"b"};let score=0,answered=0;for(const [q,a] of Object.entries(answers)){const selected=document.querySelector(`input[name="${q}"]:checked`);if(selected){answered++;if(selected.value===a)score++;}}const box=$("lessonFeedback");if(answered<3){box.textContent="Ответь на все три вопроса, затем проверь результат.";return;}box.textContent=`Результат: ${score} из 3. `+(score===3?"Отлично! Ты освоил основные положения темы.":"Повтори материал и попробуй ещё раз.");if(score===3){const d=getDone();if(!d.includes(0))setDone([...d,0]);}});
 $("connection").textContent=navigator.onLine?"Подключение активно":"Автономный режим";
 window.addEventListener("online",()=>$("connection").textContent="Подключение активно");window.addEventListener("offline",()=>$("connection").textContent="Автономный режим");
 renderTopics();updateProgress();renderTerms();switchLab("centrifuge");
