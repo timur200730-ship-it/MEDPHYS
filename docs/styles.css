@@ -653,3 +653,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 
 /* Fixed numerical grid for the Poiseuille flow graph */
 #flowGraph .graph-grid line{stroke:rgba(145,166,170,.28);stroke-width:1;stroke-dasharray:3 5;}
+
+/* Keep the centrifuge visualization and its graph together as one experiment unit */
+#page-lab .centrifuge-visual-pair{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;margin-top:10px;}
+#page-lab #centrifugeGraphCard{margin-top:0;}
+@media(max-width:650px){#page-lab .centrifuge-visual-pair{gap:10px;}#page-lab #centrifugeGraphCard{padding:12px 10px;}#page-lab #centrifugeGraph{width:100%;min-height:0;}}
