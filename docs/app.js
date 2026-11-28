@@ -359,6 +359,8 @@ function switchLab(next){
   });
   states[next].forEach(id=>$(id).classList.remove("hidden"));
   $("flowGraphCard").style.display=next==="flow"?"block":"none";
+  $("motionStudyGrid").classList.toggle("hidden",next!=="motion");
+  document.querySelector(".motion-graph-footnote").classList.toggle("hidden",next!=="motion");
   $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":next==="flow"?"Параметры потока":"Параметры динамики";
   $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":next==="flow"?"ЭКСПЕРИМЕНТ 03":"ЭКСПЕРИМЕНТ 04";
   $("questionTitle").textContent=next==="centrifuge"
