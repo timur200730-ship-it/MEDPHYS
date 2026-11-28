@@ -425,3 +425,195 @@ a, a:visited, a:hover, a:active { text-decoration: none !important; }
 :root[data-theme="light"] .formula{color:#95651d}
 :root[data-theme="light"] .formula span{color:#607579}
 :root[data-theme="light"] .quiz-meta .muted{color:#607579}
+
+
+/* MEDPHYS 1.7 — unified typography and responsive reading system */
+:root{
+  --font-body:Manrope,Arial,sans-serif;
+  --font-display:'Space Grotesk',Manrope,Arial,sans-serif;
+  --type-body:15px;
+  --type-small:12px;
+  --type-caption:11px;
+  --leading-body:1.75;
+}
+body{font-family:var(--font-body);font-size:var(--type-body);line-height:var(--leading-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3{font-family:var(--font-display)}
+a,a:visited,a:hover,a:active{text-decoration:none!important}
+button,a,input,summary{font-family:var(--font-body)}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.page-heading h1{line-height:1.16;letter-spacing:-.8px}
+.page-heading p{font-size:14px;line-height:1.8;max-width:760px}
+.eyebrow,.side-label,.card-kicker,.lesson-label{line-height:1.5}
+.muted{font-size:12px;line-height:1.65}
+.hero{padding:clamp(30px,4vw,52px)}
+.hero-copy{max-width:590px}
+.hero p{font-size:14px;line-height:1.8;max-width:560px}
+.hero h1{line-height:1.13}
+.feature-card{padding:23px;min-height:220px;display:flex;flex-direction:column;align-items:flex-start}
+.feature-card h3{font-size:19px;line-height:1.35;margin:9px 0}
+.feature-card p{font-size:13px;line-height:1.75;min-height:0;flex:1;margin-bottom:16px}
+.feature-card .text-link{font-size:12px;line-height:1.5}
+.feature-icon{flex:none}
+.progress-panel h3{font-size:18px}
+.progress-panel p{font-size:12px;line-height:1.65}
+.topic{padding:19px 21px;gap:18px}
+.topic-num{font-size:20px}
+.topic-info h3{font-size:16px;line-height:1.4;margin-bottom:6px}
+.topic-info p{font-size:12px;line-height:1.65}
+.topic-hours{display:inline-block;font-size:11px;line-height:1.5;margin-top:5px}
+.topic button{font-size:11px;padding:9px 13px}
+.program-group>h2{font-size:22px;line-height:1.4}
+.term{padding:20px 21px}
+.term b{font-size:16px;line-height:1.45}
+.term p{font-size:13px;line-height:1.75;margin-top:8px}
+.search{font-size:14px;line-height:1.5;padding:14px 16px}
+.quiz-card{padding:clamp(20px,3vw,30px)}
+.quiz-card h2{font-size:21px;line-height:1.55}
+.answer{font-size:14px;line-height:1.55;padding:15px 17px}
+.feedback,.quiz-feedback{font-size:13px;line-height:1.7}
+.lab-tab{font-size:12px}
+.lab-explain{font-size:13px;line-height:1.75}
+.control-heading h3{font-size:18px}
+.range-label{font-size:13px}
+.range-label b{font-size:13px}
+.range-ends{font-size:11px}
+.result-box{padding:17px}
+.formula{font-size:17px;line-height:1.5}
+.formula span{font-size:12px;line-height:1.65}
+.lesson-block{padding:clamp(20px,2.5vw,30px)}
+.lesson-label{font-size:11px;letter-spacing:1.5px}
+.lesson-block h2{font-size:22px;line-height:1.4}
+.lesson-block p,.lesson-block li{font-size:15px;line-height:1.8}
+.lesson-block b{line-height:1.5}
+.lesson-callout{font-size:14px;line-height:1.75}
+.lesson-aside a,.kin-side a{font-size:13px;line-height:1.6;padding:10px 12px}
+.kin-card{padding:clamp(19px,2.5vw,28px)}
+.kin-card h2{font-size:23px;line-height:1.4}
+.kin-card h3{font-size:18px;line-height:1.4}
+.kin-card p,.kin-card li{font-size:15px;line-height:1.8}
+.kin-tag{font-size:11px}
+.kin-formula{font-size:17px;line-height:1.65}
+.kin-question label{font-size:14px;line-height:1.65}
+.kin-feedback{font-size:13px;line-height:1.7}
+.practice-list li{font-size:15px;line-height:1.8}
+.footer{font-size:11px;line-height:1.6}
+.footer-credit small{font-size:10px}
+.topbar{font-size:11px}
+.nav-item{font-size:13px}
+.offline b{font-size:11px}
+.offline small{font-size:10px}
+
+/* Light palette: consistent contrast for all course components */
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#edf2ef;--panel:#ffffff;--panel2:#e7eeea;--line:#cbd8d2;
+  --text:#26383c;--muted:#607477;--gold:#a87524;--teal:#287f70;--violet:#7467b0;
+  --paper:#ffffff;--ink:#26383c;
+}
+:root[data-theme="light"] body{background:#edf2ef;color:#26383c}
+:root[data-theme="light"] .sidebar{background:#e4ece7;border-color:#cad8d1}
+:root[data-theme="light"] .main{color:#26383c}
+:root[data-theme="light"] .topbar,:root[data-theme="light"] .footer{border-color:#cbd8d2;color:#607477}
+:root[data-theme="light"] .crumb,:root[data-theme="light"] .crumb b{color:#40585b}
+:root[data-theme="light"] .brand,:root[data-theme="light"] .brand b,:root[data-theme="light"] .brand small{color:#26383c}
+:root[data-theme="light"] .side-label,:root[data-theme="light"] .version{color:#607477}
+:root[data-theme="light"] .nav-item{color:#52696c}
+:root[data-theme="light"] .nav-item.active,:root[data-theme="light"] .nav-item:hover{background:#d5e3dc;color:#26383c}
+:root[data-theme="light"] .offline,:root[data-theme="light"] .feature-card,:root[data-theme="light"] .card,
+:root[data-theme="light"] .topic,:root[data-theme="light"] .term,:root[data-theme="light"] .progress-panel,
+:root[data-theme="light"] .quiz-card,:root[data-theme="light"] .lesson-block,
+:root[data-theme="light"] .lesson-aside,:root[data-theme="light"] .graph-card,
+:root[data-theme="light"] .lab-visual,:root[data-theme="light"] .lab-controls,
+:root[data-theme="light"] .kin-card,:root[data-theme="light"] .kin-side{
+  background:#fff;border-color:#cbd8d2;color:#26383c;box-shadow:0 5px 18px rgba(38,65,57,.045)
+}
+:root[data-theme="light"] .hero{background:radial-gradient(ellipse at 76% 48%,#d8e8df 0%,#e7efe9 44%,#f8f9f5 100%);border-color:#c5d7cf}
+:root[data-theme="light"] .hero h1,:root[data-theme="light"] .page-heading h1,
+:root[data-theme="light"] .section-head h2,:root[data-theme="light"] .feature-card h3,
+:root[data-theme="light"] .topic-info h3,:root[data-theme="light"] .progress-panel h3,
+:root[data-theme="light"] .quiz-card h2,:root[data-theme="light"] .lesson-block h2,
+:root[data-theme="light"] .kin-card h2,:root[data-theme="light"] .kin-card h3{color:#26383c}
+:root[data-theme="light"] .hero p,:root[data-theme="light"] .page-heading p,
+:root[data-theme="light"] .feature-card p,:root[data-theme="light"] .topic-info p,
+:root[data-theme="light"] .progress-panel p,:root[data-theme="light"] .term p,
+:root[data-theme="light"] .lesson-block p,:root[data-theme="light"] .lesson-block li,
+:root[data-theme="light"] .kin-card p,:root[data-theme="light"] .kin-card li,
+:root[data-theme="light"] .muted,:root[data-theme="light"] .lab-explain{color:#5b7072}
+:root[data-theme="light"] .term b,:root[data-theme="light"] .topic-hours,
+:root[data-theme="light"] .lesson-label,:root[data-theme="light"] .formula{color:#95651d}
+:root[data-theme="light"] .search,:root[data-theme="light"] input[type="text"],
+:root[data-theme="light"] input[type="search"],:root[data-theme="light"] textarea{
+  background:#fff;color:#26383c;border-color:#bdcec6
+}
+:root[data-theme="light"] .search::placeholder,:root[data-theme="light"] input::placeholder{color:#81918e}
+:root[data-theme="light"] .topic button,:root[data-theme="light"] .secondary-btn,
+:root[data-theme="light"] .lab-tab,:root[data-theme="light"] .answer,
+:root[data-theme="light"] .dynamics-subtab{
+  background:#edf3ef;color:#31494b;border-color:#c3d3cb
+}
+:root[data-theme="light"] .topic button:hover,:root[data-theme="light"] .answer:hover{background:#e0ebe4}
+:root[data-theme="light"] .answer.correct{background:#dcefe8;border-color:#4a9b83}
+:root[data-theme="light"] .answer.wrong{background:#f5e5e1;border-color:#c77b70}
+:root[data-theme="light"] .lab-tab.active,:root[data-theme="light"] .dynamics-subtab.active{background:#dcebe4;border-color:#b68a42;color:#6d4d1c}
+:root[data-theme="light"] .lesson-callout,:root[data-theme="light"] .result-box,
+:root[data-theme="light"] .g-readout,:root[data-theme="light"] .dynamics-extra,
+:root[data-theme="light"] .dynamics-extra-visual,:root[data-theme="light"] .kin-callout,
+:root[data-theme="light"] .kin-two>div,:root[data-theme="light"] .kin-card details{
+  background:#edf4f0;border-color:#c7d8cf;color:#31484a
+}
+:root[data-theme="light"] .lesson-aside a,:root[data-theme="light"] .kin-side a{color:#52696d;border-color:#d8e2dc}
+:root[data-theme="light"] .lesson-aside a:hover,:root[data-theme="light"] .kin-side a:hover{background:#edf4f0;color:#8a601e}
+:root[data-theme="light"] .footer-brand strong,:root[data-theme="light"] .footer-credit strong{color:#34484a}
+:root[data-theme="light"] .footer-brand span,:root[data-theme="light"] .footer-credit span,:root[data-theme="light"] .footer-credit small{color:#687e7d}
+:root[data-theme="light"] .notice{background:#f8f0df;color:#735820;border-color:#e4d2a9}
+:root[data-theme="light"] .formula span{color:#607579}
+:root[data-theme="light"] .graph-label{fill:#52696d}
+:root[data-theme="light"] .graph-current{fill:#95651d}
+:root[data-theme="light"] .scene-caption,:root[data-theme="light"] .range-ends{color:#657a7b}
+
+/* Responsive reading sizes */
+@media(min-width:1200px){
+  .feature-card h3{font-size:20px}
+  .feature-card p{font-size:14px}
+  .topic-info h3{font-size:17px}
+  .topic-info p{font-size:13px}
+  .term b{font-size:17px}
+  .term p{font-size:14px}
+}
+@media(max-width:900px){
+  .feature-card{padding:19px}
+  .feature-card h3{font-size:17px}
+  .feature-card p{font-size:12px}
+  .topic-info p{font-size:12px}
+}
+@media(max-width:650px){
+  body{font-size:15px}
+  .page{padding-top:24px}
+  .hero{padding:25px 21px;min-height:0}
+  .hero h1{font-size:clamp(30px,8vw,39px);letter-spacing:-1.1px}
+  .hero p,.page-heading p{font-size:14px;line-height:1.75}
+  .section-head h2{font-size:21px}
+  .feature-grid{grid-template-columns:1fr;gap:11px}
+  .feature-card{min-height:0;padding:19px}
+  .feature-card h3{font-size:18px}
+  .feature-card p{font-size:13px;line-height:1.7}
+  .progress-panel{padding:17px;gap:12px}
+  .topic{padding:15px 13px;gap:10px;align-items:flex-start}
+  .topic-num{width:34px;font-size:17px;padding-top:2px}
+  .topic-info h3{font-size:15px}
+  .topic-info p{font-size:12px}
+  .topic-hours{font-size:10px}
+  .topic button{font-size:10px;padding:8px}
+  .program-group>h2{font-size:19px}
+  .glossary-list{grid-template-columns:1fr;gap:10px}
+  .term{padding:18px}
+  .term b{font-size:16px}
+  .term p{font-size:14px;line-height:1.7}
+  .quiz-card h2{font-size:19px}
+  .answer{font-size:14px}
+  .lesson-block p,.lesson-block li,.kin-card p,.kin-card li{font-size:14px;line-height:1.75}
+  .lesson-block h2,.kin-card h2{font-size:20px}
+  .kin-card h3{font-size:17px}
+  .lab-explain{font-size:13px}
+  .footer{gap:15px;flex-wrap:wrap}
+}
