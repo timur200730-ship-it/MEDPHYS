@@ -220,8 +220,27 @@ function renderDynamicsGraph(mass, netForce){
 }
 let motionState={elapsed:0,duration:5,speed:2,running:false,raf:0,last:0};
 function stopMotionAnimation(){motionState.running=false;if(motionState.raf)cancelAnimationFrame(motionState.raf);motionState.raf=0;}
-function updateMotionView(t){const elapsed=Math.max(0,Math.min(motionState.duration,t)),x=motionState.speed*elapsed;const dot=$("movingDot");if(dot){dot.style.left=Math.min(100,x)+"%";dot.setAttribute("aria-label",`Положение ${x.toFixed(1)} метра`);}$("motionTimeNow").textContent=elapsed.toFixed(1).replace(".",",")+" с";$("motionXNow").textContent="x = "+x.toFixed(1).replace(".",",")+" м";$("motionVNow").textContent="v = "+motionState.speed+" м/с";const distanceLabel=$("motionDistanceLabel");if(distanceLabel)distanceLabel.textContent=`Пройденный путь: ${x.toFixed(1).replace(".",",")} м за ${elapsed.toFixed(1).replace(".",",")} с`;$("motionPlay").textContent=elapsed>=motionState.duration?"↻ Повторить":motionState.running?"▶ Идёт движение":"▶ Продолжить";$("motionPause").disabled=!motionState.running;const tl=$("motionTimeline");tl.innerHTML="";for(let k=0;k<=motionState.duration;k++){const e=document.createElement("span");e.textContent=k+" с";e.className=k<=elapsed?"passed":"";tl.appendChild(e);}const positionPoint=$("motionPositionPoint"),velocityPoint=$("motionVelocityPoint");if(positionPoint){positionPoint.setAttribute("cx",(58+552*elapsed/motionState.duration).toFixed(1));positionPoint.setAttribute("cy",(180-150*x/Math.max(1,motionState.speed*motionState.duration)).toFixed(1));}if(velocityPoint)velocityPoint.setAttribute("cx",(58+552*elapsed/motionState.duration).toFixed(1));}
-function renderMotionGraphs(speed,duration,elapsed){const vy=180-(speed/10)*150;$("motionPositionCurve").setAttribute("d","M58 180 L610 30");$("motionVelocityCurve").setAttribute("d",`M58 ${vy} L610 ${vy}`);$("motionTimeAxis").textContent=duration+" с";$("motionVelocityTimeAxis").textContent=duration+" с";motionState.elapsed=elapsed;motionState.duration=duration;motionState.speed=speed;updateMotionView(elapsed);}
+function updateMotionView(t){
+ const elapsed=Math.max(0,Math.min(motionState.duration,t)),x=motionState.speed*elapsed;
+ const dot=$("movingDot");if(dot){dot.style.left=Math.min(100,x)+"%";dot.setAttribute("aria-label",`Положение ${x.toFixed(1)} метра`);}
+ $("motionTimeNow").textContent=elapsed.toFixed(1).replace(".",",")+" с";$("motionXNow").textContent="x = "+x.toFixed(1).replace(".",",")+" м";$("motionVNow").textContent="v = "+motionState.speed+" м/с";
+ const distanceLabel=$("motionDistanceLabel");if(distanceLabel)distanceLabel.textContent=`Пройденный путь: ${x.toFixed(1).replace(".",",")} м за ${elapsed.toFixed(1).replace(".",",")} с`;
+ $("motionPlay").textContent=elapsed>=motionState.duration?"↻ Повторить":motionState.running?"▶ Идёт движение":"▶ Продолжить";$("motionPause").disabled=!motionState.running;
+ const tl=$("motionTimeline");tl.innerHTML="";for(let k=0;k<=motionState.duration;k++){const e=document.createElement("span");e.textContent=k+" с";e.className=k<=elapsed?"passed":"";tl.appendChild(e);}
+ const marks=$("motionIntervalMarks");if(marks){marks.innerHTML="";for(let k=0;k<=motionState.duration;k++){const mark=document.createElement("span");mark.className="motion-interval-mark"+(k<=elapsed?" passed":"");mark.style.left=(k/motionState.duration*100)+"%";mark.title=`Через ${k} с: ${(motionState.speed*k).toFixed(1)} м`;marks.appendChild(mark);}}
+ const ratio=elapsed/motionState.duration,positionPoint=$("motionPositionPoint"),velocityPoint=$("motionVelocityPoint");
+ if(positionPoint){positionPoint.setAttribute("cx",(58+552*ratio).toFixed(1));positionPoint.setAttribute("cy",(180-150*ratio).toFixed(1));}
+ if(velocityPoint){velocityPoint.setAttribute("cx",(58+552*ratio).toFixed(1));velocityPoint.setAttribute("cy",(180-(motionState.speed/10)*150).toFixed(1));}
+ const medical=$("motionMedicalValue");if(medical)medical.textContent=(motionState.speed*motionState.duration).toLocaleString("ru-RU",{maximumFractionDigits:1})+" м";
+}
+function renderMotionGraphs(speed,duration,elapsed){
+ const maxDistance=Math.max(1,speed*duration),vy=180-(speed/10)*150;
+ $("motionPositionCurve").setAttribute("d","M58 180 L610 30");$("motionVelocityCurve").setAttribute("d",`M58 ${vy} L610 ${vy}`);
+ $("motionTimeAxis").textContent=duration+" с";$("motionVelocityTimeAxis").textContent=duration+" с";
+ $("motionPositionMax").textContent=maxDistance.toLocaleString("ru-RU",{maximumFractionDigits:1})+" м";
+ $("motionVelocityMax").textContent="10 м/с";
+ motionState.elapsed=elapsed;motionState.duration=duration;motionState.speed=speed;updateMotionView(elapsed);
+}
 function motionFrame(now){if(!motionState.running)return;if(!motionState.last)motionState.last=now;motionState.elapsed=Math.min(motionState.duration,motionState.elapsed+(now-motionState.last)/1000);motionState.last=now;updateMotionView(motionState.elapsed);if(motionState.elapsed>=motionState.duration){stopMotionAnimation();updateMotionView(motionState.duration);return;}motionState.raf=requestAnimationFrame(motionFrame);}
 function startMotionAnimation(){if(motionState.elapsed>=motionState.duration)motionState.elapsed=0;motionState.running=true;motionState.last=0;updateMotionView(motionState.elapsed);motionState.raf=requestAnimationFrame(motionFrame);}
 function calcDynamics(){
@@ -340,6 +359,8 @@ function switchLab(next){
   });
   states[next].forEach(id=>$(id).classList.remove("hidden"));
   $("flowGraphCard").style.display=next==="flow"?"block":"none";
+  $("motionStudyGrid").classList.toggle("hidden",next!=="motion");
+  document.querySelector(".motion-graph-footnote").classList.toggle("hidden",next!=="motion");
   $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":next==="flow"?"Параметры потока":"Параметры динамики";
   $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":next==="flow"?"ЭКСПЕРИМЕНТ 03":"ЭКСПЕРИМЕНТ 04";
   $("questionTitle").textContent=next==="centrifuge"
@@ -431,6 +452,8 @@ document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
   });
 });
 document.addEventListener("click",event=>{
+  const reveal=event.target.closest("#motionChallengeReveal");
+  if(reveal){const answer=$("motionChallengeAnswer"),opening=answer.classList.contains("hidden");answer.classList.toggle("hidden",!opening);reveal.setAttribute("aria-expanded",String(opening));reveal.textContent=opening?"Скрыть вывод":"Показать ожидаемый вывод";return;}
   const button=event.target.closest("#motionPlay,#motionPause,#motionReset");
   if(!button)return;
   event.preventDefault();
