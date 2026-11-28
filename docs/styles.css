@@ -800,3 +800,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .dyn-study-medical{border-top:1px solid var(--line);padding-top:12px;margin-top:8px;font-size:12px;line-height:1.6;color:var(--muted)}
 .dyn-study-medical b{color:var(--teal)}
 @media(max-width:650px){.dyn-study-panel{padding:11px}.dyn-study-tab{font-size:11px;padding:10px 3px}.dyn-study-result{font-size:14px}}
+
+/* MEDPHYS v53 · Newton's third-law interactive investigation */
+.third-law-scene{margin:12px 0;padding:8px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.third-law-scene svg{display:block;width:100%;height:auto;max-height:220px}
+.third-law-controls{display:grid;gap:6px;margin:12px 0}
+.third-law-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+.third-law-results>div{display:flex;flex-direction:column;gap:6px;min-width:0;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025)}
+.third-law-results span,.third-law-results small{font-size:11px;color:var(--muted);line-height:1.45}
+.third-law-results strong{font-size:18px;color:var(--gold)}
+.third-law-results small b{color:var(--teal)}
+.third-law-note{font-size:11px;line-height:1.6;color:var(--muted);margin:12px 0 2px}
+@media(max-width:600px){.third-law-scene{padding:4px}.third-law-scene svg{max-height:none}.third-law-results{gap:6px}.third-law-results>div{padding:9px}.third-law-results strong{font-size:16px}}

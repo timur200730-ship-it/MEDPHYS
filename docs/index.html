@@ -7,7 +7,7 @@
   <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=22">
+  <link rel="stylesheet" href="./styles.css?v=23">
   <title>MEDPHYS — физика в медицине</title>
 </head>
 <body>
@@ -641,7 +641,40 @@
             </div>
             <div id="dynamicsExtra" class="dynamics-extra hidden">
               <div class="dynamics-extra-title">Исследования второго закона Ньютона</div>
-<div class="dyn-study-panel" id="dynStudyPanel">
+<div class="dyn-study-panel" id="thirdLawPanel">
+ <div class="dynamics-extra-title">Исследование третьего закона Ньютона</div>
+ <p class="dyn-study-description">Два тела взаимодействуют друг с другом. Сила, с которой тело A действует на тело B, равна по модулю и противоположна по направлению силе, с которой тело B действует на тело A. Эти силы приложены к разным телам.</p>
+ <div class="third-law-scene">
+  <svg viewBox="0 0 680 230" role="img" aria-label="Два взаимодействующих тела: силы действия и противодействия равны по величине и направлены противоположно">
+   <line x1="35" y1="174" x2="645" y2="174" stroke="#789196" stroke-width="3"/>
+   <rect x="112" y="105" width="150" height="62" rx="12" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/>
+   <rect x="418" y="105" width="150" height="62" rx="12" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/>
+   <text x="187" y="143" text-anchor="middle" fill="#20323a" font-size="18" font-weight="700">Тело A</text>
+   <text x="493" y="143" text-anchor="middle" fill="#20323a" font-size="18" font-weight="700">Тело B</text>
+   <path id="thirdForceA" d="M112 88 H42 M58 74 L40 88 L58 102" stroke="#dfb66b" stroke-width="6" fill="none" stroke-linecap="round"/>
+   <path id="thirdForceB" d="M568 88 H638 M622 74 L640 88 L622 102" stroke="#d87578" stroke-width="6" fill="none" stroke-linecap="round"/>
+   <text x="44" y="55" fill="#dfb66b" font-size="15" font-weight="700">F B→A</text>
+   <text x="636" y="55" text-anchor="end" fill="#d87578" font-size="15" font-weight="700">F A→B</text>
+   <text x="340" y="210" text-anchor="middle" fill="#a9c0c1" font-size="13">СИЛЫ ВЗАИМОДЕЙСТВИЯ ПРИЛОЖЕНЫ К РАЗНЫМ ТЕЛАМ</text>
+  </svg>
+ </div>
+ <div class="third-law-controls">
+  <label class="range-label"><span>Модуль силы взаимодействия</span><b><output id="thirdForceOut">40</output> Н</b></label>
+  <input id="thirdForceInput" type="range" min="5" max="100" step="5" value="40">
+  <label class="range-label"><span>Масса тела A</span><b><output id="thirdMassAOut">20</output> кг</b></label>
+  <input id="thirdMassAInput" type="range" min="5" max="100" step="5" value="20">
+  <label class="range-label"><span>Масса тела B</span><b><output id="thirdMassBOut">40</output> кг</b></label>
+  <input id="thirdMassBInput" type="range" min="5" max="100" step="5" value="40">
+ </div>
+ <div class="third-law-results" aria-live="polite">
+  <div><span>Сила на тело A</span><strong id="thirdForceAValue">40 Н ←</strong><small>ускорение A: <b id="thirdAccelA">2,00 м/с²</b></small></div>
+  <div><span>Сила на тело B</span><strong id="thirdForceBValue">40 Н →</strong><small>ускорение B: <b id="thirdAccelB">1,00 м/с²</b></small></div>
+ </div>
+ <div class="newton-conclusion" id="thirdLawConclusion">Силы равны по модулю (40 Н), противоположны по направлению и приложены к разным телам. Ускорения могут различаться, потому что массы тел различны.</div>
+ <div class="newton-medical"><div class="eyebrow">ФИЗИКА В МЕДИЦИНЕ</div><b>Почему человек может идти?</b><p>Стопа давит на поверхность назад, а поверхность действует на стопу силой трения вперёд. Эти силы равны по модулю и противоположны, но приложены к разным телам. При взаимодействии рук с каталкой человек также действует на неё, а каталка — на человека.</p></div>
+ <p class="third-law-note">Важно: силы действия и противодействия не уравновешивают друг друга, поскольку приложены не к одному телу. В модели ускорения рассчитаны для случая, когда результирующая сила на каждом теле представлена только этой парой взаимодействия; реальные контакты могут включать и другие силы.</p>
+</div>
+\n<div class="dyn-study-panel" id="dynStudyPanel">
  <div class="dyn-study-tabs" role="group" aria-label="Сравнительные опыты">
   <button type="button" class="dyn-study-tab active" data-study="force">1 · Сила</button>
   <button type="button" class="dyn-study-tab" data-study="mass">2 · Масса</button>
@@ -2347,6 +2380,6 @@
       </footer>
     </main>
   </div>
-  <script src="./app.js?v=17"></script>
+  <script src="./app.js?v=18"></script>
 </body>
 </html>
