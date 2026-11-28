@@ -640,7 +640,24 @@
               </div>
             </div>
             <div id="dynamicsExtra" class="dynamics-extra hidden">
-              <div class="dynamics-extra-title">Дополнительные эксперименты</div>
+              <div class="dynamics-extra-title">Исследования второго закона Ньютона</div>
+<div class="dyn-study-panel" id="dynStudyPanel">
+ <div class="dyn-study-tabs" role="group" aria-label="Сравнительные опыты">
+  <button type="button" class="dyn-study-tab active" data-study="force">1 · Сила</button>
+  <button type="button" class="dyn-study-tab" data-study="mass">2 · Масса</button>
+  <button type="button" class="dyn-study-tab" data-study="balance">3 · Равновесие</button>
+ </div>
+ <p class="dyn-study-description" id="dynStudyDescription">Масса постоянна. Меняй силу тяги и наблюдай, как меняется ускорение.</p>
+ <div class="dyn-study-sliders">
+  <label class="range-label"><span id="dynStudyLabel1">Сила тяги</span><b><output id="dynStudyOut1">50</output> Н</b></label>
+  <input id="dynStudyInput1" type="range" min="0" max="100" step="5" value="50">
+  <label class="range-label"><span id="dynStudyLabel2">Масса тележки</span><b><output id="dynStudyOut2">20</output> кг</b></label>
+  <input id="dynStudyInput2" type="range" min="5" max="100" step="1" value="20">
+ </div>
+ <div class="dyn-study-result" id="dynStudyResult" aria-live="polite">ΣF = 40 Н · a = 2,00 м/с²</div>
+ <div class="dyn-study-comparison" id="dynStudyComparison"></div>
+ <div class="dyn-study-medical"><b>Физика в медицине · каталка</b><p id="dynStudyMedical">При неизменной массе увеличение равнодействующей силы увеличивает ускорение в той же пропорции.</p></div>
+</div><div class="dynamics-extra-title">Дополнительные эксперименты</div>
               <div class="dynamics-subtabs" role="tablist" aria-label="Эксперименты по динамике">
                 <button class="dynamics-subtab active" data-dynmode="forces">Сложение сил</button>
                 <button class="dynamics-subtab" data-dynmode="friction">Трение</button>
