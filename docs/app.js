@@ -326,7 +326,43 @@ function calcDynamics(){
   renderDynamicsGraph(m,net);
   renderNewtonComparison();
 }
-function calcLab(){
+let collisionType="elastic";
+function formatMomentumNumber(value,digits=2){return Number(value).toFixed(digits).replace(".",",").replace("-","−");}
+function setMomentumArrow(id,x,y,v,color){
+ const path=$(id);if(Math.abs(v)<1e-9){path.style.opacity=".12";return;}
+ const length=Math.min(110,28+Math.abs(v)*15),end=x+Math.sign(v)*length,base=x;
+ const head=end-Math.sign(v)*14;
+ path.setAttribute("d",`M${base} ${y} H${end} M${head} ${y-11} L${end} ${y} L${head} ${y+11}`);
+ path.style.opacity="1";path.setAttribute("stroke",color);
+}
+function calcMomentumLab(){
+ const m1=Number($("momentumMass1").value),m2=Number($("momentumMass2").value),u1=Number($("momentumU1").value),u2=Number($("momentumU2").value);
+ const total=m1+m2,p0=m1*u1+m2*u2;
+ let v1,v2;
+ if(collisionType==="inelastic"){v1=p0/total;v2=v1;}
+ else{v1=((m1-m2)*u1+2*m2*u2)/total;v2=(2*m1*u1+(m2-m1)*u2)/total;}
+ const p1=m1*v1,p2=m2*v2,pAfter=p1+p2;
+ $("momentumMass1Out").textContent=formatMomentumNumber(m1,1);$("momentumMass2Out").textContent=formatMomentumNumber(m2,1);
+ $("momentumU1Out").textContent=formatMomentumNumber(u1,1);$("momentumU2Out").textContent=formatMomentumNumber(u2,1);
+ $("momentumBefore").textContent=formatMomentumNumber(p0)+" кг·м/с";
+ $("momentumAfter").textContent=formatMomentumNumber(pAfter)+" кг·м/с";
+ $("momentumV1After").textContent=formatMomentumNumber(v1)+" м/с";
+ $("momentumV2After").textContent=formatMomentumNumber(v2)+" м/с";
+ setMomentumArrow("momentumBeforeArrow1",187,72,u1,"#62bfae");setMomentumArrow("momentumBeforeArrow2",450,72,u2,"#dfb66b");
+ setMomentumArrow("momentumAfterArrow1",187,182,v1,"#62bfae");setMomentumArrow("momentumAfterArrow2",450,182,v2,"#dfb66b");
+ $("momentumBody1Before").querySelector?.("text");
+ $("momentumAfterLabel").textContent=collisionType==="inelastic"?"После неупругого столкновения тела движутся вместе":"После упругого столкновения тела разлетаются с новыми скоростями";
+ const energy0=.5*m1*u1*u1+.5*m2*u2*u2,energyAfter=.5*m1*v1*v1+.5*m2*v2*v2;
+ $("momentumConclusion").textContent=collisionType==="elastic"
+ ?`Импульс сохраняется: ${formatMomentumNumber(p0)} = ${formatMomentumNumber(pAfter)} кг·м/с. В идеальной упругой модели кинетическая энергия также сохраняется: ${formatMomentumNumber(energy0)} Дж до и ${formatMomentumNumber(energyAfter)} Дж после.`
+ :`Импульс сохраняется: ${formatMomentumNumber(p0)} = ${formatMomentumNumber(pAfter)} кг·м/с. После сцепления общая скорость равна ${formatMomentumNumber(v1)} м/с. Кинетическая энергия уменьшается с ${formatMomentumNumber(energy0)} до ${formatMomentumNumber(energyAfter)} Дж.`;
+ $("formula").innerHTML="p = mv <span>Импульс тела · кг·м/с</span>";
+ $("formulaLegend").classList.remove("hidden");
+ $("formulaLegend").innerHTML="<b>Обозначения:</b> p — импульс тела; m — масса; v — скорость. Для замкнутой системы: m₁u₁ + m₂u₂ = m₁v₁ + m₂v₂.";
+ setResult(formatMomentumNumber(pAfter),"кг·м/с","Суммарный импульс после столкновения");
+ $("labExplain").textContent="Выбери тип столкновения и измени массы и начальные скорости. Знак скорости показывает направление: положительный — вправо, отрицательный — влево. Внешним воздействием на систему пренебрегаем.";
+}
+\nfunction calcLab(){
   const gReadout=$("gReadout");
   $("formulaLegend").classList.toggle("hidden",lab!=="dynamics");
   gReadout.classList.toggle("hidden",lab!=="centrifuge");
@@ -340,7 +376,7 @@ function calcLab(){
   $("dynamicsControls").classList.toggle("hidden",lab!=="dynamics");
   $("dynamicsScene").classList.toggle("hidden",lab!=="dynamics");
 
-  if(lab==="dynamics"){calcDynamics();return;}
+  if(lab==="dynamics"){calcDynamics();return;}\n  if(lab==="momentum"){calcMomentumLab();return;}
   if(lab==="centrifuge"){
     const rpm=Number($("rpm").value);
     const radiusM=Number($("radius").value)/100;
@@ -399,7 +435,7 @@ function calcLab(){
   }
 }
 function switchLab(next){
-  if(!["centrifuge","motion","flow","dynamics"].includes(next))return;
+  if(!["centrifuge","motion","flow","dynamics","momentum"].includes(next))return;
   lab=next;
   const bloodLesson=$("centrifugeBloodLesson");
   if(bloodLesson)bloodLesson.classList.toggle("hidden",next!=="centrifuge");
@@ -412,17 +448,17 @@ function switchLab(next){
     centrifuge:["centrifugeControls","centrifugeScene"],
     motion:["motionControls","motionScene"],
     flow:["flowControls","flowScene"],
-    dynamics:["dynamicsControls","dynamicsScene"]
+    dynamics:["dynamicsControls","dynamicsScene"],\n    momentum:["momentumControls","momentumScene"]
   };
-  ["centrifugeControls","motionControls","flowControls","dynamicsControls","centrifugeScene","motionScene","flowScene","dynamicsScene"].forEach(id=>{
+  ["centrifugeControls","motionControls","flowControls","dynamicsControls","momentumControls","centrifugeScene","motionScene","flowScene","dynamicsScene","momentumScene"].forEach(id=>{
     $(id).classList.add("hidden");
   });
   states[next].forEach(id=>$(id).classList.remove("hidden"));
-  $("flowGraphCard").style.display=next==="flow"?"block":"none";
+  $("flowGraphCard").style.display=next==="flow"?"block":"none";\n  $("centrifugeGraphCard").classList.toggle("hidden",next!=="centrifuge");\n  $("dynamicsGraphCard").style.display=next==="dynamics"?"block":"none";
   $("motionStudyGrid").classList.toggle("hidden",next!=="motion");
   document.querySelector(".motion-graph-footnote").classList.toggle("hidden",next!=="motion");
-  $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":next==="flow"?"Параметры потока":"Параметры динамики";
-  $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":next==="flow"?"ЭКСПЕРИМЕНТ 03":"ЭКСПЕРИМЕНТ 04";
+  $("controlTitle").textContent=next==="centrifuge"?"Параметры центрифуги":next==="motion"?"Параметры движения":next==="flow"?"Параметры потока":next==="momentum"?"Параметры столкновения":"Параметры динамики";
+  $("labMode").textContent=next==="centrifuge"?"ЭКСПЕРИМЕНТ 01":next==="motion"?"ЭКСПЕРИМЕНТ 02":next==="flow"?"ЭКСПЕРИМЕНТ 03":next==="dynamics"?"ЭКСПЕРИМЕНТ 04":"ЭКСПЕРИМЕНТ 05";
   $("questionTitle").textContent=next==="centrifuge"
     ?"Как изменится ускорение, если увеличить частоту вращения в 2 раза?"
     :next==="motion"
@@ -437,7 +473,7 @@ function switchLab(next){
     :next==="flow"
     ?"Меняй радиус сосуда, сохраняя давление, вязкость и длину неизменными. По закону Пуазёйля Q пропорционален r⁴."
     :"Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе.";
-  if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynStudyMode("force");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
+  if(next==="momentum"){$("questionTitle").textContent="Сохраняется ли импульс при столкновении?";$("questionText").textContent="Измени массы и начальные скорости. Сравни суммарный импульс до и после столкновения.";}\n  if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynStudyMode("force");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
   calcLab();
   if(next==="flow"){
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
@@ -502,7 +538,7 @@ document.querySelectorAll(".dyn-study-tab").forEach(b=>b.addEventListener("click
 document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
   button.addEventListener("click",()=>switchLab(button.dataset.lab));
 });
-["rpm","radius","speed","time","vesselRadius","pressure","dynMass","dynForce","dynFriction"].forEach(id=>{
+["momentumMass1","momentumMass2","momentumU1","momentumU2"].forEach(id=>$(id).addEventListener("input",calcMomentumLab));\ndocument.querySelectorAll("[data-collision]").forEach(button=>button.addEventListener("click",()=>{collisionType=button.dataset.collision;document.querySelectorAll("[data-collision]").forEach(b=>{const active=b.dataset.collision===collisionType;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});calcMomentumLab();}));\n["rpm","radius","speed","time","vesselRadius","pressure","dynMass","dynForce","dynFriction"].forEach(id=>{
   $(id).addEventListener("input",calcLab);
 });
 ["vesselRadius","pressure"].forEach(id=>{
