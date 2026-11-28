@@ -1,7 +1,10 @@
 const topics=[
 ["Физика — наука о природе","Введение в физику и методы научного познания."],
-["Основы кинематики","Раздел 1. Механика · Тема 1.1."],
-["Основы динамики","Раздел 1. Механика · Тема 1.2. · 6 часов + практическое занятие № 2"]
+["Основы кинематики","Раздел 1 · Механика · Тема 1.1 · 6 академических часов."],
+["Основы динамики","Раздел 1 · Механика · Тема 1.2 · 6 академических часов."],
+["Практическое занятие № 1","Решение задач по теме «Кинематика» · 2 академических часа."],
+["Практическое занятие № 2","Решение задач на движение тела под действием нескольких сил · 2 академических часа."],
+["Законы сохранения","Раздел 1 · Механика · Тема 1.3 · 2 академических часа."]
 ];
 const terms=[
 ["Ускорение","Векторная физическая величина, характеризующая быстроту изменения скорости тела."],
@@ -19,14 +22,31 @@ const terms=[
 ["Сила трения","Сила, препятствующая относительному движению соприкасающихся поверхностей."],
 ["Невесомость","Состояние, при котором вес тела равен нулю, то есть тело не действует на опору или подвес."]
 ];
-const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
+const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
 const $=id=>document.getElementById(id);
 function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("crumbName").textContent=pages[name]||"Обзор";$("sidebar").classList.remove("open");window.scrollTo(0,0)}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 $("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
 function getDone(){try{return JSON.parse(localStorage.getItem("medphys-done")||"[]")}catch{return []}}
 function setDone(a){localStorage.setItem("medphys-done",JSON.stringify(a));renderTopics();updateProgress()}
-function renderTopics(){const done=getDone();const groups=[{title:"Введение в физику",items:[0]},{title:"Раздел 1 · Механика",items:[1,2]}];$("topicList").innerHTML=groups.map(g=>`<section class="program-group"><h2>${g.title}</h2><div class="program-group-items">${g.items.map(i=>{const t=topics[i];return `<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${String(i+1).padStart(2,"0")}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p>${i===0?'<small class="topic-hours">2 академических часа · Материал открыт</small>':i===1?'<small class="topic-hours">18 академических часов · Материал открыт</small>':'<small class="topic-hours">6 академических часов + практическое занятие № 2</small>'}</div><button data-topic="${i}">Открыть урок →</button></article>`}).join("")}</div></section>`).join("");document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>{const i=Number(b.dataset.topic);showPage(i===0?"lesson-physics":i===1?"lesson-kinematics":"lesson-dynamics")}))}
+function renderTopics(){
+  const done=getDone();
+  const groups=[
+    {title:"Введение в физику",items:[{i:0,num:"01"}]},
+    {title:"Раздел 1 · Механика · 18 академических часов",items:[
+      {i:1,num:"1.1"},{i:3,num:"ПЗ 1"},{i:2,num:"1.2"},{i:4,num:"ПЗ 2"},{i:5,num:"1.3"}
+    ]}
+  ];
+  const routes={0:"lesson-physics",1:"lesson-kinematics",2:"lesson-dynamics",3:"practice-kinematics",4:"practice-dynamics",5:"lesson-conservation"};
+  const hours={0:"2 академических часа",1:"6 академических часов",2:"6 академических часов",3:"2 академических часа",4:"2 академических часа",5:"2 академических часа"};
+  $("topicList").innerHTML=groups.map(g=>`<section class="program-group"><h2>${g.title}</h2><div class="program-group-items">${g.items.map(item=>{
+    const i=item.i,t=topics[i];
+    return `<article class="topic ${done.includes(i)?"done":""}"><div class="topic-num">${item.num}</div><div class="topic-info"><h3>${t[0]}</h3><p>${t[1]}</p><small class="topic-hours">${hours[i]} · Материал открыт</small></div><button data-topic="${i}">Открыть →</button></article>`;
+  }).join("")}</div></section>`).join("");
+  document.querySelectorAll("[data-topic]").forEach(b=>b.addEventListener("click",()=>{
+    const i=Number(b.dataset.topic);showPage(routes[i]||"program");
+  }));
+}
 function updateProgress(){const n=getDone().length,p=Math.round(n/topics.length*100);$("progressPercent").textContent=p+"%";$("progressBar").style.width=p+"%"}
 function renderTerms(q=""){const filtered=terms.filter(t=>(t[0]+" "+t[1]).toLowerCase().includes(q.toLowerCase()));$("glossaryList").innerHTML=filtered.map(t=>`<article class="term"><b>${t[0]}</b><p>${t[1]}</p></article>`).join("")||'<p class="muted">Ничего не найдено.</p>'}
 $("glossarySearch").addEventListener("input",e=>renderTerms(e.target.value));
