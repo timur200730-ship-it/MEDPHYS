@@ -433,7 +433,7 @@
               <div class="machine"><div class="machine-ring"><div class="rotor" id="rotor"><span class="tube t1"></span><span class="tube t2"></span><span class="tube t3"></span><span class="tube t4"></span><span class="vector-arrow" aria-hidden="true"></span></div></div><div class="machine-base"></div></div>
               <div class="scene-caption">СХЕМА РОТОРА ЦЕНТРИФУГИ</div>
             </div>
-            <div class="motion-scene hidden" id="motionScene"><div class="track"><div class="moving-dot" id="movingDot"></div></div><div class="scene-caption">МОДЕЛЬ ПРЯМОЛИНЕЙНОГО ДВИЖЕНИЯ</div></div>
+            <div class="motion-scene hidden" id="motionScene"><div class="track"><div class="moving-dot" id="movingDot"></div></div><div class="scene-caption" id="motionDistanceLabel">Пройденный путь: 0 м из 100 м</div><div class="scene-caption">МОДЕЛЬ ПРЯМОЛИНЕЙНОГО ДВИЖЕНИЯ</div></div>
 <div class="dynamics-scene hidden" id="dynamicsScene">
               <svg viewBox="0 0 680 250" role="img" aria-label="Модель тележки под действием силы тяги и силы трения">
                 <line x1="45" y1="194" x2="635" y2="194" stroke="#9bbfc0" stroke-width="5"/>
@@ -479,6 +479,7 @@
                   <text x="340" y="198" text-anchor="middle" fill="#91a6aa" font-size="11" letter-spacing="1.5">МОДЕЛЬ ЛАМИНАРНОГО ТЕЧЕНИЯ</text>
                 </svg>
                 <div class="vessel-label">Схема условная: частицы движутся вдоль сосуда, скорость максимальна в центре потока</div>
+              <p class="flow-model-note">Учебная идеализация: жидкость считается ньютоновской, сосуд — жёстким цилиндрическим, течение — стационарным и ламинарным. Реальные кровь и сосуды устроены сложнее.</p>
               </div>
               <div class="flow-key"><span><i class="flow-key-center"></i> быстрее: центр сосуда</span><span><i class="flow-key-wall"></i> медленнее: у стенок</span></div>
             <div class="graph-card card hidden" id="flowGraphCard">
@@ -575,11 +576,11 @@
         <div class="graph-card card hidden" id="dynamicsGraphCard">
           <div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и равнодействующая сила</h3></div><span class="graph-legend"><i></i> a(F)</span></div>
           <svg id="dynamicsGraph" viewBox="0 0 640 230" role="img" aria-label="График линейной зависимости ускорения от равнодействующей силы">
-            <line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/>
+            <line x1="242" y1="18" x2="242" y2="184" class="axis"/><line x1="58" y1="130" x2="610" y2="130" class="axis"/>
             <path id="dynGraphCurve" class="graph-curve" d=""/>
             <line id="dynGraphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/>
             <circle id="dynGraphPoint" class="graph-point" cx="58" cy="184" r="6"/>
-            <text x="58" y="207" class="graph-label">0</text><text x="610" y="207" text-anchor="end" class="graph-label">200 Н</text>
+            <text x="58" y="207" class="graph-label">−100 Н</text><text x="610" y="207" text-anchor="end" class="graph-label">200 Н</text>
             <text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">ΣF</text>
             <text id="dynGraphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text>
           </svg>
