@@ -749,3 +749,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 
 /* MEDPHYS v50 · missing motion readout */
 .motion-distance-readout{display:block;min-height:22px;margin:0;padding:4px 0;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);letter-spacing:0}
+
+/* MEDPHYS v51 · motion experiment study and equal-interval marks */
+.motion-interval-marks{position:absolute;inset:0;pointer-events:none}
+.motion-interval-mark{position:absolute;top:-15px;width:2px;height:38px;background:rgba(255,255,255,.5);transform:translateX(-1px)}
+.motion-interval-mark:after{content:"";position:absolute;left:-3px;bottom:-2px;width:8px;height:8px;border-radius:50%;background:#e4bd70}
+.motion-interval-mark.passed:after{background:#69c4b2;box-shadow:0 0 8px rgba(105,196,178,.65)}
+.motion-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.motion-study-card{min-width:0;padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.motion-study-card h3{margin:6px 0 10px;font-size:16px;color:var(--text)}
+.motion-study-card ol{padding-left:19px;margin:8px 0 14px;color:var(--muted);font-size:12px;line-height:1.65}
+.motion-study-card li+li{margin-top:7px}
+.motion-study-card button{font-size:12px;padding:9px 12px}
+.motion-challenge-answer{margin:12px 0 0;padding:10px;border-radius:9px;background:rgba(105,196,178,.09);color:var(--teal);font-size:12px;line-height:1.6}
+.motion-medical-result{display:flex;flex-direction:column;gap:4px;padding:12px;margin:12px 0;border-radius:10px;background:rgba(223,182,107,.08)}
+.motion-medical-result span{font-size:11px;color:var(--muted)}.motion-medical-result strong{font-size:24px;color:var(--gold)}
+.motion-medical-note{font-size:10px!important;line-height:1.55!important;color:var(--muted)!important}
+.motion-graph-footnote{margin-top:4px}
+@media(max-width:650px){.motion-study-grid{grid-template-columns:1fr;gap:10px}.motion-study-card{padding:13px}.motion-study-card h3{font-size:15px}}
