@@ -639,3 +639,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #page-lesson-thermo .lesson-content{min-width:0}
 #page-lesson-thermo .kin-formula{overflow-wrap:anywhere}
 #page-lesson-thermo .lesson-mini span{line-height:1.65}
+
+/* Practical lesson 4 */
+#page-practice-heat .practice-task-list>li{margin:0 0 16px;line-height:1.7}
+#page-practice-heat .teacher-solution{border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0;background:rgba(255,255,255,.025)}
+#page-practice-heat .teacher-solution summary{cursor:pointer;font-weight:650;line-height:1.5}
+#page-practice-heat .teacher-solution p{margin:12px 0 0;line-height:1.7}
