@@ -235,6 +235,8 @@ function calcLab(){
 function switchLab(next){
   if(!["centrifuge","motion","flow","dynamics"].includes(next))return;
   lab=next;
+  const bloodLesson=$("centrifugeBloodLesson");
+  if(bloodLesson)bloodLesson.classList.toggle("hidden",next!=="centrifuge");
   document.querySelectorAll(".lab-tab").forEach(button=>{
     const active=button.dataset.lab===next;
     button.classList.toggle("active",active);
