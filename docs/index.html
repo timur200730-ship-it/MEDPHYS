@@ -7,7 +7,7 @@
   <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=21">
+  <link rel="stylesheet" href="./styles.css?v=22">
   <title>MEDPHYS — физика в медицине</title>
 </head>
 <body>
@@ -618,6 +618,26 @@
               <label class="range-label"><span>Сила сопротивления</span><b><output id="dynFrictionOut">10</output> Н</b></label>
               <input id="dynFriction" type="range" min="0" max="100" step="1" value="10">
               <div class="range-ends"><span>0 Н</span><span>100 Н</span></div>
+              <div class="newton-investigation">
+                <div class="dynamics-extra-title">Сравнительные опыты · второй закон Ньютона</div>
+                <p class="newton-intro">Выбери опыт: модель установит исходные параметры. Затем меняй ползунки и сравнивай ускорение.</p>
+                <div class="newton-presets">
+                  <button type="button" class="newton-preset active" data-newton-preset="force">1. Меняем силу</button>
+                  <button type="button" class="newton-preset" data-newton-preset="mass">2. Меняем массу</button>
+                  <button type="button" class="newton-preset" data-newton-preset="balance">3. Баланс сил</button>
+                </div>
+                <div class="newton-comparison" id="newtonComparison" aria-live="polite">
+                  <div class="newton-comparison-title" id="newtonComparisonTitle">Опыт 1. Как сила влияет на ускорение?</div>
+                  <p id="newtonComparisonText">Сравни два значения равнодействующей при одинаковой массе.</p>
+                  <div class="newton-bars" id="newtonBars"></div>
+                  <div class="newton-conclusion" id="newtonConclusion"></div>
+                </div>
+                <div class="newton-medical">
+                  <div class="eyebrow">ФИЗИКА В МЕДИЦИНЕ</div>
+                  <b>Каталка с разной нагрузкой</b>
+                  <p>При одинаковой равнодействующей силе более массивная система «каталка + пациент» получает меньшее ускорение. Это иллюстрация закона Ньютона, а не инструкция по перемещению пациента.</p>
+                </div>
+              </div>
             </div>
             <div id="dynamicsExtra" class="dynamics-extra hidden">
               <div class="dynamics-extra-title">Дополнительные эксперименты</div>
@@ -2310,6 +2330,6 @@
       </footer>
     </main>
   </div>
-  <script src="./app.js?v=16"></script>
+  <script src="./app.js?v=17"></script>
 </body>
 </html>
