@@ -97,12 +97,20 @@ function setResult(value, unit, label){
 function renderDynamicsGraph(mass, netForce){
   const curve=$("dynGraphCurve"),point=$("dynGraphPoint"),guide=$("dynGraphGuide"),label=$("dynGraphCurrent");
   if(!curve||!point||!guide||!label)return;
-  const x0=58,x1=610,y0=22,y1=184,maxF=200,maxA=maxF/mass;
+  const x0=58,x1=610,y0=22,y1=184,minF=-100,maxF=200;
+  const xAt=f=>x0+(f-minF)/(maxF-minF)*(x1-x0);
+  const maxA=maxF/mass,minA=minF/mass;
+  const yAt=a=>y0+(maxA-a)/(maxA-minA)*(y1-y0);
   const pts=[];
-  for(let i=0;i<=100;i++){const f=maxF*i/100;const x=x0+(f/maxF)*(x1-x0);const y=y1-(f/mass/maxA)*(y1-y0);pts.push((i?"L":"M")+x.toFixed(2)+","+y.toFixed(2));}
+  for(let i=0;i<=120;i++){
+    const f=minF+(maxF-minF)*i/120;
+    pts.push((i?"L":"M")+xAt(f).toFixed(2)+","+yAt(f/mass).toFixed(2));
+  }
   curve.setAttribute("d",pts.join(" "));
-  const f=Math.max(0,Math.min(maxF,netForce)),a=f/mass,px=x0+f/maxF*(x1-x0),py=y1-a/maxA*(y1-y0);
-  point.setAttribute("cx",px);point.setAttribute("cy",py);guide.setAttribute("x1",px);guide.setAttribute("x2",px);guide.setAttribute("y1",py);guide.setAttribute("y2",y1);
+  const f=Math.max(minF,Math.min(maxF,netForce)),a=f/mass,px=xAt(f),py=yAt(a),zeroY=yAt(0);
+  point.setAttribute("cx",px.toFixed(2));point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2));guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",zeroY.toFixed(2));
   label.textContent=`ΣF=${f.toFixed(0)} Н · a=${a.toFixed(2).replace(".",",")} м/с²`;
 }
 function calcDynamics(){
@@ -118,7 +126,7 @@ function calcDynamics(){
   $("dynForceArrow").style.opacity=f===0?".15":"1";
   $("dynFrictionArrow").style.opacity=fr===0?".15":"1";
   $("labExplain").textContent=`На тележку действуют сила тяги ${f} Н и сила сопротивления ${fr} Н. Равнодействующая ${net} Н. При массе ${m} кг ускорение составляет ${a.toFixed(2).replace(".",",")} м/с².`;
-  renderDynamicsGraph(m,Math.max(0,net));
+  renderDynamicsGraph(m,net);
 }
 function calcLab(){
   const gReadout=$("gReadout");
@@ -141,7 +149,7 @@ function calcLab(){
     const acceleration=omega*omega*radiusM;
     $("rpmOut").textContent=rpm.toLocaleString("ru-RU");
     $("radiusOut").textContent=radiusM.toFixed(2).replace(".",",");
-    setResult(Math.round(acceleration).toLocaleString("ru-RU"),"м/с²","Центростремительное ускорение");
+    setResult(Number(acceleration.toPrecision(3)).toLocaleString("ru-RU"),"м/с²","Центростремительное ускорение");
     $("gValue").textContent=(acceleration/9.80665).toLocaleString("ru-RU",{maximumFractionDigits:0})+" g";
     $("formula").innerHTML="a = ω²r <span>ω = 2πn / 60</span>";
     $("rotor").style.animationDuration=Math.max(.25,60/rpm*8)+"s";
@@ -154,7 +162,9 @@ function calcLab(){
     $("timeOut").textContent=time.toLocaleString("ru-RU");
     setResult(distance.toFixed(1).replace(".",","),"м","Путь за выбранное время");
     $("formula").innerHTML="s = vt <span>Путь = скорость × время</span>";
-    $("movingDot").style.left=Math.min(92,speed/10*92)+"%";
+    $("movingDot").style.left=Math.min(92,distance/100*92)+"%";
+    const motionLabel=$("motionDistanceLabel");
+    if(motionLabel)motionLabel.textContent=`Пройденный путь: ${distance.toFixed(1).replace(".",",")} м из 100 м`;
     $("labExplain").textContent="При равномерном прямолинейном движении путь прямо пропорционален скорости и времени движения.";
   } else {
     const radiusMm=Number($("vesselRadius").value);
@@ -203,12 +213,16 @@ function switchLab(next){
     ?"Как изменится ускорение, если увеличить частоту вращения в 2 раза?"
     :next==="motion"
     ?"Как изменится путь, если при той же скорости увеличить время в 2 раза?"
+    :next==="flow"
+    ?"Как изменится объёмный расход, если увеличить радиус сосуда?"
     :"Что произойдёт с ускорением, если при той же массе увеличить равнодействующую силу в 2 раза?";
   $("questionText").textContent=next==="centrifuge"
     ?"Измени частоту вращения. При постоянном радиусе ускорение зависит от квадрата частоты."
     :next==="motion"
     ?"Измени время движения. При постоянной скорости путь изменяется прямо пропорционально времени."
-    :"Сравни два значения радиуса при неизменных давлении, вязкости и длине сосуда. В модели Пуазёйля расход пропорционален r⁴.";
+    :next==="flow"
+    ?"Меняй радиус сосуда, сохраняя давление, вязкость и длину неизменными. По закону Пуазёйля Q пропорционален r⁴."
+    :"Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе.";
   if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
   calcLab();
   if(next==="flow"){
@@ -259,7 +273,7 @@ function calcDynamicsExtra(){
    $("dynExtraVisual").querySelector("svg").setAttribute("aria-label","Схема наклонной плоскости и действующих сил");
    $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M70 150 L540 ${150- Math.tan(v[1]*Math.PI/180)*300} L540 150 Z" fill="#263f49" stroke="#8ca9a5" stroke-width="3"/><rect x="275" y="${Math.max(28,120-v[1]*1.1)}" width="70" height="42" rx="8" fill="#dce8e3" stroke="#62bfae" stroke-width="3" transform="rotate(${-v[1]} 310 140)"/><text x="80" y="178" fill="#dce6e1" font-size="13">Угол ${v[1]}°</text><text x="310" y="25" fill="#dfb66b" text-anchor="middle" font-size="14">F тяжести</text>`;
  }else if(mode==="atwood"){
-   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M180 24 H440 M310 24 V42" stroke="#91a9a8" stroke-width="7" stroke-linecap="round"/><circle cx="310" cy="68" r="27" fill="#203943" stroke="#dfb66b" stroke-width="5"/><circle cx="310" cy="68" r="5" fill="#dfb66b"/><path d="M283 68 V139 Q283 150 270 150 M337 68 V139 Q337 150 350 150" stroke="#e4e9e4" stroke-width="3" fill="none"/><rect x="239" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><rect x="319" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="270" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₁</text><text x="350" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₂</text><text x="270" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[0]} кг</text><text x="350" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[1]} кг</text><path d="${v[0]>v[1]?"M210 122 V165 M200 153 L210 167 L220 153":"M210 165 V122 M200 134 L210 120 L220 134"}" stroke="#dfb66b" stroke-width="3" fill="none"/><path d="${v[1]>v[0]?"M410 122 V165 M400 153 L410 167 L420 153":"M410 165 V122 M400 134 L410 120 L420 134"}" stroke="#d87578" stroke-width="3" fill="none"/><text x="310" y="14" text-anchor="middle" fill="#dfb66b" font-size="12">Неподвижная опора · блок · лёгкая нить</text>`;
+   $("dynExtraVisual").querySelector("svg").innerHTML=`<path d="M180 24 H440 M310 24 V42" stroke="#91a9a8" stroke-width="7" stroke-linecap="round"/><circle cx="310" cy="68" r="27" fill="#203943" stroke="#dfb66b" stroke-width="5"/><circle cx="310" cy="68" r="5" fill="#dfb66b"/><path d="M283 68 V139 Q283 150 270 150 M337 68 V139 Q337 150 350 150" stroke="#e4e9e4" stroke-width="3" fill="none"/><rect x="239" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><rect x="319" y="150" width="62" height="34" rx="7" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="270" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₁</text><text x="350" y="172" text-anchor="middle" fill="#20323a" font-size="14" font-weight="700">m₂</text><text x="270" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[0]} кг</text><text x="350" y="142" text-anchor="middle" fill="#dfb66b" font-size="12">${v[1]} кг</text><path d="${v[0]===v[1]?"":v[0]>v[1]?"M210 122 V165 M200 153 L210 167 L220 153":"M210 165 V122 M200 134 L210 120 L220 134"}" stroke="#dfb66b" stroke-width="3" fill="none"/><path d="${v[0]===v[1]?"":v[1]>v[0]?"M410 122 V165 M400 153 L410 167 L420 153":"M410 165 V122 M400 134 L410 120 L420 134"}" stroke="#d87578" stroke-width="3" fill="none"/><text x="310" y="14" text-anchor="middle" fill="#dfb66b" font-size="12">Неподвижная опора · блок · лёгкая нить</text>`;
  }else{
    $("dynExtraVisual").querySelector("svg").innerHTML=`<line x1="35" y1="145" x2="585" y2="145" stroke="#789196" stroke-width="3"/><rect x="260" y="92" width="100" height="52" rx="10" fill="#dce8e3" stroke="#62bfae" stroke-width="3"/><text x="310" y="124" text-anchor="middle" fill="#20323a" font-size="18" font-weight="700">ТЕЛО</text><path d="M360 110 H${Math.min(570,360+len1)}" stroke="#dfb66b" stroke-width="6"/><path d="M260 110 H${Math.max(50,260-len2)}" stroke="#d87578" stroke-width="6"/><text x="490" y="80" fill="#dfb66b" font-size="15">F₁</text><text x="105" y="80" fill="#d87578" font-size="15">F₂</text>`;
  }
