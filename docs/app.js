@@ -218,6 +218,12 @@ function renderDynamicsGraph(mass, netForce){
   guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",zeroY.toFixed(2));
   label.textContent=`ΣF=${f.toFixed(0)} Н · a=${a.toFixed(2).replace(".",",")} м/с²`;
 }
+let motionState={elapsed:0,duration:5,speed:2,running:false,raf:0,last:0};
+function stopMotionAnimation(){motionState.running=false;if(motionState.raf)cancelAnimationFrame(motionState.raf);motionState.raf=0;}
+function updateMotionView(t){const elapsed=Math.max(0,Math.min(motionState.duration,t)),x=motionState.speed*elapsed;$("movingDot").style.left=Math.min(100,x)+"%";$("motionTimeNow").textContent=elapsed.toFixed(1).replace(".",",")+" с";$("motionXNow").textContent="x = "+x.toFixed(1).replace(".",",")+" м";$("motionVNow").textContent="v = "+motionState.speed+" м/с";$("motionDistanceLabel").textContent=`Пройденный путь: ${x.toFixed(1).replace(".",",")} м за ${elapsed.toFixed(1).replace(".",",")} с`;$("motionPlay").textContent=elapsed>=motionState.duration?"↻ Повторить":motionState.running?"▶ Идёт движение":"▶ Продолжить";$("motionPause").disabled=!motionState.running;const tl=$("motionTimeline");tl.innerHTML="";for(let k=0;k<=motionState.duration;k++){const e=document.createElement("span");e.textContent=k+" с";e.className=k<=elapsed?"passed":"";tl.appendChild(e);}$("motionPositionPoint").setAttribute("cx",(58+552*elapsed/motionState.duration).toFixed(1));$("motionPositionPoint").setAttribute("cy",(180-150*x/Math.max(1,motionState.speed*motionState.duration)).toFixed(1));$("motionVelocityPoint").setAttribute("cx",(58+552*elapsed/motionState.duration).toFixed(1));}
+function renderMotionGraphs(speed,duration,elapsed){const vy=180-(speed/10)*150;$("motionPositionCurve").setAttribute("d","M58 180 L610 30");$("motionVelocityCurve").setAttribute("d",`M58 ${vy} L610 ${vy}`);$("motionTimeAxis").textContent=duration+" с";$("motionVelocityTimeAxis").textContent=duration+" с";motionState.elapsed=elapsed;motionState.duration=duration;motionState.speed=speed;updateMotionView(elapsed);}
+function motionFrame(now){if(!motionState.running)return;if(!motionState.last)motionState.last=now;motionState.elapsed=Math.min(motionState.duration,motionState.elapsed+(now-motionState.last)/1000);motionState.last=now;updateMotionView(motionState.elapsed);if(motionState.elapsed>=motionState.duration){stopMotionAnimation();updateMotionView(motionState.duration);return;}motionState.raf=requestAnimationFrame(motionFrame);}
+function startMotionAnimation(){if(motionState.elapsed>=motionState.duration)motionState.elapsed=0;motionState.running=true;motionState.last=0;updateMotionView(motionState.elapsed);motionState.raf=requestAnimationFrame(motionFrame);}
 function calcDynamics(){
   const m=Number($("dynMass").value),f=Number($("dynForce").value),fr=Number($("dynFriction").value),net=f-fr,a=net/m;
   $("dynMassOut").textContent=m;$("dynForceOut").textContent=f;$("dynFrictionOut").textContent=fr;
@@ -227,10 +233,18 @@ function calcDynamics(){
   $("formulaLegend").innerHTML="<b>Обозначения:</b> Σ (сигма) — сумма; F — сила; m — масса тела; a — ускорение. ΣF — равнодействующая всех сил.";
 
   $("gReadout").classList.add("hidden");$("flowExtra").classList.add("hidden");
-  $("dynSceneCaption").textContent=net>0?"Равнодействующая направлена вперёд — тележка ускоряется":net<0?"Равнодействующая направлена назад — тележка замедляется":"Силы уравновешены — ускорение равно нулю";
-  $("dynForceArrow").style.opacity=f===0?".15":"1";
-  $("dynFrictionArrow").style.opacity=fr===0?".15":"1";
-  $("labExplain").textContent=`На тележку действуют сила тяги ${f} Н и сила сопротивления ${fr} Н. Равнодействующая ${net} Н. При массе ${m} кг ускорение составляет ${a.toFixed(2).replace(".",",")} м/с².`;
+  const forceLen=38+Math.min(1,f/200)*125,frictionLen=38+Math.min(1,fr/100)*125;
+  $("dynForceArrow").setAttribute("d",`M395 145 H${395+forceLen} M${380+forceLen} 132 L${395+forceLen} 145 L${380+forceLen} 158`);
+  $("dynFrictionArrow").setAttribute("d",`M205 145 H${205-frictionLen} M${220-frictionLen} 132 L${205-frictionLen} 145 L${220-frictionLen} 158`);
+  $("dynForceArrow").style.opacity=f===0?".12":"1";$("dynFrictionArrow").style.opacity=fr===0?".12":"1";
+  $("dynForceLabel").textContent=`F тяги · ${f} Н`;$("dynFrictionLabel").textContent=`F сопр. · ${fr} Н`;
+  const acc=$("dynAccelerationArrow"),accLabel=$("dynAccelerationLabel");
+  if(net>0){acc.setAttribute("d","M300 82 H430 M414 68 L432 82 L414 96");acc.style.opacity="1";accLabel.setAttribute("x","440");}
+  else if(net<0){acc.setAttribute("d","M300 82 H170 M186 68 L168 82 L186 96");acc.style.opacity="1";accLabel.setAttribute("x","72");}
+  else{acc.style.opacity=".12";accLabel.setAttribute("x","440");}
+  accLabel.textContent=`a = ${a.toFixed(2).replace(".",",")} м/с²`;
+  $("dynSceneCaption").textContent=net>0?"Равнодействующая направлена вправо. При начальной скорости вправо тележка разгоняется.":net<0?"Равнодействующая направлена влево. При начальной скорости вправо тележка сначала замедляется; при движении влево — разгоняется.":"Силы уравновешены: ускорение равно нулю, скорость не изменяется.";
+  $("labExplain").textContent=`Сила тяги: ${f} Н вправо. Сила сопротивления: ${fr} Н влево. Равнодействующая ΣF = ${net} Н. По второму закону Ньютона a = ΣF/m = ${a.toFixed(2).replace(".",",")} м/с². Направление ускорения совпадает с направлением равнодействующей.`;
   renderDynamicsGraph(m,net);
 }
 function calcLab(){
@@ -242,6 +256,7 @@ function calcLab(){
   $("flowGraphCard").classList.toggle("hidden",lab!=="flow");
   $("flowGraphCard").style.display=lab==="flow"?"block":"none";
   $("dynamicsGraphCard").classList.toggle("hidden",lab!=="dynamics");
+  $("motionGraphCard").classList.toggle("hidden",lab!=="motion");
   $("dynamicsGraphCard").style.display=lab==="dynamics"?"block":"none";
   $("dynamicsControls").classList.toggle("hidden",lab!=="dynamics");
   $("dynamicsScene").classList.toggle("hidden",lab!=="dynamics");
@@ -267,10 +282,9 @@ function calcLab(){
     $("timeOut").textContent=time.toLocaleString("ru-RU");
     setResult(distance.toFixed(1).replace(".",","),"м","Путь за выбранное время");
     $("formula").innerHTML="s = vt <span>Путь = скорость × время</span>";
-    $("movingDot").style.left=Math.min(92,distance/100*92)+"%";
-    const motionLabel=$("motionDistanceLabel");
-    if(motionLabel)motionLabel.textContent=`Пройденный путь: ${distance.toFixed(1).replace(".",",")} м из 100 м`;
-    $("labExplain").textContent="При равномерном прямолинейном движении путь прямо пропорционален скорости и времени движения.";
+    if(motionState.running)stopMotionAnimation();motionState.elapsed=0;motionState.duration=time;motionState.speed=speed;
+    renderMotionGraphs(speed,time,0);$("motionGraphCard").classList.remove("hidden");
+    $("labExplain").textContent=`За каждую секунду тело проходит ${speed} м. За ${time} с путь составит ${distance} м. Координата отсчитывается от x₀ = 0; направление движения выбрано положительным.`;
   } else {
     const radiusMm=Number($("vesselRadius").value);
     const pressurePa=Number($("pressure").value);
@@ -414,8 +428,12 @@ document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
     }
   });
 });
+$("motionPlay").addEventListener("click",()=>{if(!motionState.running)startMotionAnimation();});
+$("motionPause").addEventListener("click",()=>{stopMotionAnimation();updateMotionView(motionState.elapsed);});
+$("motionReset").addEventListener("click",()=>{stopMotionAnimation();motionState.elapsed=0;updateMotionView(0);});
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&motionState.running){stopMotionAnimation();updateMotionView(motionState.elapsed);}});
 $("resetLab").addEventListener("click",()=>{
-  $("rpm").value=3000; $("radius").value=10;
+  stopMotionAnimation();motionState.elapsed=0;$("rpm").value=3000; $("radius").value=10;
   $("speed").value=2; $("time").value=5;
   $("vesselRadius").value=2; $("pressure").value=1500;
   $("dynMass").value=20;$("dynForce").value=50;$("dynFriction").value=10;
