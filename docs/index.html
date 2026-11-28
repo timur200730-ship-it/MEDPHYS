@@ -7,7 +7,7 @@
   <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=19">
+  <link rel="stylesheet" href="./styles.css?v=20">
   <title>MEDPHYS — физика в медицине</title>
 </head>
 <body>
@@ -466,7 +466,7 @@
             </div>
             <div class="centrifuge-visual-pair"><div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div></div>
 
-            <div class="motion-scene hidden" id="motionScene"><div class="motion-track-wrap"><div class="motion-track"><span class="motion-mark" style="left:0%">0 м</span><span class="motion-mark" style="left:25%">25 м</span><span class="motion-mark" style="left:50%">50 м</span><span class="motion-mark" style="left:75%">75 м</span><span class="motion-mark" style="left:100%">100 м</span><div class="moving-dot" id="movingDot"></div></div></div><div class="motion-live-readout"><b id="motionTimeNow">0,0 с</b><span id="motionXNow">x = 0,0 м</span><span id="motionVNow">v = 2 м/с</span></div><div class="motion-actions"><button type="button" class="secondary-btn" id="motionPlay">▶ Начать</button><button type="button" class="secondary-btn" id="motionPause" disabled>Ⅱ Пауза</button><button type="button" class="secondary-btn" id="motionReset">↺ Сброс</button></div><div class="motion-timeline" id="motionTimeline"></div><p class="graph-note">Модель прямолинейного движения с постоянной скоростью. Условная дистанция на схеме — 100 м; выбранное время задаёт длительность наблюдения.</p></div>
+            <div class="motion-scene hidden" id="motionScene"><div class="motion-track-wrap"><div class="motion-track"><span class="motion-mark" style="left:0%">0 м</span><span class="motion-mark" style="left:25%">25 м</span><span class="motion-mark" style="left:50%">50 м</span><span class="motion-mark" style="left:75%">75 м</span><span class="motion-mark" style="left:100%">100 м</span><div class="moving-dot" id="movingDot"></div></div></div><div class="scene-caption motion-distance-readout" id="motionDistanceLabel" aria-live="polite">Пройденный путь: 0 м за 0 с</div><div class="motion-live-readout"><b id="motionTimeNow">0,0 с</b><span id="motionXNow">x = 0,0 м</span><span id="motionVNow">v = 2 м/с</span></div><div class="motion-actions"><button type="button" class="secondary-btn" id="motionPlay">▶ Начать</button><button type="button" class="secondary-btn" id="motionPause" disabled>Ⅱ Пауза</button><button type="button" class="secondary-btn" id="motionReset">↺ Сброс</button></div><div class="motion-timeline" id="motionTimeline"></div><p class="graph-note">Модель прямолинейного движения с постоянной скоростью. Условная дистанция на схеме — 100 м; выбранное время задаёт длительность наблюдения.</p></div>
 <div class="dynamics-scene hidden" id="dynamicsScene">
               <svg viewBox="0 0 680 250" role="img" aria-label="Модель тележки под действием силы тяги и силы трения">
                 <line x1="45" y1="194" x2="635" y2="194" stroke="#9bbfc0" stroke-width="5"/>
@@ -2297,6 +2297,6 @@
       </footer>
     </main>
   </div>
-  <script src="./app.js?v=14"></script>
+  <script src="./app.js?v=15"></script>
 </body>
 </html>
