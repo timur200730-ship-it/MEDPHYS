@@ -543,6 +543,26 @@
                 <div><span>Сопротивление относительно нормы</span><strong id="flowResistanceValue">1×</strong></div>
                 <p id="flowStenosisText">При выбранном радиусе сравнение с условной нормой 2 мм.</p>
               </div>
+              <div class="graph-card card flow-pressure-card" id="flowPressureCard">
+                <div class="graph-heading"><div><div class="eyebrow">ВЛИЯНИЕ ПЕРЕПАДА ДАВЛЕНИЯ</div><h3>Как давление приводит жидкость в движение</h3></div><span class="graph-legend"><i></i> Q(ΔP)</span></div>
+                <p class="flow-pressure-intro">Давление перед участком сосуда выше, чем после него. Разность давлений ΔP создаёт направленный поток: при неизменных радиусе, вязкости и длине участка больший перепад даёт больший объёмный расход.</p>
+                <svg id="flowPressureGraph" viewBox="0 0 640 230" role="img" aria-label="График прямой пропорциональной зависимости объёмного расхода от перепада давления">
+                  <line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/>
+                  <g class="graph-grid" aria-hidden="true"><line x1="58" y1="129" x2="610" y2="129"/><line x1="58" y1="74" x2="610" y2="74"/><line x1="58" y1="18" x2="610" y2="18"/></g>
+                  <path id="flowPressureCurve" class="graph-curve" d=""/>
+                  <line id="flowPressureGuide" class="graph-guide" x1="278" y1="101" x2="278" y2="184"/>
+                  <circle id="flowPressurePoint" class="graph-point" cx="278" cy="101" r="6"/>
+                  <text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">3000 Па</text>
+                  <text x="58" y="12" class="graph-label">Q, мл/мин</text><text x="610" y="226" text-anchor="end" class="graph-label">ΔP</text>
+                  <text id="flowPressureCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text>
+                </svg>
+                <div class="stenosis-result flow-pressure-result">
+                  <div><span>Расход при выбранном перепаде</span><strong id="flowPressureFlowValue">—</strong></div>
+                  <div><span>Относительно 1500 Па при том же радиусе</span><strong id="flowPressureRatioValue">—</strong></div>
+                  <p id="flowPressureText" aria-live="polite">Измени перепад давления и проследи, как меняется расход при неизменном радиусе сосуда.</p>
+                </div>
+                <p class="flow-model-note">Упрощённая стационарная модель по закону Пуазёйля. В реальном кровообращении давление пульсирует, сосуды эластичны, а свойства крови сложнее.</p>
+              </div>
             <div class="graph-card card hidden" id="flowGraphCard">
           <div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Объёмный расход и радиус сосуда</h3></div><span class="graph-legend"><i></i> Q(r)</span></div>
           <svg id="flowGraph" viewBox="0 0 640 230" role="img" aria-label="График зависимости объёмного расхода от радиуса сосуда">
