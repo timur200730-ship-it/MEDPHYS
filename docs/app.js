@@ -243,6 +243,29 @@ function renderMotionGraphs(speed,duration,elapsed){
 }
 function motionFrame(now){if(!motionState.running)return;if(!motionState.last)motionState.last=now;motionState.elapsed=Math.min(motionState.duration,motionState.elapsed+(now-motionState.last)/1000);motionState.last=now;updateMotionView(motionState.elapsed);if(motionState.elapsed>=motionState.duration){stopMotionAnimation();updateMotionView(motionState.duration);return;}motionState.raf=requestAnimationFrame(motionFrame);}
 function startMotionAnimation(){if(motionState.elapsed>=motionState.duration)motionState.elapsed=0;motionState.running=true;motionState.last=0;updateMotionView(motionState.elapsed);motionState.raf=requestAnimationFrame(motionFrame);}
+const newtonPresets={
+ force:{mass:20,force:40,friction:0,title:"Опыт 1. Как сила влияет на ускорение?",text:"Масса постоянна — 20 кг. Сравни ускорение при равнодействующей 20 Н и 40 Н.",a:[{label:"ΣF = 20 Н",value:1},{label:"ΣF = 40 Н",value:2}],conclusion:"При неизменной массе увеличение равнодействующей силы в 2 раза увеличивает ускорение в 2 раза."},
+ mass:{mass:20,force:40,friction:0,title:"Опыт 2. Как масса влияет на ускорение?",text:"Равнодействующая постоянна — 40 Н. Сравни тела массой 10 кг и 20 кг.",a:[{label:"m = 10 кг",value:4},{label:"m = 20 кг",value:2}],conclusion:"При неизменной равнодействующей увеличение массы в 2 раза уменьшает ускорение в 2 раза."},
+ balance:{mass:20,force:50,friction:50,title:"Опыт 3. Что происходит при равновесии сил?",text:"Сила тяги и сила сопротивления равны по модулю и противоположны по направлению.",a:[{label:"Тяга 50 Н",value:0},{label:"Сопротивление 50 Н",value:0}],conclusion:"Равнодействующая равна нулю, поэтому ускорение равно нулю. Тело покоится или движется равномерно прямолинейно."}
+};
+let activeNewtonPreset="force";
+function renderNewtonComparison(){
+ const cfg=newtonPresets[activeNewtonPreset],m=Number($("dynMass").value),f=Number($("dynForce").value),fr=Number($("dynFriction").value),net=f-fr;
+ let rows=[];
+ if(activeNewtonPreset==="force"){rows=[{label:"ΣF = 20 Н",a:20/m},{label:"Текущая ΣF = "+net+" Н",a:net/m}];}
+ else if(activeNewtonPreset==="mass"){rows=[{label:"m = 10 кг",a:net/10},{label:"Текущая m = "+m+" кг",a:net/m}];}
+ else{rows=[{label:"Тяга "+f+" Н",a:net/m},{label:"Сопротивление "+fr+" Н",a:net/m}];}
+ $("newtonComparisonTitle").textContent=cfg.title;$("newtonComparisonText").textContent=cfg.text;
+ const max=Math.max(0.01,...rows.map(r=>Math.abs(r.a)));
+ $("newtonBars").innerHTML=rows.map(r=>{const width=Math.max(0,Math.abs(r.a)/max*100);return `<div class="newton-bar-row"><span>${r.label}</span><div class="newton-bar-track"><i style="width:${width}%"></i></div><b>${r.a.toFixed(2).replace(".",",")} м/с²</b></div>`;}).join("");
+ $("newtonConclusion").textContent=activeNewtonPreset==="balance"?(Math.abs(net)<1e-9?"Равнодействующая равна нулю: a = 0.":"Сейчас силы не уравновешены: измени ползунки так, чтобы тяга и сопротивление совпали.") :activeNewtonPreset==="force"?(Math.abs(net-40)<1e-9?"При переходе от 20 Н к 40 Н ускорение удваивается.":"Сравни текущее значение с эталонными 20 Н при той же массе."):(Math.abs(net-40)<1e-9?"При 40 Н тело массой 10 кг получает ускорение вдвое больше, чем тело массой 20 кг.":"Сохрани равнодействующую 40 Н, чтобы сравнение влияния массы было корректным.");
+}
+function selectNewtonPreset(mode){
+ if(!newtonPresets[mode])return;activeNewtonPreset=mode;
+ document.querySelectorAll(".newton-preset").forEach(b=>b.classList.toggle("active",b.dataset.newtonPreset===mode));
+ const cfg=newtonPresets[mode];$("dynMass").value=cfg.mass;$("dynForce").value=cfg.force;$("dynFriction").value=cfg.friction;
+ calcDynamics();
+}
 function calcDynamics(){
   const m=Number($("dynMass").value),f=Number($("dynForce").value),fr=Number($("dynFriction").value),net=f-fr,a=net/m;
   $("dynMassOut").textContent=m;$("dynForceOut").textContent=f;$("dynFrictionOut").textContent=fr;
@@ -265,6 +288,7 @@ function calcDynamics(){
   $("dynSceneCaption").textContent=net>0?"Равнодействующая направлена вправо. При начальной скорости вправо тележка разгоняется.":net<0?"Равнодействующая направлена влево. При начальной скорости вправо тележка сначала замедляется; при движении влево — разгоняется.":"Силы уравновешены: ускорение равно нулю, скорость не изменяется.";
   $("labExplain").textContent=`Сила тяги: ${f} Н вправо. Сила сопротивления: ${fr} Н влево. Равнодействующая ΣF = ${net} Н. По второму закону Ньютона a = ΣF/m = ${a.toFixed(2).replace(".",",")} м/с². Направление ускорения совпадает с направлением равнодействующей.`;
   renderDynamicsGraph(m,net);
+  renderNewtonComparison();
 }
 function calcLab(){
   const gReadout=$("gReadout");
@@ -452,6 +476,8 @@ document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
   });
 });
 document.addEventListener("click",event=>{
+  const newton=event.target.closest("[data-newton-preset]");
+  if(newton){selectNewtonPreset(newton.dataset.newtonPreset);return;}
   const reveal=event.target.closest("#motionChallengeReveal");
   if(reveal){const answer=$("motionChallengeAnswer"),opening=answer.classList.contains("hidden");answer.classList.toggle("hidden",!opening);reveal.setAttribute("aria-expanded",String(opening));reveal.textContent=opening?"Скрыть вывод":"Показать ожидаемый вывод";return;}
   const button=event.target.closest("#motionPlay,#motionPause,#motionReset");
