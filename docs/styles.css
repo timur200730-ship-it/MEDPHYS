@@ -303,3 +303,8 @@
 
 .formula-legend{margin-top:-8px;margin-bottom:14px;padding:12px 14px;border-left:3px solid var(--gold);background:rgba(220,235,230,.06);border-radius:0 8px 8px 0;color:#c4d2ce;font-size:12px;line-height:1.7}
 .formula-legend b{color:#e5c47e}
+
+/* MEDPHYS lab audit fixes */
+.flow-model-note{max-width:620px;margin:10px auto 0;padding:11px 13px;border:1px solid rgba(223,182,107,.35);border-left:3px solid var(--gold);border-radius:9px;background:rgba(223,182,107,.08);color:#d7d2c3;font-size:11px;line-height:1.6}
+#motionDistanceLabel{margin-top:10px;color:var(--gold);font-weight:700}
+@media(min-width:900px){.flow-model-note{font-size:13px;padding:14px 16px}}
