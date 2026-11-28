@@ -110,31 +110,33 @@ function renderFlowGraph(radiusMm, pressurePa, viscosity, length){
   const label=document.getElementById("flowGraphCurrent");
   if(!curve||!point||!guide||!label)return;
   const x0=58,x1=610,y0=22,y1=184,minR=1,maxR=4;
-  const qAt=(rMm)=>{
+  const qAt=(rMm, pressure=pressurePa)=>{
     const r=rMm/1000;
-    return Math.PI*Math.pow(r,4)*pressurePa/(8*viscosity*length)*60*1e6;
+    return Math.PI*Math.pow(r,4)*pressure/(8*viscosity*length)*60*1e6;
   };
-  const maxQ=qAt(maxR);
+  // Единая шкала: верхняя граница соответствует r=4 мм и ΔP=3000 Па.
+  // Поэтому при изменении давления график не перенормируется автоматически.
+  const maxQ=qAt(maxR,3000);
   if(!Number.isFinite(maxQ)||maxQ<=0)return;
   const pts=[];
   for(let i=0;i<=100;i++){
     const r=minR+(maxR-minR)*i/100;
     const x=x0+(r-minR)/(maxR-minR)*(x1-x0);
-    const y=y1-(qAt(r)/maxQ)*(y1-y0);
+    const y=y1-Math.min(1,qAt(r)/maxQ)*(y1-y0);
     pts.push(`${i===0?"M":"L"}${x.toFixed(2)},${y.toFixed(2)}`);
   }
   curve.setAttribute("d",pts.join(" "));
   const safeR=Math.min(maxR,Math.max(minR,Number(radiusMm)));
   const qNow=qAt(safeR);
   const px=x0+(safeR-minR)/(maxR-minR)*(x1-x0);
-  const py=y1-(qNow/maxQ)*(y1-y0);
+  const py=y1-Math.min(1,qNow/maxQ)*(y1-y0);
   point.setAttribute("cx",px.toFixed(2));
   point.setAttribute("cy",py.toFixed(2));
   guide.setAttribute("x1",px.toFixed(2));
   guide.setAttribute("x2",px.toFixed(2));
   guide.setAttribute("y1",py.toFixed(2));
   guide.setAttribute("y2",y1);
-  label.textContent=`r=${safeR.toFixed(1).replace(".",",")} мм · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
+  label.textContent=`r=${safeR.toFixed(1).replace(".",",")} мм · ΔP=${pressurePa} Па · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
 }
 function setResult(value, unit, label){
   $("resultValue").textContent=value;
