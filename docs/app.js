@@ -279,6 +279,17 @@ function setDynStudyMode(mode){
  for(let i=1;i<=2;i++){const n=i-1;const input=$("dynStudyInput"+i);$("dynStudyLabel"+i).textContent=cfg.labels[n];input.min=cfg.min[n];input.max=cfg.max[n];input.step=cfg.step[n];input.value=cfg.values[n];input.disabled=cfg.min[n]===cfg.max[n];}
  calcDynStudy();
 }
+function calcThirdLaw(){
+ const force=Number($("thirdForceInput").value),massA=Number($("thirdMassAInput").value),massB=Number($("thirdMassBInput").value);
+ $("thirdForceOut").textContent=force;$("thirdMassAOut").textContent=massA;$("thirdMassBOut").textContent=massB;
+ $("thirdForceAValue").textContent=force+" Н ←";$("thirdForceBValue").textContent=force+" Н →";
+ $("thirdAccelA").textContent=(force/massA).toFixed(2).replace(".",",")+" м/с²";
+ $("thirdAccelB").textContent=(force/massB).toFixed(2).replace(".",",")+" м/с²";
+ $("thirdLawConclusion").textContent="Силы равны по модулю ("+force+" Н), противоположны по направлению и приложены к разным телам. Ускорение A = "+(force/massA).toFixed(2).replace(".",",")+" м/с², ускорение B = "+(force/massB).toFixed(2).replace(".",",")+" м/с². Различие ускорений объясняется разными массами.";
+ const len=45+force/100*75;
+ $("thirdForceA").setAttribute("d",`M112 88 H${112-len} M${128-len} 74 L${110-len} 88 L${128-len} 102`);
+ $("thirdForceB").setAttribute("d",`M568 88 H${568+len} M${552+len} 74 L${570+len} 88 L${552+len} 102`);
+}
 function calcDynStudy(){
  const cfg=dynStudyConfigs[dynStudyMode],v=[Number($("dynStudyInput1").value),Number($("dynStudyInput2").value)];
  $("dynStudyOut1").textContent=v[0];$("dynStudyOut2").textContent=v[1];
@@ -484,7 +495,7 @@ function calcDynamicsExtra(){
 }
 document.querySelectorAll(".dynamics-subtab").forEach(b=>b.addEventListener("click",()=>setDynamicsMode(b.dataset.dynmode)));
 document.querySelectorAll(".dyn-study-tab").forEach(b=>b.addEventListener("click",()=>setDynStudyMode(b.dataset.study)));
-["dynStudyInput1","dynStudyInput2"].forEach(id=>$(id).addEventListener("input",calcDynStudy));
+["dynStudyInput1","dynStudyInput2"].forEach(id=>$(id).addEventListener("input",calcDynStudy));\n["thirdForceInput","thirdMassAInput","thirdMassBInput"].forEach(id=>$(id).addEventListener("input",calcThirdLaw));\ncalcThirdLaw();
 
 ["dynExtra1","dynExtra2","dynExtra3"].forEach(id=>$(id).addEventListener("input",calcDynamicsExtra));
 
