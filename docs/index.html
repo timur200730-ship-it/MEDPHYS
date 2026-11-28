@@ -517,6 +517,14 @@
           <div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Объёмный расход и радиус сосуда</h3></div><span class="graph-legend"><i></i> Q(r)</span></div>
           <svg id="flowGraph" viewBox="0 0 640 230" role="img" aria-label="График зависимости объёмного расхода от радиуса сосуда">
             <line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/>
+            <g class="graph-grid" aria-hidden="true">
+              <line x1="58" y1="184" x2="610" y2="184"/><line x1="58" y1="130" x2="610" y2="130"/>
+              <line x1="58" y1="76" x2="610" y2="76"/><line x1="58" y1="22" x2="610" y2="22"/>
+            </g>
+            <text x="50" y="187" text-anchor="end" class="graph-label">0</text>
+            <text x="50" y="133" text-anchor="end" class="graph-label">3,4 тыс.</text>
+            <text x="50" y="79" text-anchor="end" class="graph-label">6,9 тыс.</text>
+            <text x="50" y="25" text-anchor="end" class="graph-label">10,3 тыс.</text>
             <path id="flowGraphCurve" class="graph-curve" d=""/>
             <line id="flowGraphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/>
             <circle id="flowGraphPoint" class="graph-point" cx="58" cy="184" r="6"/>
@@ -524,7 +532,7 @@
             <text x="58" y="12" class="graph-label">Q, мл/мин</text><text x="610" y="226" text-anchor="end" class="graph-label">r</text>
             <text id="flowGraphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущая точка</text>
           </svg>
-          <p class="graph-note">При неизменных давлении, вязкости и длине участка закон Пуазёйля даёт Q ∝ r⁴. Точка перемещается при изменении радиуса.</p>
+          <p class="graph-note">Шкала расхода фиксирована для всех значений давления (верхняя граница — расчётный расход при r = 4 мм и ΔP = 3000 Па). При неизменных ΔP, вязкости и длине участка закон Пуазёйля даёт Q ∝ r⁴. График — учебная идеализация, не клиническая модель.</p>
         </div>
             </div>
             <div class="lab-explain" id="labExplain">Измени параметры эксперимента и наблюдай, как меняются модель и физические величины.</div>
