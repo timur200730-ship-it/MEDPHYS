@@ -746,3 +746,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
  .motion-scene>.graph-note{font-size:11px}
  .lab-explain{font-size:12px;line-height:1.6;margin-top:16px}
 }
+
+/* MEDPHYS v50 · missing motion readout */
+.motion-distance-readout{display:block;min-height:22px;margin:0;padding:4px 0;text-align:center;font-size:12px;line-height:1.5;color:var(--muted);letter-spacing:0}
