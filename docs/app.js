@@ -51,7 +51,32 @@ if(themeButton)themeButton.addEventListener("click",()=>{
   try{localStorage.setItem("medphys-theme",next)}catch{}
 });
 
-function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("crumbName").textContent=pages[name]||"Обзор";$("sidebar").classList.remove("open");window.scrollTo(0,0)}
+const courseSequence=[
+  ["lesson-physics","Физика — наука о природе"],
+  ["lesson-kinematics","Основы кинематики"],
+  ["practice-kinematics","Практическое занятие № 1"],
+  ["lesson-dynamics","Основы динамики"],
+  ["practice-dynamics","Практическое занятие № 2"],
+  ["lesson-conservation","Законы сохранения"],
+  ["lesson-molecular","Основы молекулярно-кинетической теории"],
+  ["practice-gas-laws","Практическое занятие № 3"],
+  ["lesson-thermo","Основы термодинамики"],
+  ["practice-heat","Практическое занятие № 4"],
+  ["lesson-phase","Агрегатные состояния вещества и фазовые переходы"],
+  ["control-molecular","Контрольная работа № 1"]
+];
+function renderCourseNavigation(name){
+  const index=courseSequence.findIndex(item=>item[0]===name);
+  if(index<0)return;
+  const page=$("page-"+name), layout=page?.querySelector(".lesson-layout");
+  if(!layout)return;
+  let nav=layout.querySelector(".lesson-nav");
+  if(!nav){nav=document.createElement("nav");nav.className="lesson-nav";nav.setAttribute("aria-label","Переход между темами курса");layout.appendChild(nav);}
+  const previous=courseSequence[index-1], next=courseSequence[index+1];
+  nav.innerHTML=`<div class="lesson-nav-side">${previous?`<button class="secondary-btn lesson-nav-button" type="button" data-course-target="${previous[0]}"><span aria-hidden="true">←</span><span><small>Предыдущий материал</small><b>${previous[1]}</b></span></button>`:""}</div><div class="lesson-nav-side lesson-nav-next">${next?`<button class="secondary-btn lesson-nav-button" type="button" data-course-target="${next[0]}"><span><small>Следующий материал</small><b>${next[1]}</b></span><span aria-hidden="true">→</span></button>`:""}</div>`;
+  nav.querySelectorAll("[data-course-target]").forEach(button=>button.addEventListener("click",()=>showPage(button.dataset.courseTarget)));
+}
+function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("crumbName").textContent=pages[name]||"Обзор";$("sidebar").classList.remove("open");renderCourseNavigation(name);window.scrollTo(0,0)}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 $("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
 function getDone(){try{return JSON.parse(localStorage.getItem("medphys-done")||"[]")}catch{return []}}
