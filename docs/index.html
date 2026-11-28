@@ -7,7 +7,7 @@
   <meta name="description" content="MEDPHYS — интерактивная образовательная платформа: физика в медицине.">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=14">
+  <link rel="stylesheet" href="./styles.css?v=15">
   <title>MEDPHYS — физика в медицине</title>
 </head>
 <body>
@@ -603,6 +603,61 @@
             <button class="secondary-btn full" id="resetLab">Сбросить параметры ↺</button>
           </div>
         </div>
+
+        <section class="lab-blood-lesson card" id="centrifugeBloodLesson" aria-labelledby="bloodCentrifugeTitle">
+          <div class="eyebrow">ФИЗИКА В МЕДИЦИНСКОЙ ЛАБОРАТОРИИ</div>
+          <h2 id="bloodCentrifugeTitle">Что происходит с образцом крови в центрифуге?</h2>
+          <p>При вращении пробирки возникает ускорение, направленное к оси вращения. В системе вращающейся пробирки проявляется действие центробежного эффекта: компоненты образца оседают и разделяются с разной скоростью. На результат влияют плотность, размер и форма частиц, вязкость среды, относительное центробежное ускорение и время обработки.</p>
+          <div class="blood-separation-visual">
+            <svg viewBox="0 0 820 330" role="img" aria-label="Схема пробирки с цельной кровью до центрифугирования и разделённой на плазму, тонкий слой лейкоцитов и тромбоцитов, эритроциты после центрифугирования">
+              <defs>
+                <linearGradient id="bloodWhole" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b84d5b"/><stop offset="1" stop-color="#75283b"/></linearGradient>
+                <linearGradient id="plasmaLayer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4df91"/><stop offset="1" stop-color="#d8bd70"/></linearGradient>
+                <linearGradient id="rbcLayer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a63d4a"/><stop offset="1" stop-color="#6d1e32"/></linearGradient>
+                <clipPath id="tubeBeforeClip"><path d="M115 82 H225 V257 Q170 302 115 257 Z"/></clipPath>
+                <clipPath id="tubeAfterClip"><path d="M570 82 H680 V257 Q625 302 570 257 Z"/></clipPath>
+              </defs>
+              <g font-family="Arial, sans-serif" text-anchor="middle">
+                <text x="170" y="35" fill="#dce9f3" font-size="20" font-weight="700">До вращения</text>
+                <text x="625" y="35" fill="#dce9f3" font-size="20" font-weight="700">После вращения</text>
+                <rect x="110" y="58" width="120" height="22" rx="5" fill="#8ea5b2"/>
+                <rect x="565" y="58" width="120" height="22" rx="5" fill="#8ea5b2"/>
+                <g clip-path="url(#tubeBeforeClip)">
+                  <rect x="115" y="82" width="110" height="190" fill="url(#bloodWhole)"/>
+                  <g fill="#f1a0a0" opacity=".9"><circle cx="135" cy="115" r="5"/><circle cx="180" cy="143" r="5"/><circle cx="205" cy="105" r="5"/><circle cx="150" cy="188" r="5"/><circle cx="194" cy="220" r="5"/><circle cx="170" cy="255" r="5"/><circle cx="215" cy="175" r="5"/><circle cx="130" cy="230" r="5"/></g>
+                </g>
+                <path d="M115 82 H225 V257 Q170 302 115 257 Z" fill="none" stroke="#dce9f3" stroke-width="4"/>
+                <g clip-path="url(#tubeAfterClip)">
+                  <rect x="570" y="82" width="110" height="115" fill="url(#plasmaLayer)"/>
+                  <rect x="570" y="197" width="110" height="8" fill="#e8c5a1"/>
+                  <rect x="570" y="205" width="110" height="67" fill="url(#rbcLayer)"/>
+                </g>
+                <path d="M570 82 H680 V257 Q625 302 570 257 Z" fill="none" stroke="#dce9f3" stroke-width="4"/>
+                <path d="M230 160 H545 M530 148 L546 160 L530 172" stroke="#6cc9bb" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="390" y="140" fill="#a9c0c1" font-size="14">вращение</text>
+                <text x="390" y="185" fill="#a9c0c1" font-size="14">и разделение</text>
+                <path d="M680 135 H725" stroke="#e7d28d" stroke-width="2"/><text x="730" y="125" text-anchor="start" fill="#f1df9d" font-size="14">Плазма</text>
+                <path d="M680 201 H725" stroke="#e8c5a1" stroke-width="2"/><text x="730" y="195" text-anchor="start" fill="#f0d8c4" font-size="13">Лейкоциты</text><text x="730" y="211" text-anchor="start" fill="#f0d8c4" font-size="13">и тромбоциты</text>
+                <path d="M680 240 H725" stroke="#d87578" stroke-width="2"/><text x="730" y="245" text-anchor="start" fill="#ef9aa0" font-size="14">Эритроциты</text>
+                <text x="170" y="315" fill="#a9c0c1" font-size="14">Клетки и жидкая часть вместе</text>
+                <text x="625" y="315" fill="#a9c0c1" font-size="14">Условное разделение слоёв</text>
+              </g>
+            </svg>
+            <div class="blood-layer-key">
+              <span><i class="blood-key-plasma"></i><b>Плазма</b> — верхний жидкий слой</span>
+              <span><i class="blood-key-buffy"></i><b>«Бuffy coat»</b> — тонкий промежуточный слой лейкоцитов и тромбоцитов</span>
+              <span><i class="blood-key-rbc"></i><b>Эритроциты</b> — осевший нижний слой</span>
+            </div>
+            <p class="blood-visual-note">Схема условная и не в масштабе: толщина промежуточного слоя сильно увеличена для наглядности.</p>
+          </div>
+          <div class="blood-info-grid">
+            <div><h3>Почему слои располагаются именно так?</h3><p>Эритроциты в среднем плотнее плазмы и при центрифугировании формируют нижний осадок. Над ними остаётся тонкий слой, обогащённый лейкоцитами и тромбоцитами. Верхний слой — плазма, жидкая часть крови.</p></div>
+            <div><h3>Зачем это нужно медицине?</h3><p>Разделение образца позволяет лаборатории получать нужную фракцию для различных исследований: плазму, сыворотку или клеточную часть. Выбор зависит от вида анализа и пробирки.</p></div>
+          </div>
+          <div class="lesson-callout"><b>Плазма и сыворотка — не одно и то же.</b> Для получения плазмы кровь собирают с антикоагулянтом, который препятствует свёртыванию. Для получения сыворотки образцу сначала дают свернуться, а затем отделяют жидкую часть от сгустка. Сыворотка не содержит фибриноген и часть факторов свёртывания, израсходованных при образовании сгустка.</div>
+          <div class="lesson-callout"><b>Связь с формулой виртуального эксперимента.</b> Модель рассчитывает центростремительное ускорение: a = ω²r. Отношение этого ускорения к ускорению свободного падения выражают в условных единицах g (RCF). Поэтому одинаковые обороты в минуту при разных радиусах ротора не обязательно дают одинаковое ускорение образца.</div>
+          <p class="muted">Важно: это объяснительная схема, а не инструкция по лабораторной обработке. Реальные режимы центрифугирования, тип пробирки, температура и время задаются валидированным протоколом конкретного исследования. Не все образцы крови после обработки дают ровно три видимых слоя.</p>
+        </section>
         <div class="graph-card card" id="centrifugeGraphCard"><div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и частота вращения</h3></div><span class="graph-legend"><i></i> a(n)</span></div><svg id="centrifugeGraph" viewBox="0 0 640 230" role="img" aria-label="График квадратичной зависимости центростремительного ускорения от частоты вращения"><line x1="58" y1="18" x2="58" y2="184" class="axis"/><line x1="58" y1="184" x2="610" y2="184" class="axis"/><path id="graphCurve" class="graph-curve" d=""/><line id="graphGuide" class="graph-guide" x1="58" y1="18" x2="58" y2="184"/><circle id="graphPoint" class="graph-point" cx="58" cy="184" r="5"/><text x="58" y="207" class="graph-label">500</text><text x="610" y="207" text-anchor="end" class="graph-label">8000 об/мин</text><text x="58" y="12" class="graph-label">a, м/с²</text><text x="610" y="226" text-anchor="end" class="graph-label">n</text><text id="graphCurrent" x="600" y="14" text-anchor="end" class="graph-current">Текущие параметры</text></svg><p class="graph-note">Кривая построена по формуле a = (2πn/60)²r. При постоянном радиусе ускорение растёт пропорционально квадрату частоты.</p></div>
         <div class="graph-card card hidden" id="dynamicsGraphCard">
           <div class="graph-heading"><div><div class="eyebrow">ЗАВИСИМОСТЬ ВЕЛИЧИН</div><h3>Ускорение и равнодействующая сила</h3></div><span class="graph-legend"><i></i> a(F)</span></div>
