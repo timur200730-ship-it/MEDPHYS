@@ -722,3 +722,27 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 .motion-graphs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.motion-graphs-grid>div{min-width:0;padding:10px;border:1px solid var(--line);border-radius:12px}.motion-graphs-grid h4{margin:3px 4px 8px;font-size:14px;color:var(--text)}.motion-graphs-grid svg{display:block;width:100%;height:auto;overflow:visible}
 @media(max-width:650px){.motion-live-readout{font-size:12px}.motion-actions button{flex:1;padding:10px 7px;font-size:11px}.motion-timeline{gap:2px}.motion-timeline span{font-size:8px;padding:6px 0}.motion-graphs-grid{grid-template-columns:1fr}.motion-graphs-grid>div{padding:8px}.motion-track-wrap{padding-left:8px;padding-right:8px}}
 @media(prefers-reduced-motion:reduce){.motion-track .moving-dot{transition:none!important}}
+
+/* MEDPHYS v49 · motion lab mobile layout and stacking fix */
+.motion-scene{height:auto;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;padding:26px 0 12px;overflow:visible}
+.motion-track-wrap{flex:0 0 auto;min-height:72px;padding-top:24px;padding-bottom:22px;margin:0 0 8px}
+.motion-track{position:relative;width:auto;margin:0 14px}
+.motion-live-readout{position:relative;z-index:1;min-height:62px;align-items:center}
+.motion-actions{position:relative;z-index:2;min-height:48px}
+.motion-actions button{min-height:46px;touch-action:manipulation;pointer-events:auto}
+.motion-timeline{position:relative;z-index:1;margin:4px 0 8px}
+.motion-scene>.graph-note{position:relative;margin:0;padding:10px 0 0;line-height:1.55;overflow-wrap:anywhere}
+.lab-explain{position:relative;clear:both;display:block;margin-top:18px;padding-top:14px;line-height:1.65;overflow-wrap:anywhere;min-height:0}
+.motion-graphs-grid{min-width:0}
+.motion-graphs-grid svg{max-width:100%}
+.dynamics-scene svg text:last-of-type{display:none}
+@media(max-width:650px){
+ .motion-scene{gap:14px;padding-top:22px}
+ .motion-track-wrap{min-height:78px;padding-left:4px;padding-right:4px}
+ .motion-track{margin-left:14px;margin-right:14px}
+ .motion-live-readout{gap:6px;padding:10px 12px;flex-wrap:nowrap;font-size:12px}
+ .motion-actions{gap:7px}
+ .motion-actions button{min-width:0;white-space:nowrap;font-size:12px}
+ .motion-scene>.graph-note{font-size:11px}
+ .lab-explain{font-size:12px;line-height:1.6;margin-top:16px}
+}
