@@ -699,3 +699,15 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
   .stenosis-result{gap:8px;padding:10px}
   .stenosis-result strong{font-size:18px}
 }
+
+
+/* MEDPHYS · зависимость кровотока от перепада давления */
+.flow-pressure-card{margin:14px 0 18px;padding:18px}
+.flow-pressure-intro{margin:8px 0 12px;color:var(--muted);font-size:13px;line-height:1.7}
+.flow-pressure-card svg{display:block;width:100%;height:auto;max-height:260px}
+.flow-pressure-result{margin-top:8px}
+@media(max-width:600px){
+  .flow-pressure-card{padding:12px 10px;margin:10px 0 14px}
+  .flow-pressure-intro{font-size:12px;line-height:1.65}
+  .flow-pressure-card svg{min-height:150px}
+}

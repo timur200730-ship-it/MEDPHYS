@@ -163,6 +163,36 @@ function renderFlowGraph(radiusMm, pressurePa, viscosity, length){
   guide.setAttribute("y2",y1);
   label.textContent=`r=${safeR.toFixed(1).replace(".",",")} мм · ΔP=${pressurePa} Па · Q=${qNow.toFixed(1).replace(".",",")} мл/мин`;
 }
+function renderFlowPressureGraph(radiusMm, pressurePa, viscosity, length){
+  const curve=$("flowPressureCurve"),point=$("flowPressurePoint"),guide=$("flowPressureGuide"),label=$("flowPressureCurrent");
+  if(!curve||!point||!guide||!label)return;
+  const x0=58,x1=610,y0=22,y1=184,minP=500,maxP=3000;
+  const qAt=p=>Math.PI*Math.pow(radiusMm/1000,4)*p/(8*viscosity*length)*60*1e6;
+  const maxQ=qAt(maxP);
+  if(!Number.isFinite(maxQ)||maxQ<=0)return;
+  const pts=[];
+  for(let i=0;i<=100;i++){
+    const p=minP+(maxP-minP)*i/100;
+    const x=x0+(p-minP)/(maxP-minP)*(x1-x0);
+    const y=y1-qAt(p)/maxQ*(y1-y0);
+    pts.push((i?"L":"M")+x.toFixed(2)+","+y.toFixed(2));
+  }
+  curve.setAttribute("d",pts.join(" "));
+  const safeP=Math.min(maxP,Math.max(minP,pressurePa)),q=qAt(safeP);
+  const px=x0+(safeP-minP)/(maxP-minP)*(x1-x0),py=y1-q/maxQ*(y1-y0);
+  point.setAttribute("cx",px.toFixed(2));point.setAttribute("cy",py.toFixed(2));
+  guide.setAttribute("x1",px.toFixed(2));guide.setAttribute("x2",px.toFixed(2));
+  guide.setAttribute("y1",py.toFixed(2));guide.setAttribute("y2",y1);
+  label.textContent="ΔP="+safeP+" Па · r="+radiusMm.toFixed(1).replace(".",",")+" мм";
+  $("flowPressureFlowValue").textContent=q.toFixed(1).replace(".",",")+" мл/мин";
+  const ratio=safeP/1500;
+  $("flowPressureRatioValue").textContent=ratio.toLocaleString("ru-RU",{maximumFractionDigits:2})+"×";
+  $("flowPressureText").textContent=ratio>1
+    ?"Перепад выше 1500 Па: при том же радиусе модельный расход увеличивается прямо пропорционально ΔP."
+    :ratio<1
+    ?"Перепад ниже 1500 Па: при том же радиусе модельный расход уменьшается прямо пропорционально ΔP."
+    :"Перепад равен 1500 Па — базовая точка сравнения для выбранного радиуса.";
+}
 function setResult(value, unit, label){
   $("resultValue").textContent=value;
   $("resultUnit").textContent=unit;
@@ -269,6 +299,7 @@ function calcLab(){
       : "Радиус совпадает с условной точкой сравнения 2 мм. Изменение расхода и сопротивления отсчитывается от неё.";
     $("labExplain").textContent="Модель показывает ламинарное течение ньютоновской жидкости в жёстком цилиндрическом сосуде. Расход зависит от четвёртой степени радиуса и прямо пропорционален перепаду давления.";
     renderFlowGraph(radiusMm,pressurePa,viscosity,length);
+    renderFlowPressureGraph(radiusMm,pressurePa,viscosity,length);
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),viscosity,length));
   }
 }
@@ -313,6 +344,7 @@ function switchLab(next){
   calcLab();
   if(next==="flow"){
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
+    requestAnimationFrame(()=>renderFlowPressureGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
   }
 }
 
