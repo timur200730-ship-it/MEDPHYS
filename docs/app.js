@@ -24,6 +24,27 @@ const terms=[
 ];
 const pages={overview:"Обзор",program:"Учебная программа","lesson-physics":"Физика — наука о природе","lesson-kinematics":"Основы кинематики","lesson-dynamics":"Основы динамики","practice-kinematics":"Практическое занятие № 1","practice-dynamics":"Практическое занятие № 2","lesson-conservation":"Законы сохранения",lab:"Виртуальная лаборатория",practice:"Практикум",glossary:"Словарь терминов"};
 const $=id=>document.getElementById(id);
+
+const themeButton=$("themeToggle");
+function applyTheme(theme){
+  const light=theme==="light";
+  document.documentElement.dataset.theme=light?"light":"dark";
+  if(themeButton){
+    themeButton.querySelector(".theme-icon").textContent=light?"☾":"☀";
+    themeButton.querySelector(".theme-label").textContent=light?"Тёмная тема":"Светлая тема";
+    themeButton.setAttribute("aria-label",light?"Включить тёмную тему":"Включить светлую тему");
+    themeButton.title=light?"Переключить на тёмную тему":"Переключить на светлую тему";
+  }
+}
+let savedTheme="dark";
+try{savedTheme=localStorage.getItem("medphys-theme")||"dark"}catch{}
+applyTheme(savedTheme);
+if(themeButton)themeButton.addEventListener("click",()=>{
+  const next=document.documentElement.dataset.theme==="light"?"dark":"light";
+  applyTheme(next);
+  try{localStorage.setItem("medphys-theme",next)}catch{}
+});
+
 function showPage(name){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));$("crumbName").textContent=pages[name]||"Обзор";$("sidebar").classList.remove("open");window.scrollTo(0,0)}
 document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
 $("menuBtn").addEventListener("click",()=>$("sidebar").classList.toggle("open"));
