@@ -266,6 +266,31 @@ function selectNewtonPreset(mode){
  const cfg=newtonPresets[mode];$("dynMass").value=cfg.mass;$("dynForce").value=cfg.force;$("dynFriction").value=cfg.friction;
  calcDynamics();
 }
+let dynStudyMode="force";
+const dynStudyConfigs={
+ force:{desc:"Масса постоянна. Меняй силу тяги; сила сопротивления остаётся равной 10 Н.",labels:["Сила тяги","Масса тележки"],units:["Н","кг"],min:[0,100],max:[200,100],step:[5,1],values:[50,20]},
+ mass:{desc:"Равнодействующая постоянна и равна 40 Н. Меняй массу тележки.",labels:["Равнодействующая сила","Масса тележки"],units:["Н","кг"],min:[40,5],max:[40,100],step:[1,1],values:[40,20]},
+ balance:{desc:"Сравни силу тяги и сопротивления. При равных силах ускорение равно нулю.",labels:["Сила тяги","Сила сопротивления"],units:["Н","Н"],min:[0,0],max:[200,200],step:[5,5],values:[50,50]}
+};
+function setDynStudyMode(mode){
+ const cfg=dynStudyConfigs[mode];if(!cfg)return;dynStudyMode=mode;
+ document.querySelectorAll(".dyn-study-tab").forEach(b=>{const active=b.dataset.study===mode;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
+ $("dynStudyDescription").textContent=cfg.desc;
+ for(let i=1;i<=2;i++){const n=i-1;const input=$("dynStudyInput"+i);$("dynStudyLabel"+i).textContent=cfg.labels[n];input.min=cfg.min[n];input.max=cfg.max[n];input.step=cfg.step[n];input.value=cfg.values[n];input.disabled=cfg.min[n]===cfg.max[n];}
+ calcDynStudy();
+}
+function calcDynStudy(){
+ const cfg=dynStudyConfigs[dynStudyMode],v=[Number($("dynStudyInput1").value),Number($("dynStudyInput2").value)];
+ $("dynStudyOut1").textContent=v[0];$("dynStudyOut2").textContent=v[1];
+ let m,net,description,comparison;
+ if(dynStudyMode==="force"){m=v[1];net=v[0]-10;description="При неизменной массе ускорение растёт прямо пропорционально равнодействующей силе.";comparison=`При Fтяги = 50 Н и сопротивлении 10 Н: a = ${(40/m).toFixed(2).replace(".",",")} м/с². Сейчас: a = ${(net/m).toFixed(2).replace(".",",")} м/с².`;}
+ else if(dynStudyMode==="mass"){net=40;m=v[1];description="При постоянной равнодействующей увеличение массы уменьшает ускорение обратно пропорционально массе.";comparison=`При массе 20 кг: a = 2,00 м/с². Сейчас: a = ${(net/m).toFixed(2).replace(".",",")} м/с².`;}
+ else{net=v[0]-v[1];m=20;description=net===0?"Силы уравновешены: равнодействующая и ускорение равны нулю.":net>0?"Тяга больше сопротивления: ускорение направлено вправо.":"Сопротивление больше тяги: ускорение направлено влево." ;comparison=`ΣF = ${net} Н. При массе 20 кг ускорение a = ${(net/m).toFixed(2).replace(".",",")} м/с².`;}
+ const a=net/m;
+ $("dynStudyResult").textContent=`ΣF = ${net.toFixed(1).replace(".",",")} Н · a = ${a.toFixed(2).replace(".",",")} м/с²`;
+ $("dynStudyComparison").textContent=comparison;
+ $("dynStudyMedical").textContent=dynStudyMode==="mass"?"Если каталка и пациент образуют систему большей массы, при том же усилии тяги ускорение будет меньше. Это учебная модель, не рекомендация по перемещению пациента.":dynStudyMode==="force"?"При неизменной массе каталки с пациентом большая равнодействующая сила создаёт большее ускорение. Это учебная модель, не рекомендация по перемещению пациента.":"Когда силы тяги и сопротивления каталки равны, ускорение равно нулю: при движении с постоянной скоростью силы могут быть уравновешены. Это учебная модель.";
+}
 function calcDynamics(){
   const m=Number($("dynMass").value),f=Number($("dynForce").value),fr=Number($("dynFriction").value),net=f-fr,a=net/m;
   $("dynMassOut").textContent=m;$("dynForceOut").textContent=f;$("dynFrictionOut").textContent=fr;
@@ -401,7 +426,7 @@ function switchLab(next){
     :next==="flow"
     ?"Меняй радиус сосуда, сохраняя давление, вязкость и длину неизменными. По закону Пуазёйля Q пропорционален r⁴."
     :"Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе.";
-  if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
+  if(next==="dynamics"){$("dynamicsExtra").classList.remove("hidden");setDynStudyMode("force");setDynamicsMode(activeDynamicsMode);$("questionTitle").textContent="Как изменится ускорение, если равнодействующую силу увеличить в 2 раза?";$("questionText").textContent="Меняй силу тяги и сопротивление. При постоянной массе ускорение прямо пропорционально равнодействующей силе."}
   calcLab();
   if(next==="flow"){
     requestAnimationFrame(()=>renderFlowGraph(Number($("vesselRadius").value),Number($("pressure").value),0.0035,0.5));
@@ -458,6 +483,9 @@ function calcDynamicsExtra(){
  }
 }
 document.querySelectorAll(".dynamics-subtab").forEach(b=>b.addEventListener("click",()=>setDynamicsMode(b.dataset.dynmode)));
+document.querySelectorAll(".dyn-study-tab").forEach(b=>b.addEventListener("click",()=>setDynStudyMode(b.dataset.study)));
+["dynStudyInput1","dynStudyInput2"].forEach(id=>$(id).addEventListener("input",calcDynStudy));
+
 ["dynExtra1","dynExtra2","dynExtra3"].forEach(id=>$(id).addEventListener("input",calcDynamicsExtra));
 
 document.querySelectorAll(".lab-tab[data-lab]").forEach(button=>{
