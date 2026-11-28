@@ -617,3 +617,20 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
   .lab-explain{font-size:13px}
   .footer{gap:15px;flex-wrap:wrap}
 }
+
+/* Medical context panel for the centrifuge laboratory */
+.lab-blood-lesson{margin-top:22px;padding:26px;grid-column:1/-1}
+.lab-blood-lesson h2{margin:7px 0 12px;font-size:clamp(21px,2.4vw,28px)}
+.lab-blood-lesson>p{line-height:1.75;color:var(--muted)}
+.blood-separation-visual{margin:20px 0;padding:18px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.035)}
+.blood-separation-visual svg{display:block;width:100%;height:auto;max-height:340px}
+.blood-layer-key{display:flex;flex-wrap:wrap;gap:12px 22px;justify-content:center;margin-top:12px}
+.blood-layer-key span{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.blood-layer-key i{width:11px;height:11px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.blood-key-plasma{background:#e6cf82}.blood-key-buffy{background:#e8c5a1}.blood-key-rbc{background:#943448}
+.blood-visual-note{font-size:12px;text-align:center;margin:12px 0 0;color:var(--muted)}
+.blood-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.blood-info-grid>div{padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.blood-info-grid h3{margin:0 0 8px;font-size:16px}.blood-info-grid p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
+.lab-blood-lesson .lesson-callout{margin:14px 0}
+@media(max-width:700px){.lab-blood-lesson{padding:18px}.blood-separation-visual{padding:8px}.blood-layer-key{justify-content:flex-start;flex-direction:column}.blood-info-grid{grid-template-columns:1fr}.blood-separation-visual svg{min-height:170px}}
