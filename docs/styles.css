@@ -308,3 +308,21 @@
 .flow-model-note{max-width:620px;margin:10px auto 0;padding:11px 13px;border:1px solid rgba(223,182,107,.35);border-left:3px solid var(--gold);border-radius:9px;background:rgba(223,182,107,.08);color:#d7d2c3;font-size:11px;line-height:1.6}
 #motionDistanceLabel{margin-top:10px;color:var(--gold);font-weight:700}
 @media(min-width:900px){.flow-model-note{font-size:13px;padding:14px 16px}}
+
+
+/* MEDPHYS typography and link polish — desktop glossary + clean links */
+a, a:visited, a:hover, a:active { text-decoration: none !important; }
+.term, .term * { text-decoration: none !important; }
+@media (min-width: 900px) {
+  #page-glossary .page-heading h1 { font-size: 42px; line-height: 1.18; }
+  #page-glossary .page-heading p { font-size: 16px; line-height: 1.7; max-width: 760px; }
+  #page-glossary .search { font-size: 15px; padding: 16px 18px; max-width: 620px; }
+  #page-glossary .glossary-list { gap: 14px; }
+  #page-glossary .term { padding: 21px 22px; border-radius: 12px; }
+  #page-glossary .term b { display:block; font-size: 17px; line-height: 1.4; }
+  #page-glossary .term p { font-size: 14px; line-height: 1.65; margin-top: 9px; }
+}
+@media (min-width: 1200px) {
+  #page-glossary .term b { font-size: 18px; }
+  #page-glossary .term p { font-size: 15px; }
+}
