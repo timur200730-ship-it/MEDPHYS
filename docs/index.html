@@ -1702,6 +1702,26 @@
               </figure>
               <p class="muted">Парообразование включает испарение с поверхности жидкости и кипение во всём её объёме. Обратный процесс — конденсация.</p>
             </div>
+            <div class="lesson-block" id="phase-heating-curve">
+              <div class="lesson-label">ТЕМПЕРАТУРНЫЙ ГРАФИК</div>
+              <h2>Как меняется температура при нагревании вещества?</h2>
+              <p>При постоянной мощности нагревателя температура вещества растёт на участках нагревания, а во время плавления и кипения чистого вещества при постоянном давлении остаётся постоянной. Энергия в эти периоды расходуется на изменение состояния вещества.</p>
+              <figure class="lesson-visual" role="group" aria-label="График нагревания вещества с участками нагрева твёрдого тела, плавления, нагрева жидкости, кипения и нагрева пара">
+                <svg viewBox="0 0 720 350" role="img" aria-labelledby="heatCurveTitle heatCurveDesc">
+                  <title id="heatCurveTitle">Кривая нагревания вещества</title>
+                  <desc id="heatCurveDesc">Температура сначала растёт, затем остаётся постоянной во время плавления, снова растёт, остаётся постоянной во время кипения и снова растёт при нагревании пара.</desc>
+                  <rect x="8" y="8" width="704" height="334" rx="18" fill="#102632" stroke="#315263"/>
+                  <g stroke="#b8cbd2" stroke-width="2" fill="none"><path d="M78 42 V275 H665"/></g>
+                  <g fill="#e7f1f4" font-family="Arial,sans-serif" font-size="15"><text x="35" y="48">T</text><text x="663" y="300">Время</text><text x="80" y="295">0</text></g>
+                  <path d="M90 255 L180 205 L275 205 L370 145 L465 145 L565 65 L635 35" stroke="#62bfae" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  <g stroke="#dfb66b" stroke-width="1.5" stroke-dasharray="5 5"><path d="M180 205 V275"/><path d="M275 205 V275"/><path d="M465 145 V275"/></g>
+                  <g fill="#e7f1f4" font-family="Arial,sans-serif" font-size="13" text-anchor="middle"><text x="130" y="185">Твёрдое</text><text x="228" y="190">Плавление</text><text x="325" y="125">Жидкость</text><text x="420" y="130">Кипение</text><text x="555" y="48">Пар</text></g>
+                  <g fill="#dfb66b" font-family="Arial,sans-serif" font-size="13" text-anchor="middle"><text x="228" y="320">T плавления = const</text><text x="420" y="320">T кипения = const</text></g>
+                  <g stroke="#dfb66b" stroke-width="1.5"><path d="M180 210 V200 M275 210 V200 M370 150 V140 M465 150 V140"/></g>
+                </svg>
+                <figcaption>Условная кривая нагревания при постоянном давлении и мощности нагревателя. Горизонтальные участки соответствуют фазовым переходам чистого вещества; конкретные температуры зависят от вещества и давления.</figcaption>
+              </figure>
+            </div>
             <div class="lesson-block" id="phase-evaporation">
               <div class="lesson-label">1. ИСПАРЕНИЕ И КОНДЕНСАЦИЯ. НАСЫЩЕННЫЙ ПАР</div>
               <h2>Как жидкость превращается в пар</h2>
@@ -1785,6 +1805,28 @@
               <div class="kin-formula">ηотн = ηкрови / ηсравнения</div>
               <p><b>ηотн</b> — относительная вязкость; <b>ηкрови</b> — вязкость исследуемого образца; <b>ηсравнения</b> — вязкость выбранной жидкости сравнения, измеренная при сопоставимых условиях. В учебных задачах за жидкость сравнения могут принимать воду, но результат зависит от температуры и метода измерения.</p>
               <div class="lesson-callout"><b>Важно:</b> у крови нет одного неизменного значения вязкости, которое можно сравнивать без указания условий. В лабораторной практике реологические показатели измеряют стандартизированными методами. Относительная вязкость сама по себе не является диагнозом.</div>
+              <figure class="lesson-visual" role="group" aria-label="Схема ламинарного течения жидкости в сосуде и профиля скорости">
+                <svg viewBox="0 0 720 300" role="img" aria-labelledby="flowBloodTitle flowBloodDesc">
+                  <title id="flowBloodTitle">Ламинарный поток в сосуде</title>
+                  <desc id="flowBloodDesc">Жидкость течёт слоями внутри сосуда: скорость максимальна в центре и уменьшается к стенкам. Показан параболический профиль скорости.</desc>
+                  <rect x="8" y="8" width="704" height="284" rx="18" fill="#102632" stroke="#315263"/>
+                  <g font-family="Arial,sans-serif" fill="#e7f1f4"><text x="175" y="35" text-anchor="middle" font-size="17" font-weight="700">Слои жидкости в сосуде</text><text x="535" y="35" text-anchor="middle" font-size="17" font-weight="700">Профиль скорости</text></g>
+                  <rect x="35" y="85" width="285" height="125" rx="58" fill="#5b2834" stroke="#e58b91" stroke-width="4"/>
+                  <g stroke-linecap="round" fill="none">
+                    <path d="M55 112 H290 M55 137 H290 M55 148 H290 M55 160 H290 M55 185 H290" stroke="#f0a1a6" stroke-width="3" opacity=".55"/>
+                    <path d="M65 148 H290" stroke="#dfb66b" stroke-width="4"/>
+                    <path d="M275 140 L292 148 L275 156" stroke="#dfb66b" stroke-width="3"/>
+                  </g>
+                  <g fill="#b8cbd2" font-size="12" font-family="Arial,sans-serif"><text x="45" y="235">Стенка</text><text x="260" y="235">Стенка</text><text x="175" y="258" text-anchor="middle">Скорость выше в центре потока</text></g>
+                  <g transform="translate(390 65)">
+                    <path d="M0 150 H270 M20 170 V0" stroke="#b8cbd2" stroke-width="2" fill="none"/>
+                    <path d="M20 150 Q155 -105 270 150" stroke="#62bfae" stroke-width="4" fill="none"/>
+                    <path d="M20 150 H270" stroke="#e58b91" stroke-width="1.5" stroke-dasharray="4 5"/>
+                    <g fill="#b8cbd2" font-size="12" font-family="Arial,sans-serif"><text x="8" y="-4">v</text><text x="270" y="190" text-anchor="end">Поперечное положение</text><text x="20" y="188">стенка</text><text x="250" y="188">стенка</text></g>
+                  </g>
+                </svg>
+                <figcaption>Идеализированный ламинарный профиль: скорость потока максимальна около оси сосуда и уменьшается к стенкам. Кровь — неньютоновская жидкость, поэтому схема не описывает все особенности реального кровотока.</figcaption>
+              </figure>
               <h3>Почему это важно для медицины?</h3>
               <ul>
                 <li>вязкость влияет на сопротивление движению крови в сосудах и на нагрузку, которую испытывает сердце;</li>
